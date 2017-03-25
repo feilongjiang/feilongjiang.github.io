@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-03-25T07:37:49.564Z</updated>
+  <updated>2017-03-25T08:02:58.361Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/03/25/Python%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91/"/>
     <id>http://yoursite.com/2017/03/25/Python生成词云/</id>
     <published>2017-03-25T07:02:21.000Z</published>
-    <updated>2017-03-25T07:37:49.564Z</updated>
+    <updated>2017-03-25T08:02:58.361Z</updated>
     
     <content type="html"><![CDATA[<p><img src="/images/imagesource/17-03-25-1.png" alt="wordcloud"></p>
 <h2 id="Python如何生成词云"><a href="#Python如何生成词云" class="headerlink" title="Python如何生成词云"></a>Python如何生成词云</h2><p>最近看到词云这东西，感觉挺酷眩，就想自己实现以下:P<br>通过度娘发现可以用Python库来生成词云， So Let’s go!<br><a id="more"></a></p>
@@ -117,6 +117,8 @@
 </blockquote>
 <p>以上就是所有可以配置的参数，可以根据需要来用。</p>
 <p>End~</p>
+<hr>
+<p>[1]: 图片出处: <a href="https://github.com/amueller/word_cloud" target="_blank" rel="external">https://github.com/amueller/word_cloud</a></p>
 ]]></content>
     
     <summary type="html">
