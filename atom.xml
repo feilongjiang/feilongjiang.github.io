@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-03-24T11:34:12.744Z</updated>
+  <updated>2017-03-25T07:30:54.687Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,123 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python生成词云</title>
+    <link href="http://yoursite.com/2017/03/25/Python%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91/"/>
+    <id>http://yoursite.com/2017/03/25/Python生成词云/</id>
+    <published>2017-03-25T07:02:21.000Z</published>
+    <updated>2017-03-25T07:30:54.687Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/images/imagesource/17-03-25-1.png" alt="wordcloud"></p>
+<h2 id="Python如何生成词云"><a href="#Python如何生成词云" class="headerlink" title="Python如何生成词云"></a>Python如何生成词云</h2><p>最近看到词云这东西，感觉挺酷眩，就想自己实现以下:P<br>通过度娘发现可以用Python库来生成词云， So Let’s go!<br><a id="more"></a></p>
+<h3 id="用到的库"><a href="#用到的库" class="headerlink" title="用到的库"></a>用到的库</h3><p><a href="https://amueller.github.io/word_cloud/" target="_blank" rel="external">WorldCloud</a><br>官网: <a href="https://amueller.github.io/word_cloud" target="_blank" rel="external">https://amueller.github.io/word_cloud</a><br>github: <a href="https://github.com/amueller/word_cloud" target="_blank" rel="external">https://github.com/amueller/word_cloud</a> </p>
+<h3 id="安装WordCloud"><a href="#安装WordCloud" class="headerlink" title="安装WordCloud"></a>安装WordCloud</h3><h4 id="通过PIP安装"><a href="#通过PIP安装" class="headerlink" title="通过PIP安装"></a>通过PIP安装</h4><pre><code>pip install wordcloud
+</code></pre><h4 id="下载WHL包安装"><a href="#下载WHL包安装" class="headerlink" title="下载WHL包安装"></a>下载WHL包安装</h4><p>当然可能通过PIP会安装出错，我们可以下<a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#wordcloud" target="_blank" rel="external">WHL包</a>手动安装</p>
+<p>下载完成后，再使用PIP命令安装：</p>
+<pre><code>pip install yourfilepath\wordcloud‑1.3.1‑cp36‑cp36m‑win_amd64.whl
+</code></pre><p>其中， yourfilepath是你电脑中whl文件存放的位置，后面的包名为你所下载的whl包，我下的是<code>wordcloud‑1.3.1‑cp36‑cp36m‑win_amd64.whl</code>。</p>
+<h3 id="使用WordlCloud"><a href="#使用WordlCloud" class="headerlink" title="使用WordlCloud"></a>使用WordlCloud</h3><p>安装完成后，就可以用了。可以先测试以下是否安装成功：</p>
+<pre><code>from wordcould import WordCloud
+</code></pre><p>如果没有报错，表示安装成功了。</p>
+<h4 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h4><p>下面就是源码部分了:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"><span class="keyword">from</span> wordcloud <span class="keyword">import</span> WordCloud</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line"><span class="keyword">from</span> scipy.misc omport imread</div><div class="line"></div><div class="line"><span class="comment"># 读入一个文件</span></div><div class="line">text = open(<span class="string">'your text file.txt'</span>, <span class="string">'r'</span>).read()</div><div class="line"><span class="comment"># 读入图片</span></div><div class="line">bg_pic = imread(<span class="string">'your picture.png'</span>)</div><div class="line"><span class="comment"># 配置词云参数</span></div><div class="line">wc = WordCloud(</div><div class="line">    <span class="comment"># 设置背景色,我这里设置为了黑色</span></div><div class="line">    background_color = <span class="string">'black'</span>,</div><div class="line">    <span class="comment"># 设置词云形状，就是之前读入的图片</span></div><div class="line">    mask = bg_pic,</div><div class="line">    <span class="comment"># 设置字体,字体路径要正确，不然会报错，最好和py文件放在一块</span></div><div class="line">    font_path = <span class="string">'Sketch Fine Serif.otf'</span></div><div class="line">)</div><div class="line"><span class="comment"># 生成词云</span></div><div class="line">wordcloud = wc.generate(text)</div><div class="line"><span class="comment"># 显示词云图片</span></div><div class="line">plt.imshow(wordcloud)</div><div class="line">plt.axis(<span class="string">'off'</span>)</div><div class="line">plt.show()</div><div class="line"><span class="comment"># 保存图片</span></div><div class="line">wordcloud.to_file(<span class="string">'wordcloud.jpg'</span>)</div></pre></td></tr></table></figure></p>
+<p>生成的词云效果如图:<br><img src="/images/imagesource/17-03-25-2.jpg" alt="my wordcloud"></p>
+<h4 id="参数"><a href="#参数" class="headerlink" title="参数"></a>参数</h4><p>其中配置词云参数的时候，有多个参数可选：</p>
+<p>Parameters<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">font_path : string</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>Font path to the font that will be used (OTF or TTF). Defaults to DroidSansMono path on a Linux machine. If you are on another OS or don’t have this font, you need to adjust this path.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">width : int (default=400)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Width of the canvas.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">height : int (default=200)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Height of canvas</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">prefer_horizontal : float (default=0.90)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>The ratio of times to try horizontal fitting as opposed to vertical. If prefer_horizontal &lt; 1, the algorithm will try rotating the word if it doesn’t fit. (There is currently no built-in way to get only vertical words.)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mask : nd-array or None (default=None)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>If not None, gives a binary mask on where to draw words. If mask is not None, width and height will be ignored and the shape of mask will be used instead. All white (#FF or #FFFFFF) entries will be considerd “masked out” while other entries will be free to draw on. [This changed in the most recent version!]</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scale : float (default=1)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Scaling between computation and drawing. For large word-cloud images, using scale instead of larger canvas size is significantly faster, but might lead to a coarser fit for the words.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">min_font_size : int (default=4)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Smallest font size to use. Will stop when there is no more room in this size.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">font_step : int (default=1)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Step size for the font. font_step &gt; 1 might speed up computation but give a worse fit.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">max_words : number (default=200)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>The maximum number of words.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">stopwords : set of strings or None</div></pre></td></tr></table></figure>
+<blockquote>
+<p>The words that will be eliminated. If None, the build-in STOPWORDS list will be used.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">background_color : color value (default=”black”)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Background color for the word cloud image.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">max_font_size : int or None (default=None)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Maximum font size for the largest word. If None, height of the image is used.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mode : string (default=”RGB”)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Transparent background will be generated when mode is “RGBA” and background_color is None.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">relative_scaling : float (default=.5)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Importance of relative word frequencies for font-size. With relative_scaling=0, only word-ranks are considered. With relative_scaling=1, a word that is twice as frequent will have twice the size. If you want to consider the word frequencies and not only their rank, relative_scaling around .5 often looks good.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">color_func : callable, default=None</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Callable with parameters word, font_size, position, orientation, font_path, random_state that returns a PIL color for each word. Overwrites “colormap”. See colormap for specifying a matplotlib colormap instead.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">regexp : string or None (optional)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Regular expression to split the input text into tokens in process_text. If None is specified, r”\w[\w’]+” is used.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">collocations : bool, default=True</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Whether to include collocations (bigrams) of two words.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">colormap : string or matplotlib colormap, default=”viridis”</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Matplotlib colormap to randomly draw colors from for each word. Ignored if “color_func” is specified.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">normalize_plurals : bool, default=True</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Whether to remove trailing ‘s’ from words. If True and a word appears with and without a trailing ‘s’, the one with trailing ‘s’ is removed and its counts are added to the version without trailing ‘s’ – unless the word ends with ‘ss’.</p>
+</blockquote>
+<p>以上就是所有可以配置的参数，可以根据需要来用。</p>
+<p>End~</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;/images/imagesource/17-03-25-1.png&quot; alt=&quot;wordcloud&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;Python如何生成词云&quot;&gt;&lt;a href=&quot;#Python如何生成词云&quot; class=&quot;headerlink&quot; title=&quot;Python如何生成词云&quot;&gt;&lt;/a&gt;Python如何生成词云&lt;/h2&gt;&lt;p&gt;最近看到词云这东西，感觉挺酷眩，就想自己实现以下:P&lt;br&gt;通过度娘发现可以用Python库来生成词云， So Let’s go!&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Python" scheme="http://yoursite.com/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="http://yoursite.com/tags/Python/"/>
+    
+      <category term="词云" scheme="http://yoursite.com/tags/%E8%AF%8D%E4%BA%91/"/>
+    
+  </entry>
   
   <entry>
     <title>Python脚本抓取Bing美图</title>
