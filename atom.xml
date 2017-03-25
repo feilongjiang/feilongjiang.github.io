@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-03-25T07:35:32.082Z</updated>
+  <updated>2017-03-25T07:37:49.564Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,11 +20,14 @@
     <link href="http://yoursite.com/2017/03/25/Python%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91/"/>
     <id>http://yoursite.com/2017/03/25/Python生成词云/</id>
     <published>2017-03-25T07:02:21.000Z</published>
-    <updated>2017-03-25T07:35:32.082Z</updated>
+    <updated>2017-03-25T07:37:49.564Z</updated>
     
     <content type="html"><![CDATA[<p><img src="/images/imagesource/17-03-25-1.png" alt="wordcloud"></p>
 <h2 id="Python如何生成词云"><a href="#Python如何生成词云" class="headerlink" title="Python如何生成词云"></a>Python如何生成词云</h2><p>最近看到词云这东西，感觉挺酷眩，就想自己实现以下:P<br>通过度娘发现可以用Python库来生成词云， So Let’s go!<br><a id="more"></a></p>
-<h3 id="用到的库"><a href="#用到的库" class="headerlink" title="用到的库"></a>用到的库</h3><h4 id="WorldCloud"><a href="#WorldCloud" class="headerlink" title="WorldCloud"></a>WorldCloud</h4><p>官网: <a href="https://amueller.github.io/word_cloud" target="_blank" rel="external">https://amueller.github.io/word_cloud</a><br>github: <a href="https://github.com/amueller/word_cloud" target="_blank" rel="external">https://github.com/amueller/word_cloud</a> </p>
+<h3 id="用到的库"><a href="#用到的库" class="headerlink" title="用到的库"></a>用到的库</h3><h4 id="WorldCloud"><a href="#WorldCloud" class="headerlink" title="WorldCloud"></a>WorldCloud</h4><ul>
+<li>官网: <a href="https://amueller.github.io/word_cloud" target="_blank" rel="external">https://amueller.github.io/word_cloud</a></li>
+<li>github: <a href="https://github.com/amueller/word_cloud" target="_blank" rel="external">https://github.com/amueller/word_cloud</a> </li>
+</ul>
 <h3 id="安装WordCloud"><a href="#安装WordCloud" class="headerlink" title="安装WordCloud"></a>安装WordCloud</h3><h4 id="通过PIP安装"><a href="#通过PIP安装" class="headerlink" title="通过PIP安装"></a>通过PIP安装</h4><pre><code>pip install wordcloud
 </code></pre><h4 id="下载WHL包安装"><a href="#下载WHL包安装" class="headerlink" title="下载WHL包安装"></a>下载WHL包安装</h4><p>当然可能通过PIP会安装出错，我们可以下<a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/#wordcloud" target="_blank" rel="external">WHL包</a>手动安装</p>
 <p>下载完成后，再使用PIP命令安装：</p>
