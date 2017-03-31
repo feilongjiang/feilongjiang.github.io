@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-03-25T15:04:53.808Z</updated>
+  <updated>2017-03-31T06:46:20.538Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,58 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C++ string输入问题</title>
+    <link href="http://yoursite.com/2017/03/31/C-string%E8%BE%93%E5%85%A5%E9%97%AE%E9%A2%98/"/>
+    <id>http://yoursite.com/2017/03/31/C-string输入问题/</id>
+    <published>2017-03-31T06:38:28.000Z</published>
+    <updated>2017-03-31T06:46:20.538Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><blockquote>
+<p>使用cin读入一组字符串并存入一个vector对象</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>使用如下代码<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="comment">/*用cin读入一组字符串并把它们存入一个vector对象*/</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; text;</div><div class="line">	<span class="built_in">string</span> word;</div><div class="line">	<span class="keyword">while</span> (getline(<span class="built_in">cin</span>, word))</div><div class="line">	&#123;</div><div class="line">		text.push_back(word);</div><div class="line">	&#125;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"["</span>;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> i : text)</div><div class="line">		<span class="keyword">if</span> (i == text.back())</div><div class="line">			<span class="built_in">cout</span> &lt;&lt; i;</div><div class="line">		<span class="keyword">else</span></div><div class="line">			<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">","</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"]"</span>;</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在运行测试时发现了一个问题：<br>当输入为</p>
+<blockquote>
+<p>aa ss dd qq ww ee^Z (注意，^Z是在字符串输入完成后直接在后面加入的)</p>
+</blockquote>
+<p>按回车后发现输出卡出了，并不会输出所输入的字符串</p>
+<p>当输入为</p>
+<blockquote>
+<p>aa ss dd qq ww ee<br>^Z(换行后的^Z)</p>
+</blockquote>
+<p>就可以正确输出了</p>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>百思不得其解，遂百度之。<br>看到了两种解释，感觉都有道理，就都贴上来好了<br>1.</p>
+<blockquote>
+<p>因为标准C++ I/O函数是有缓冲的，你输入aa dd ssctrl+z之后，cin调用read读到aa dd ss到缓冲中，返回aa给用户，再次调用直接返回dd，再次调用直接返回ss，从而忽略掉了ctrl+z，因为第一次read把它带过了。此刻调用cin，因为缓冲区空，于是read阻塞等待输入，你输入ctrl+z，read返回0，于是cin&gt;&gt;调用立即返回，cin状态为eof，while退出。</p>
+</blockquote>
+<p>2.</p>
+<blockquote>
+<p>windows认为，如果缓冲中还有其它内容，ctrl+z不表示输入结束，仅代表当前行输入结束，只在单独一个ctrl+z的时候才表示输入结束。</p>
+</blockquote>
+<p>意思就是说如果使用ctrl+z来结束输入的话，一定要是单独使用，不能在输入后面直接加。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;使用cin读入一组字符串并存入一个vector对象&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="C++" scheme="http://yoursite.com/categories/C/"/>
+    
+    
+      <category term="C++" scheme="http://yoursite.com/tags/C/"/>
+    
+      <category term="String" scheme="http://yoursite.com/tags/String/"/>
+    
+      <category term="vector" scheme="http://yoursite.com/tags/vector/"/>
+    
+  </entry>
   
   <entry>
     <title>给出一个表达式，按照顺序求出表达式的值</title>
