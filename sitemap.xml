@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2017/03/23/Python3%E8%84%9A%E6%9C%AC%E6%8A%93%E5%8F%96Bing%E7%BE%8E%E5%9B%BE/</loc>
+    
+    <lastmod>2017-03-31T07:39:09.889Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2017/03/31/C-string%E8%BE%93%E5%85%A5%E9%97%AE%E9%A2%98/</loc>
     
     <lastmod>2017-03-31T06:46:20.538Z</lastmod>
@@ -19,13 +26,6 @@
     <loc>http://yoursite.com/2017/03/25/Python%E7%94%9F%E6%88%90%E8%AF%8D%E4%BA%91/</loc>
     
     <lastmod>2017-03-25T08:02:58.361Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2017/03/23/Python3%E8%84%9A%E6%9C%AC%E6%8A%93%E5%8F%96Bing%E7%BE%8E%E5%9B%BE/</loc>
-    
-    <lastmod>2017-03-24T11:34:12.744Z</lastmod>
     
   </url>
   
