@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-03-31T06:46:20.538Z</updated>
+  <updated>2017-04-07T10:34:36.925Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,53 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C++前置递增（递减）和后置递增（递减）运算符</title>
+    <link href="http://yoursite.com/2017/04/07/C-%E5%89%8D%E7%BD%AE%E9%80%92%E5%A2%9E%EF%BC%88%E9%80%92%E5%87%8F%EF%BC%89%E5%92%8C%E5%90%8E%E7%BD%AE%E9%80%92%E5%A2%9E%EF%BC%88%E9%80%92%E5%87%8F%EF%BC%89%E8%BF%90%E7%AE%97%E7%AC%A6/"/>
+    <id>http://yoursite.com/2017/04/07/C-前置递增（递减）和后置递增（递减）运算符/</id>
+    <published>2017-04-07T10:31:16.000Z</published>
+    <updated>2017-04-07T10:34:36.925Z</updated>
+    
+    <content type="html"><![CDATA[<p>在做C++ primer 第五版课后习题4.31时遇到一个问题：</p>
+<blockquote>
+<p>本节的程序使用了前置版本的递增运算符和递减运算符，解释为什么要用前置版本而不用后置版本。要想使用后置版本的递增递减运算符需要做哪些改动？使用后置版本重写本节程序。</p>
+</blockquote>
+<a id="more"></a>
+<p>源程序代码如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::size_type cnt = ivec.size();</div><div class="line"><span class="comment">// 将把从size到1的值赋给ivec的元素</span></div><div class="line"><span class="keyword">for</span>(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::size_type ix = <span class="number">0</span>;</div><div class="line">                    ix != ivec.size(); ++ix, --cnt)</div><div class="line">    ivec[ix] = cnt;</div></pre></td></tr></table></figure></p>
+<p>可以看到源程序用的是前置递增和递减运算符<br>我根据源代码写了一下可运行的版本：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec(<span class="number">10</span>, <span class="number">0</span>);        <span class="comment">// 初始化ivec</span></div><div class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::size_type cnt = ivec.size();</div><div class="line">	<span class="keyword">for</span> (<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::size_type ix = <span class="number">0</span>; </div><div class="line">	                    ix != ivec.size(); ++ix, --cnt)</div><div class="line">		ivec[ix] = cnt;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> x : ivec)</div><div class="line">		<span class="built_in">cout</span> &lt;&lt; x &lt;&lt; <span class="string">" "</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>输出的结果为</p>
+<blockquote>
+<p>10 9 8 7 6 5 4 3 2 1</p>
+</blockquote>
+<p>然后根据题目的意思，使用了后置版本的递增和递减运算符：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; ivec(<span class="number">10</span>, <span class="number">0</span>);        <span class="comment">// 初始化ivec</span></div><div class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::size_type cnt = ivec.size();</div><div class="line">	<span class="keyword">for</span> (<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::size_type ix = <span class="number">0</span>; </div><div class="line">	                    ix != ivec.size(); ix++, cnt--)</div><div class="line">		ivec[ix] = cnt;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> x : ivec)</div><div class="line">		<span class="built_in">cout</span> &lt;&lt; x &lt;&lt; <span class="string">" "</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>输出的结果为</p>
+<blockquote>
+<p>10 9 8 7 6 5 4 3 2 1</p>
+</blockquote>
+<p>结果一样啊喂！(＃°Д°)<br>哪里需要修改了(╯‵□′)╯︵┻━┻<br>各种百度没有没百度到，突然想起来可以找课后练习答案啊！<br>找到了结果，还以为我错了，没想到答案居然是…</p>
+<blockquote>
+<p>We use prefix and not postfix, just because of the <strong>Advice: Use Postfix   Advice: Use Postfix Operators only When Necessary</strong>.<br>So, it’s just a good habits. And there are no changes if we have to be made to use the postfix versions. Rewrite:<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;::size_type ix = <span class="number">0</span>; ix != ivec.size(); ix++, cnt--)  </div><div class="line">    ivec[ix] = cnt;</div></pre></td></tr></table></figure></p>
+<p>This is not an appropriate example to discuss the difference of prefix and postfix.</p>
+</blockquote>
+<p>果然不是我的问题 ( •̀ ω •́ )</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在做C++ primer 第五版课后习题4.31时遇到一个问题：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本节的程序使用了前置版本的递增运算符和递减运算符，解释为什么要用前置版本而不用后置版本。要想使用后置版本的递增递减运算符需要做哪些改动？使用后置版本重写本节程序。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="C++" scheme="http://yoursite.com/categories/C/"/>
+    
+    
+      <category term="C++" scheme="http://yoursite.com/tags/C/"/>
+    
+  </entry>
   
   <entry>
     <title>C++ string输入问题</title>
