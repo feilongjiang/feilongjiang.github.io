@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="C++,String,vector," />
+  <meta name="keywords" content="C++," />
 
 
 
@@ -95,19 +95,16 @@
 
 
 
-<meta name="description" content="问题描述
-使用cin读入一组字符串并存入一个vector对象">
+<meta name="description" content="因为数组不能被拷贝，所以函数不能返回数组。不过，函数可以返回数组的指针或引用。下面就介绍几种方法：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++ string输入问题">
-<meta property="og:url" content="http://yoursite.com/2017/03/31/C-string输入问题/index.html">
+<meta property="og:title" content="函数返回数组指针或数组引用">
+<meta property="og:url" content="http://yoursite.com/2017/04/15/函数返回数组指针或数组引用/index.html">
 <meta property="og:site_name" content="FreedomLy">
-<meta property="og:description" content="问题描述
-使用cin读入一组字符串并存入一个vector对象">
-<meta property="og:updated_time" content="2017-03-31T06:46:20.538Z">
+<meta property="og:description" content="因为数组不能被拷贝，所以函数不能返回数组。不过，函数可以返回数组的指针或引用。下面就介绍几种方法：">
+<meta property="og:updated_time" content="2017-04-15T11:08:49.766Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++ string输入问题">
-<meta name="twitter:description" content="问题描述
-使用cin读入一组字符串并存入一个vector对象">
+<meta name="twitter:title" content="函数返回数组指针或数组引用">
+<meta name="twitter:description" content="因为数组不能被拷贝，所以函数不能返回数组。不过，函数可以返回数组的指针或引用。下面就介绍几种方法：">
 
 
 
@@ -135,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/03/31/C-string输入问题/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/04/15/函数返回数组指针或数组引用/"/>
 
 
 
 
 
-  <title> C++ string输入问题 | FreedomLy </title>
+  <title> 函数返回数组指针或数组引用 | FreedomLy </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -324,7 +321,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/31/C-string输入问题/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/15/函数返回数组指针或数组引用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="FreedomLy">
@@ -345,7 +342,7 @@
             
             
               
-                C++ string输入问题
+                函数返回数组指针或数组引用
               
             
           </h1>
@@ -360,8 +357,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-31T14:38:28+08:00">
-                2017-03-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-15T19:05:14+08:00">
+                2017-04-15
               </time>
             
 
@@ -401,8 +398,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/03/31/C-string输入问题/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/03/31/C-string输入问题/" itemprop="commentCount"></span>
+                <a href="/2017/04/15/函数返回数组指针或数组引用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/04/15/函数返回数组指针或数组引用/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -433,30 +430,32 @@
       
 
       
-        <h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><blockquote>
-<p>使用cin读入一组字符串并存入一个vector对象</p>
-</blockquote>
+        <p>因为数组不能被拷贝，所以函数不能返回数组。不过，函数可以返回数组的指针或引用。<br>下面就介绍几种方法：</p>
 <a id="more"></a>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>使用如下代码<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="comment">/*用cin读入一组字符串并把它们存入一个vector对象*/</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; text;</div><div class="line">	<span class="built_in">string</span> word;</div><div class="line">	<span class="keyword">while</span> (getline(<span class="built_in">cin</span>, word))</div><div class="line">	&#123;</div><div class="line">		text.push_back(word);</div><div class="line">	&#125;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"["</span>;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> i : text)</div><div class="line">		<span class="keyword">if</span> (i == text.back())</div><div class="line">			<span class="built_in">cout</span> &lt;&lt; i;</div><div class="line">		<span class="keyword">else</span></div><div class="line">			<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">","</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"]"</span>;</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>在运行测试时发现了一个问题：<br>当输入为</p>
+<h2 id="方法一：-使用类型别名"><a href="#方法一：-使用类型别名" class="headerlink" title="方法一： 使用类型别名"></a>方法一： 使用类型别名</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> arrT[<span class="number">10</span>];       <span class="comment">// arrT是一个类型别名，表示的类型</span></div><div class="line">                            <span class="comment">// 是含有10个整型的数组</span></div><div class="line"><span class="keyword">using</span> arrT = <span class="keyword">int</span>[<span class="number">10</span>];       <span class="comment">// arrT的等价声明</span></div><div class="line"><span class="function">arrT* <span class="title">func</span><span class="params">(<span class="keyword">int</span> i)</span></span>;          <span class="comment">// func返回一个指向含有10个整数的数组的指针</span></div></pre></td></tr></table></figure>
+<p>其中<code>arrT</code>是含有10个整数的数组别名。因为无法返回数组，所以将返回类型定义成数组的指针。因此<code>func</code>函数接受一个<code>int</code>实参，返回一个指向包含10个整数的数组的指针。</p>
+<h2 id="方法二：-声明一个返回数组指针的函数"><a href="#方法二：-声明一个返回数组指针的函数" class="headerlink" title="方法二： 声明一个返回数组指针的函数"></a>方法二： 声明一个返回数组指针的函数</h2><p>要想在声明<code>func</code>时不适用类型别名，我们必须牢记被定义的名字后面数组的维度：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> arr[<span class="number">10</span>];            <span class="comment">// arr是一个含有10个整数的数组</span></div><div class="line"><span class="keyword">int</span> *p1[<span class="number">10</span>];            <span class="comment">// p1是一个含有10个指针的数组</span></div><div class="line"><span class="keyword">int</span> (*p2)[<span class="number">10</span>] = &amp;arr;   <span class="comment">// p2是一个指针，他只想含有10个整数的数组</span></div></pre></td></tr></table></figure></p>
+<p>和这些声明一样，如果想定义一个返回数组指针的函数，则数组的维度必须跟在函数名字之后。然而，函数的形参列表也更在函数名字后面且形参列表应该咸鱼数组的维度。因此，返回数组指针的函数形式如下所示：</p>
 <blockquote>
-<p>aa ss dd qq ww ee^Z (注意，^Z是在字符串输入完成后直接在后面加入的)</p>
+<p>Type (*function(parameter_list)) [dimension]</p>
 </blockquote>
-<p>按回车后发现输出卡出了，并不会输出所输入的字符串</p>
-<p>当输入为</p>
-<blockquote>
-<p>aa ss dd qq ww ee<br>^Z(换行后的^Z)</p>
-</blockquote>
-<p>就可以正确输出了</p>
-<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>百思不得其解，遂百度之。<br>看到了两种解释，感觉都有道理，就都贴上来好了<br>1.</p>
-<blockquote>
-<p>因为标准C++ I/O函数是有缓冲的，你输入aa dd ssctrl+z之后，cin调用read读到aa dd ss到缓冲中，返回aa给用户，再次调用直接返回dd，再次调用直接返回ss，从而忽略掉了ctrl+z，因为第一次read把它带过了。此刻调用cin，因为缓冲区空，于是read阻塞等待输入，你输入ctrl+z，read返回0，于是cin&gt;&gt;调用立即返回，cin状态为eof，while退出。</p>
-</blockquote>
-<p>2.</p>
-<blockquote>
-<p>windows认为，如果缓冲中还有其它内容，ctrl+z不表示输入结束，仅代表当前行输入结束，只在单独一个ctrl+z的时候才表示输入结束。</p>
-</blockquote>
-<p>意思就是说如果使用ctrl+z来结束输入的话，一定要是单独使用，不能在输入后面直接加。</p>
+<p>类似于其他数组的声明，<code>Type</code>表示元素的类型，<code>dimension</code>表示数组的大小。<code>(*function(parameter_list))</code>两段的括号必须存在，就像定义<code>p2</code>时两段必须有括号一样。如果没有这对括号，函数返回的类型将是指针的数组。</p>
+<p>举个具体点的例子，下面这个func函数的声明没有使用类型别名：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> (*func(<span class="keyword">int</span> i)) [<span class="number">10</span>];</div></pre></td></tr></table></figure></p>
+<p>可以按照以下的顺序来逐层理解该声明的含义：</p>
+<ul>
+<li><code>func(int i)</code>表示调用<code>func</code>函数时需要一个<code>int</code>类型的实参</li>
+<li><code>(*func(int i))</code>意味这我们可以对函数调用的结果执行解引用操作</li>
+<li><code>(*func(int i)) [10]</code>表示解引用<code>func</code>的调用将得到一个大小是10的数组</li>
+<li><code>int(*func(int i)) [10]</code>表示数组中元素是<code>int</code>类型</li>
+</ul>
+<h2 id="方法三：-使用尾置返回类型"><a href="#方法三：-使用尾置返回类型" class="headerlink" title="方法三： 使用尾置返回类型"></a>方法三： 使用尾置返回类型</h2><p>在C++11新标准中海油可以简化上述<code>func</code>声明的方法，就是使用<strong>尾置返回类型(trailing return type)</strong>。任何函数的定义都能使用尾置返回，但是这样形式对于返回类型比较复杂的函数最有效，比如返回类型是数组的指针或者数组的引用。位置返回类型跟在形参列表后面并以一个-&gt;符号开头。为了表示函数真正的返回类型跟在形参列表之后，我们在本应该出现返回类型的地方放置一个<code>auto</code>：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// func接受一个int类型的实参，返回一个指针，该指针指向含有10个整数的数组</div><div class="line">auto func(int i) -&gt; int(*) [10];</div></pre></td></tr></table></figure>
+<p>因为我们把函数的返回类型放在了形参列表之后，所以可以清楚地看到func函数返回的是一个指针，并且该指针指向了含有10个整数的数组。</p>
+<h2 id="方法四：-使用decltype"><a href="#方法四：-使用decltype" class="headerlink" title="方法四： 使用decltype"></a>方法四： 使用decltype</h2><p>还有一种情况，如果我们知道函数返回的指针将指向哪个数组，就可以使用decltype关键字声明返回类型。例如，下面的函数返回一个指针，该指针根据参数<code>i</code>的不同指向两个已知数组中的某一个：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> odd[] = &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>&#125;;</div><div class="line"><span class="keyword">int</span> even[] = &#123;<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>&#125;;</div><div class="line"><span class="comment">// 返回一个指针，该指针指向含有5个整数的数组</span></div><div class="line"><span class="keyword">decltype</span>(odd) *addPtr(<span class="keyword">int</span> i)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> (i % <span class="number">2</span>) ? &amp;odd : &amp;even;      <span class="comment">// 返回一个指向数组的指针</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>arrPtr</code>使用关键字decltype表示它的返回类型是个指针，并且该指针所指的对象与<code>odd</code>类型一致。因为<code>odd</code>是数组，所以<code>arrPtr</code>返回一个指向含有5个整数的数组的指针。有一个地方需要注意： decltype并不负责把数组类型转换成对应的指针，所以decltype的结果是个数组，想要表示arrPtr返回指针还必须在函数声明是加一个<code>*</code>符号。</p>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><h3 id="1-编写一个程序，使其返回数组的引用并且该数组白喊10个string对象。不要使用尾置返回类型、decltype或者类型别名。"><a href="#1-编写一个程序，使其返回数组的引用并且该数组白喊10个string对象。不要使用尾置返回类型、decltype或者类型别名。" class="headerlink" title="1. 编写一个程序，使其返回数组的引用并且该数组白喊10个string对象。不要使用尾置返回类型、decltype或者类型别名。"></a>1. 编写一个程序，使其返回数组的引用并且该数组白喊10个string对象。不要使用尾置返回类型、decltype或者类型别名。</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">string</span> (&amp;func(<span class="built_in">string</span> (&amp;arr)[<span class="number">10</span>])) [<span class="number">10</span>];</div></pre></td></tr></table></figure>
+<h3 id="2-为上一题的函数再写三个声明，一个使用类型别名，另一个使用尾置返回类型，最后一个使用decltype关键字。"><a href="#2-为上一题的函数再写三个声明，一个使用类型别名，另一个使用尾置返回类型，最后一个使用decltype关键字。" class="headerlink" title="2. 为上一题的函数再写三个声明，一个使用类型别名，另一个使用尾置返回类型，最后一个使用decltype关键字。"></a>2. 为上一题的函数再写三个声明，一个使用类型别名，另一个使用尾置返回类型，最后一个使用decltype关键字。</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// 使用类型别名</div><div class="line">using arrT = string[10];</div><div class="line">arrT&amp; func1(arrT&amp; arr);</div><div class="line"></div><div class="line">// 使用尾置返回类型</div><div class="line">auto func2(arrT&amp; arr)-&gt;string(&amp;) [10];</div><div class="line"></div><div class="line">// 使用decltype关键字</div><div class="line">string arrS[10];</div><div class="line">decltype(arrS) &amp;func3(arrT&amp; arr);</div></pre></td></tr></table></figure>
+<h3 id="3-修改arrPtr函数，使其返回数组的引用"><a href="#3-修改arrPtr函数，使其返回数组的引用" class="headerlink" title="3. 修改arrPtr函数，使其返回数组的引用"></a>3. 修改arrPtr函数，使其返回数组的引用</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> odd[] = &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>&#125;;</div><div class="line"><span class="keyword">int</span> even[] = &#123;<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>&#125;;</div><div class="line"><span class="keyword">decltype</span>(odd) &amp;arrPtr(<span class="keyword">int</span> i)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> (i % <span class="number">2</span>) ? odd : even;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -488,10 +487,6 @@
           
             <a href="/tags/C/" rel="tag"># C++</a>
           
-            <a href="/tags/String/" rel="tag"># String</a>
-          
-            <a href="/tags/vector/" rel="tag"># vector</a>
-          
         </div>
       
 
@@ -503,8 +498,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/25/给出一个表达式，按照顺序求出表达式的值/" rel="next" title="给出一个表达式，按照顺序求出表达式的值">
-                <i class="fa fa-chevron-left"></i> 给出一个表达式，按照顺序求出表达式的值
+              <a href="/2017/04/07/C-前置递增（递减）和后置递增（递减）运算符/" rel="next" title="C++前置递增（递减）和后置递增（递减）运算符">
+                <i class="fa fa-chevron-left"></i> C++前置递增（递减）和后置递增（递减）运算符
               </a>
             
           </div>
@@ -512,10 +507,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/04/07/C-前置递增（递减）和后置递增（递减）运算符/" rel="prev" title="C++前置递增（递减）和后置递增（递减）运算符">
-                C++前置递增（递减）和后置递增（递减）运算符 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -720,7 +711,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题描述"><span class="nav-number">1.</span> <span class="nav-text">问题描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">2.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决办法"><span class="nav-number">3.</span> <span class="nav-text">解决办法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一：-使用类型别名"><span class="nav-number">1.</span> <span class="nav-text">方法一： 使用类型别名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二：-声明一个返回数组指针的函数"><span class="nav-number">2.</span> <span class="nav-text">方法二： 声明一个返回数组指针的函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法三：-使用尾置返回类型"><span class="nav-number">3.</span> <span class="nav-text">方法三： 使用尾置返回类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法四：-使用decltype"><span class="nav-number">4.</span> <span class="nav-text">方法四： 使用decltype</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#练习"><span class="nav-number">5.</span> <span class="nav-text">练习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-编写一个程序，使其返回数组的引用并且该数组白喊10个string对象。不要使用尾置返回类型、decltype或者类型别名。"><span class="nav-number">5.1.</span> <span class="nav-text">1. 编写一个程序，使其返回数组的引用并且该数组白喊10个string对象。不要使用尾置返回类型、decltype或者类型别名。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-为上一题的函数再写三个声明，一个使用类型别名，另一个使用尾置返回类型，最后一个使用decltype关键字。"><span class="nav-number">5.2.</span> <span class="nav-text">2. 为上一题的函数再写三个声明，一个使用类型别名，另一个使用尾置返回类型，最后一个使用decltype关键字。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-修改arrPtr函数，使其返回数组的引用"><span class="nav-number">5.3.</span> <span class="nav-text">3. 修改arrPtr函数，使其返回数组的引用</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -878,9 +869,9 @@
 
     <script type="text/javascript">
       var disqus_shortname = 'freedomly1003';
-      var disqus_identifier = '2017/03/31/C-string输入问题/';
+      var disqus_identifier = '2017/04/15/函数返回数组指针或数组引用/';
 
-      var disqus_title = "C++ string输入问题";
+      var disqus_title = "函数返回数组指针或数组引用";
 
 
       function run_disqus_script(disqus_script) {

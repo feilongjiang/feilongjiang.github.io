@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-04-07T10:34:36.925Z</updated>
+  <updated>2017-04-15T11:08:49.766Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,54 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>函数返回数组指针或数组引用</title>
+    <link href="http://yoursite.com/2017/04/15/%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%E6%88%96%E6%95%B0%E7%BB%84%E5%BC%95%E7%94%A8/"/>
+    <id>http://yoursite.com/2017/04/15/函数返回数组指针或数组引用/</id>
+    <published>2017-04-15T11:05:14.000Z</published>
+    <updated>2017-04-15T11:08:49.766Z</updated>
+    
+    <content type="html"><![CDATA[<p>因为数组不能被拷贝，所以函数不能返回数组。不过，函数可以返回数组的指针或引用。<br>下面就介绍几种方法：</p>
+<a id="more"></a>
+<h2 id="方法一：-使用类型别名"><a href="#方法一：-使用类型别名" class="headerlink" title="方法一： 使用类型别名"></a>方法一： 使用类型别名</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> arrT[<span class="number">10</span>];       <span class="comment">// arrT是一个类型别名，表示的类型</span></div><div class="line">                            <span class="comment">// 是含有10个整型的数组</span></div><div class="line"><span class="keyword">using</span> arrT = <span class="keyword">int</span>[<span class="number">10</span>];       <span class="comment">// arrT的等价声明</span></div><div class="line"><span class="function">arrT* <span class="title">func</span><span class="params">(<span class="keyword">int</span> i)</span></span>;          <span class="comment">// func返回一个指向含有10个整数的数组的指针</span></div></pre></td></tr></table></figure>
+<p>其中<code>arrT</code>是含有10个整数的数组别名。因为无法返回数组，所以将返回类型定义成数组的指针。因此<code>func</code>函数接受一个<code>int</code>实参，返回一个指向包含10个整数的数组的指针。</p>
+<h2 id="方法二：-声明一个返回数组指针的函数"><a href="#方法二：-声明一个返回数组指针的函数" class="headerlink" title="方法二： 声明一个返回数组指针的函数"></a>方法二： 声明一个返回数组指针的函数</h2><p>要想在声明<code>func</code>时不适用类型别名，我们必须牢记被定义的名字后面数组的维度：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> arr[<span class="number">10</span>];            <span class="comment">// arr是一个含有10个整数的数组</span></div><div class="line"><span class="keyword">int</span> *p1[<span class="number">10</span>];            <span class="comment">// p1是一个含有10个指针的数组</span></div><div class="line"><span class="keyword">int</span> (*p2)[<span class="number">10</span>] = &amp;arr;   <span class="comment">// p2是一个指针，他只想含有10个整数的数组</span></div></pre></td></tr></table></figure></p>
+<p>和这些声明一样，如果想定义一个返回数组指针的函数，则数组的维度必须跟在函数名字之后。然而，函数的形参列表也更在函数名字后面且形参列表应该咸鱼数组的维度。因此，返回数组指针的函数形式如下所示：</p>
+<blockquote>
+<p>Type (*function(parameter_list)) [dimension]</p>
+</blockquote>
+<p>类似于其他数组的声明，<code>Type</code>表示元素的类型，<code>dimension</code>表示数组的大小。<code>(*function(parameter_list))</code>两段的括号必须存在，就像定义<code>p2</code>时两段必须有括号一样。如果没有这对括号，函数返回的类型将是指针的数组。</p>
+<p>举个具体点的例子，下面这个func函数的声明没有使用类型别名：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> (*func(<span class="keyword">int</span> i)) [<span class="number">10</span>];</div></pre></td></tr></table></figure></p>
+<p>可以按照以下的顺序来逐层理解该声明的含义：</p>
+<ul>
+<li><code>func(int i)</code>表示调用<code>func</code>函数时需要一个<code>int</code>类型的实参</li>
+<li><code>(*func(int i))</code>意味这我们可以对函数调用的结果执行解引用操作</li>
+<li><code>(*func(int i)) [10]</code>表示解引用<code>func</code>的调用将得到一个大小是10的数组</li>
+<li><code>int(*func(int i)) [10]</code>表示数组中元素是<code>int</code>类型</li>
+</ul>
+<h2 id="方法三：-使用尾置返回类型"><a href="#方法三：-使用尾置返回类型" class="headerlink" title="方法三： 使用尾置返回类型"></a>方法三： 使用尾置返回类型</h2><p>在C++11新标准中海油可以简化上述<code>func</code>声明的方法，就是使用<strong>尾置返回类型(trailing return type)</strong>。任何函数的定义都能使用尾置返回，但是这样形式对于返回类型比较复杂的函数最有效，比如返回类型是数组的指针或者数组的引用。位置返回类型跟在形参列表后面并以一个-&gt;符号开头。为了表示函数真正的返回类型跟在形参列表之后，我们在本应该出现返回类型的地方放置一个<code>auto</code>：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// func接受一个int类型的实参，返回一个指针，该指针指向含有10个整数的数组</div><div class="line">auto func(int i) -&gt; int(*) [10];</div></pre></td></tr></table></figure>
+<p>因为我们把函数的返回类型放在了形参列表之后，所以可以清楚地看到func函数返回的是一个指针，并且该指针指向了含有10个整数的数组。</p>
+<h2 id="方法四：-使用decltype"><a href="#方法四：-使用decltype" class="headerlink" title="方法四： 使用decltype"></a>方法四： 使用decltype</h2><p>还有一种情况，如果我们知道函数返回的指针将指向哪个数组，就可以使用decltype关键字声明返回类型。例如，下面的函数返回一个指针，该指针根据参数<code>i</code>的不同指向两个已知数组中的某一个：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> odd[] = &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>&#125;;</div><div class="line"><span class="keyword">int</span> even[] = &#123;<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>&#125;;</div><div class="line"><span class="comment">// 返回一个指针，该指针指向含有5个整数的数组</span></div><div class="line"><span class="keyword">decltype</span>(odd) *addPtr(<span class="keyword">int</span> i)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> (i % <span class="number">2</span>) ? &amp;odd : &amp;even;      <span class="comment">// 返回一个指向数组的指针</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>arrPtr</code>使用关键字decltype表示它的返回类型是个指针，并且该指针所指的对象与<code>odd</code>类型一致。因为<code>odd</code>是数组，所以<code>arrPtr</code>返回一个指向含有5个整数的数组的指针。有一个地方需要注意： decltype并不负责把数组类型转换成对应的指针，所以decltype的结果是个数组，想要表示arrPtr返回指针还必须在函数声明是加一个<code>*</code>符号。</p>
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><h3 id="1-编写一个程序，使其返回数组的引用并且该数组白喊10个string对象。不要使用尾置返回类型、decltype或者类型别名。"><a href="#1-编写一个程序，使其返回数组的引用并且该数组白喊10个string对象。不要使用尾置返回类型、decltype或者类型别名。" class="headerlink" title="1. 编写一个程序，使其返回数组的引用并且该数组白喊10个string对象。不要使用尾置返回类型、decltype或者类型别名。"></a>1. 编写一个程序，使其返回数组的引用并且该数组白喊10个string对象。不要使用尾置返回类型、decltype或者类型别名。</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">string</span> (&amp;func(<span class="built_in">string</span> (&amp;arr)[<span class="number">10</span>])) [<span class="number">10</span>];</div></pre></td></tr></table></figure>
+<h3 id="2-为上一题的函数再写三个声明，一个使用类型别名，另一个使用尾置返回类型，最后一个使用decltype关键字。"><a href="#2-为上一题的函数再写三个声明，一个使用类型别名，另一个使用尾置返回类型，最后一个使用decltype关键字。" class="headerlink" title="2. 为上一题的函数再写三个声明，一个使用类型别名，另一个使用尾置返回类型，最后一个使用decltype关键字。"></a>2. 为上一题的函数再写三个声明，一个使用类型别名，另一个使用尾置返回类型，最后一个使用decltype关键字。</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// 使用类型别名</div><div class="line">using arrT = string[10];</div><div class="line">arrT&amp; func1(arrT&amp; arr);</div><div class="line"></div><div class="line">// 使用尾置返回类型</div><div class="line">auto func2(arrT&amp; arr)-&gt;string(&amp;) [10];</div><div class="line"></div><div class="line">// 使用decltype关键字</div><div class="line">string arrS[10];</div><div class="line">decltype(arrS) &amp;func3(arrT&amp; arr);</div></pre></td></tr></table></figure>
+<h3 id="3-修改arrPtr函数，使其返回数组的引用"><a href="#3-修改arrPtr函数，使其返回数组的引用" class="headerlink" title="3. 修改arrPtr函数，使其返回数组的引用"></a>3. 修改arrPtr函数，使其返回数组的引用</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> odd[] = &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>&#125;;</div><div class="line"><span class="keyword">int</span> even[] = &#123;<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>&#125;;</div><div class="line"><span class="keyword">decltype</span>(odd) &amp;arrPtr(<span class="keyword">int</span> i)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> (i % <span class="number">2</span>) ? odd : even;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;因为数组不能被拷贝，所以函数不能返回数组。不过，函数可以返回数组的指针或引用。&lt;br&gt;下面就介绍几种方法：&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="C++" scheme="http://yoursite.com/categories/C/"/>
+    
+    
+      <category term="C++" scheme="http://yoursite.com/tags/C/"/>
+    
+  </entry>
   
   <entry>
     <title>C++前置递增（递减）和后置递增（递减）运算符</title>
