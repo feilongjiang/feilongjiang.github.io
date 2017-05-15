@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://felon03.github.io/"/>
-  <updated>2017-05-15T13:20:03.342Z</updated>
+  <updated>2017-05-03T14:11:56.198Z</updated>
   <id>https://felon03.github.io/</id>
   
   <author>
@@ -14,65 +14,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>【每周一坑】神奇的九宫格</title>
-    <link href="https://felon03.github.io/2017/05/15/%E3%80%90%E6%AF%8F%E5%91%A8%E4%B8%80%E5%9D%91%E3%80%91%E7%A5%9E%E5%A5%87%E7%9A%84%E4%B9%9D%E5%AE%AB%E6%A0%BC/"/>
-    <id>https://felon03.github.io/2017/05/15/【每周一坑】神奇的九宫格/</id>
-    <published>2017-05-15T13:06:26.000Z</published>
-    <updated>2017-05-15T13:20:03.342Z</updated>
-    
-    <content type="html"><![CDATA[<p>本周题目：</p>
-<blockquote>
-<p>给定一个3*3的九宫格和1-9九个数字，将9个数字按照一定规则填充进九宫格内，使九宫格内横、竖、斜每条线的和都相等，输出至少一种结果。</p>
-</blockquote>
-<p>示例：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">Jiugongge</span><span class="params">()</span>:</span></div><div class="line">    <span class="string">'''</span></div><div class="line">    &gt;&gt;&gt; Jiugongge()</div><div class="line">    4 9 2</div><div class="line">    3 5 7</div><div class="line">    8 1 6</div><div class="line">    '''</div></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<p>附加题：</p>
-<blockquote>
-<p>给定一个正整数 N（N &gt;= 1），将 1 - N^2 填充到 N * N 的格子中，使横、竖、斜（对角线）每条线的和都相等，输出至少一种组合。</p>
-</blockquote>
-<p>比如 N 等于 3 时就是 9 宫格， N 等于 4 时为 16 宫格。</p>
-<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>在解决问题之前，要先了解一个东西 —— “幻方”。<br>Wiki上给出的中文定义：</p>
-<blockquote>
-<p><strong>幻方</strong>(Magic Square)，有时又称<strong>魔方</strong>（该称呼现一般指立方体的魔术方块）或<strong>纵横图</strong>，由一组排放在正方形中的整数组成，<br>其每行、每列以及两条对角线上的数之和均相等。通常幻方由从 $1$ 到 $N^{2}$ 的连续整数组成，其中 $N$ 为正方形的行或列的数目。<br>因此 $N$ 阶幻方有 $N$ 行 $N$ 列，并且所填充的数为从 $1$ 到 $N^{2}$ 。</p>
-<p>幻方可以使用 $N$ 阶方阵来表示，方阵的每行、每列以及两条对角线的和都等于常数 $M<em>{2}(N)$，如果填充数为 $1,2,\dots ,N^{2}$，那么有<br> $$M</em>{2}(N)={\frac  {N(N^{2}+1)}{2}}$$</p>
-</blockquote>
-<p>$N$阶幻方的解题思路分为三种情况：</p>
-<ol>
-<li>$N$为奇数</li>
-<li>$N$为4的倍数</li>
-<li>$N$为其他偶数</li>
-</ol>
-<h3 id="1-N-为奇数"><a href="#1-N-为奇数" class="headerlink" title="1. $N$为奇数"></a>1. $N$为奇数</h3><ul>
-<li>将$1$放在第一行中间一列；</li>
-<li>从$2$开始直到$n*n$为止各数依次按下列规则存放，按$45°$方向行走，如向右上，每一个数存放的行比前一个数的行数减$1$，列数加$1$；</li>
-<li>如果行列范围超出矩阵范围，则回绕。例如$1$在第一行，则$2$应放在最下一行，列数同样加$1$；</li>
-<li>如果按照上述规则确定的位置已有数，或上一个数是第$1$行$n$列时，则把下一个数放在上一个数的下面。</li>
-</ul>
-<h3 id="2-N-为-4-的倍数"><a href="#2-N-为-4-的倍数" class="headerlink" title="2. $N$为$4$的倍数"></a>2. $N$为$4$的倍数</h3><p>采用对称元素交换法。首先把数$1$到$n<em>n$按从上至下、从左至又的顺序填入矩阵。然后将方阵的所有$N</em>N$子方阵中的两对角线上位置的数关于方阵中心作对称交换，即$a(i,j)$与$a(n-1-i, n-1-j)$交换，所有其它位置上的数不变。</p>
-<h3 id="3-N-为非-4-的倍数的偶数-即-4n-2"><a href="#3-N-为非-4-的倍数的偶数-即-4n-2" class="headerlink" title="3. $N$为非$4$的倍数的偶数(即$4n+2$)"></a>3. $N$为非$4$的倍数的偶数(即$4n+2$)</h3><p>首先把大方阵分解为$4$个奇数字方阵。<br>按上述奇数幻方给分解的4个子方阵对应赋值,其中：<br>上左子阵最小$(i)$，下右子阵次小$(i+v)$，下左子阵最大$(i+3v)$，上右子阵次大$(i+2v)$<br>即$4$个子方阵对应元素相差$v$，其中$v={\frac {n*n}{4}}$<br>四个子矩阵由小到大排列方式为<br>$$<br>\begin{bmatrix} 1 &amp; 2 \ 3 &amp; 4 \ \end{bmatrix}<br>$$<br>然后作相应的元素交换：$a(i,j)$与$a(i+k,j)$在同一列做对应交换，$(j<t或j>n-t)$,$a(t,0)$与$a(t+k,0)$;$a(t,t)$与$a(t+k,t)$两对元素交换，其中$k$ = $n//2$，$t=(n-2)//4$。</t或j></p>
-<h2 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># n为奇数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">oddN</span><span class="params">()</span>:</span></div><div class="line">    <span class="comment"># 构造二维列表</span></div><div class="line">    lst = [[<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(n)] <span class="keyword">for</span> i <span class="keyword">in</span> range(n)]</div><div class="line">    <span class="comment"># 初始化列表位置</span></div><div class="line">    x, y = <span class="number">0</span>, n//<span class="number">2</span></div><div class="line">    <span class="keyword">for</span> num <span class="keyword">in</span> range(<span class="number">1</span>, n*n+<span class="number">1</span>):</div><div class="line">        lst[x][y] = num</div><div class="line">        xa, ya = x<span class="number">-1</span>, y+<span class="number">1</span></div><div class="line">        <span class="comment"># 回绕情况</span></div><div class="line">        <span class="keyword">if</span> xa &lt; <span class="number">0</span>:</div><div class="line">            xa = n<span class="number">-1</span></div><div class="line">        <span class="keyword">if</span> ya &gt; n<span class="number">-1</span>:</div><div class="line">            ya = <span class="number">0</span></div><div class="line">        <span class="comment"># 占位情况</span></div><div class="line">        <span class="keyword">if</span> lst[xa][ya] != <span class="number">0</span>:</div><div class="line">            x = x+<span class="number">1</span></div><div class="line">            <span class="keyword">if</span> x &gt; n<span class="number">-1</span>:</div><div class="line">                x = <span class="number">0</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            x, y = xa, ya</div><div class="line">    <span class="keyword">return</span> lst</div><div class="line">    </div><div class="line"><span class="comment"># n为4的倍数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fourN</span><span class="params">(n)</span>:</span></div><div class="line">    <span class="comment"># 初始化列表</span></div><div class="line">    lst = [[i+j <span class="keyword">for</span> i <span class="keyword">in</span> list(range(<span class="number">1</span>,n*n+<span class="number">1</span>))[::n]] <span class="keyword">for</span> j <span class="keyword">in</span> range(n)]</div><div class="line">    <span class="comment"># 交换对角线位置</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n//<span class="number">2</span>):</div><div class="line">        lst[i][i],lst[n<span class="number">-1</span>-i][n<span class="number">-1</span>-i] = lst[n<span class="number">-1</span>-i][n<span class="number">-1</span>-i],lst[i][i]</div><div class="line">        lst[i][n<span class="number">-1</span>-i],lst[n<span class="number">-1</span>-i][i] = lst[n<span class="number">-1</span>-i][i],lst[i][n<span class="number">-1</span>-i]</div><div class="line">    <span class="keyword">return</span> lst</div><div class="line"></div><div class="line"><span class="comment"># n为非4倍数的偶数</span></div><div class="line"><span class="comment"># 累加子矩阵</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">acc</span><span class="params">(p, lst)</span>:</span></div><div class="line">    <span class="comment"># print(lst)</span></div><div class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> lst:</div><div class="line">        <span class="keyword">for</span> index <span class="keyword">in</span> range(len(row)):</div><div class="line">            row[index] += p</div><div class="line"></div><div class="line">    <span class="keyword">return</span> lst</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fourNplus2</span><span class="params">(n)</span>:</span></div><div class="line">    m = n // <span class="number">2</span></div><div class="line">    A, B, C, D = oddN(m), oddN(m), oddN(m), oddN(m)</div><div class="line">    B = acc(m ** <span class="number">2</span>, B)</div><div class="line">    C = acc(m ** <span class="number">2</span> * <span class="number">2</span>, C)</div><div class="line">    D = acc(m ** <span class="number">2</span> * <span class="number">3</span>, D)</div><div class="line">    <span class="keyword">for</span> row_index <span class="keyword">in</span> range(len(A)):</div><div class="line">        A[row_index].extend(C[row_index])</div><div class="line">        D[row_index].extend(B[row_index])</div><div class="line">    <span class="comment"># 合并子矩阵</span></div><div class="line">    matrix = A + D</div><div class="line">    t = (n - <span class="number">2</span>) // <span class="number">4</span></div><div class="line">    <span class="comment"># 列交换</span></div><div class="line">    <span class="keyword">for</span> col_index <span class="keyword">in</span> range(len(matrix[<span class="number">0</span>])):</div><div class="line">        <span class="keyword">if</span> col_index &lt; t <span class="keyword">or</span> col_index &gt; n - t:</div><div class="line">            <span class="keyword">for</span> row_index <span class="keyword">in</span> range(len(matrix) // <span class="number">2</span>):</div><div class="line">                matrix[row_index][col_index], matrix[row_index + m][col_index] = \</div><div class="line">                    matrix[row_index + m][col_index], matrix[row_index][col_index]</div><div class="line">                <span class="comment"># 交换特殊位置</span></div><div class="line">    matrix[t][<span class="number">0</span>], matrix[m + t][<span class="number">0</span>] = matrix[m + t][<span class="number">0</span>], matrix[t][<span class="number">0</span>]</div><div class="line">    matrix[t][t], matrix[m + t][t] = matrix[m + t][t], matrix[t][t]</div><div class="line">    <span class="keyword">return</span> matrix</div></pre></td></tr></table></figure>
-<p>End~</p>
-<hr>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;本周题目：&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;给定一个3*3的九宫格和1-9九个数字，将9个数字按照一定规则填充进九宫格内，使九宫格内横、竖、斜每条线的和都相等，输出至少一种结果。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;示例：&lt;br&gt;&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;3&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;4&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;5&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;7&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Jiugongge&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;:&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &lt;span class=&quot;string&quot;&gt;&#39;&#39;&#39;&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &amp;gt;&amp;gt;&amp;gt; Jiugongge()&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    4 9 2&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    3 5 7&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    8 1 6&lt;/div&gt;&lt;div class=&quot;line&quot;&gt;    &#39;&#39;&#39;&lt;/span&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Python" scheme="https://felon03.github.io/categories/Python/"/>
-    
-    
-      <category term="Python" scheme="https://felon03.github.io/tags/Python/"/>
-    
-  </entry>
   
   <entry>
     <title>【每周一坑】求乘积最大</title>
