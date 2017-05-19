@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://felon03.github.io/"/>
-  <updated>2017-05-15T14:45:34.023Z</updated>
+  <updated>2017-05-19T06:34:34.877Z</updated>
   <id>https://felon03.github.io/</id>
   
   <author>
@@ -14,6 +14,55 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【每周一坑】杨辉三角形</title>
+    <link href="https://felon03.github.io/2017/05/19/%E3%80%90%E6%AF%8F%E5%91%A8%E4%B8%80%E5%9D%91%E3%80%91%E6%9D%A8%E8%BE%89%E4%B8%89%E8%A7%92%E5%BD%A2/"/>
+    <id>https://felon03.github.io/2017/05/19/【每周一坑】杨辉三角形/</id>
+    <published>2017-05-19T06:28:26.000Z</published>
+    <updated>2017-05-19T06:34:34.877Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p><strong>本周题目</strong></p>
+<blockquote>
+<p>杨辉三角形，也称帕斯卡三角，其定义为：<br>顶端是1，视为(row0).<br>第1行(row1)是两个1，这两个1是由它们上头左右两数之和(不在三角形内视为0).<br>以此类推<br>第2行(row2)：0+1=1; 1+1=2; 1+0=1.<br>第3行(row3)：0+1=1; 1+2=3; 2+1=3; 1+0=1.</p>
+</blockquote>
+<a id="more"></a>
+<p>根据上述方法可产生杨辉三角。如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">n = 0              1                     </div><div class="line">n = 1            1   1                   </div><div class="line">n = 2          1   2   1                 </div><div class="line">n = 3        1   3   3   1               </div><div class="line">n = 4      1   4   6   4   1             </div><div class="line">n = 5    1   5   10  10  5   1           </div><div class="line">n = ...         ...  ...</div></pre></td></tr></table></figure>
+<p>根据上述定义，定义一个函数，传入正整数参数m、n，分别代表杨辉三角第M行，左起第N个数字(m,n都从0开始计算)。如超出范围则返回 <code>Invalid query</code>。</p>
+<p>示例代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">yang_hui</span><span class="params">(m, n)</span>:</span></div><div class="line">    <span class="string">'''</span></div><div class="line">    &gt;&gt;&gt;yang_hui(1, 1)</div><div class="line">    1</div><div class="line">    &gt;&gt;&gt;yang_hui(3,2)</div><div class="line">    3</div><div class="line">    &gt;&gt;&gt;yang_hui(1,4)</div><div class="line">    Invalid query</div><div class="line">    '''</div></pre></td></tr></table></figure></p>
+<p><strong>附加题</strong><br>生成杨辉三角形<br>定义一个函数，传入M&lt;1000,生成前M行杨辉三角形。<br>示例代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_yh</span><span class="params">(m)</span>:</span></div><div class="line">    <span class="string">'''</span></div><div class="line">    generate_yh(3):</div><div class="line">    1</div><div class="line">    1 1</div><div class="line">    1 2 1</div><div class="line">    '''</div></pre></td></tr></table></figure>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>根据题目的描述，我们已经知道杨辉三角是怎么生成的了，不过还要判断超出范围的情况：<code>N &gt; M</code>时，返回的应该是 <code>Invalidquery</code>。还有 <code>n=0</code> 或 <code>n=m</code>     时，返回的值应该为1.<br>要求第(M,N)个数字，可以用递归的方式来求得：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yang_hui(m, n) = yang_hui(m<span class="number">-1</span>,n<span class="number">-1</span>) + yang_hui(m<span class="number">-1</span>,n)</div></pre></td></tr></table></figure></p>
+<h2 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h2><p><strong>yang_hui(m,n):</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 输出杨辉三角中第m行第n列的数值</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">yang_hui</span><span class="params">(m, n)</span>:</span></div><div class="line">    <span class="keyword">if</span> n <span class="keyword">and</span> n &gt; m:</div><div class="line">        <span class="keyword">return</span>  <span class="string">"Invalid query!"</span></div><div class="line">    <span class="keyword">if</span> n == <span class="number">0</span> <span class="keyword">or</span> n == m:</div><div class="line">        <span class="keyword">return</span>  <span class="number">1</span></div><div class="line">    <span class="keyword">return</span> yang_hui(m<span class="number">-1</span>,n<span class="number">-1</span>) + yang_hui(m<span class="number">-1</span>,n)</div></pre></td></tr></table></figure></p>
+<p><strong>triangles(m):</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">打印输出杨辉三角</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">triangles</span><span class="params">(m)</span>:</span></div><div class="line">    ret = [<span class="number">1</span>]</div><div class="line">    <span class="keyword">while</span> m:</div><div class="line">        <span class="keyword">yield</span> ret</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(ret)):</div><div class="line">            ret[i] = pre[i] + pre[i<span class="number">-1</span>]</div><div class="line">        ret.append(<span class="number">1</span>)</div><div class="line">        pre = ret[:]</div><div class="line">        m = m - <span class="number">1</span></div></pre></td></tr></table></figure></p>
+<p>在生成杨辉三角的时候，用到了<strong>生成器(generator)</strong>。generator在执行过程中，遇到<code>yield</code>语句就返回，再次执行时从上次返回的<code>yield</code>语句处继续执行。<br><strong>普通函数和generator函数的区别：</strong><br>普通函数调用直接返回结果：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>r = abs(<span class="number">6</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>r</div><div class="line"><span class="number">6</span></div></pre></td></tr></table></figure></p>
+<p>generator函数的“调用”实际返回一个generator对象：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>g = fib(<span class="number">6</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>g</div><div class="line">&lt;generator object fib at <span class="number">0x1022ef498</span>&gt;</div></pre></td></tr></table></figure></p>
+<p>关于generator，可以参考<a href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/0014317799226173f45ce40636141b6abc8424e12b5fb27000#0" target="_blank" rel="external">这里</a>。</p>
+<p><strong>测试</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 测试</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    print(yang_hui(<span class="number">0</span>, <span class="number">0</span>))</div><div class="line">    print(yang_hui(<span class="number">1</span>, <span class="number">1</span>))</div><div class="line">    print(yang_hui(<span class="number">1</span>, <span class="number">2</span>))</div><div class="line">    print(yang_hui(<span class="number">6</span>, <span class="number">3</span>))</div><div class="line">    print(yang_hui(<span class="number">4</span>, <span class="number">9</span>))</div><div class="line">    </div><div class="line">    <span class="comment"># 打印杨辉三角</span></div><div class="line">    triangle = triangles(<span class="number">10</span>)</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> triangle:</div><div class="line">        print(i)</div></pre></td></tr></table></figure></p>
+<h2 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h2><p>输出结果如下：</p>
+<blockquote>
+<p>1<br>1<br>Invalid query<br>20<br>Invalid query<br>[1]<br>[1, 1]<br>[1, 2, 1]<br>[1, 3, 3, 1]<br>[1, 4, 6, 4, 1]<br>[1, 5, 10, 10, 5, 1]<br>[1, 6, 15, 20, 15, 6, 1]<br>[1, 7, 21, 35, 35, 21, 7, 1]<br>[1, 8, 28, 56, 70, 56, 28, 8, 1]<br>[1, 9, 36, 84, 126, 126, 84, 36, 9, 1]</p>
+</blockquote>
+<p>End~</p>
+<hr>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;本周题目&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;杨辉三角形，也称帕斯卡三角，其定义为：&lt;br&gt;顶端是1，视为(row0).&lt;br&gt;第1行(row1)是两个1，这两个1是由它们上头左右两数之和(不在三角形内视为0).&lt;br&gt;以此类推&lt;br&gt;第2行(row2)：0+1=1; 1+1=2; 1+0=1.&lt;br&gt;第3行(row3)：0+1=1; 1+2=3; 2+1=3; 1+0=1.&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="Python" scheme="https://felon03.github.io/categories/Python/"/>
+    
+    
+      <category term="Python" scheme="https://felon03.github.io/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>【每周一坑】神奇的九宫格</title>
