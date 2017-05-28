@@ -69,7 +69,7 @@
     <link href="https://felon03.github.io/2017/05/26/C-Primer-%E7%AC%AC%E4%BA%94%E7%89%88-%E7%BB%83%E4%B9%A012-3/"/>
     <id>https://felon03.github.io/2017/05/26/C-Primer-第五版-练习12-3/</id>
     <published>2017-05-26T06:27:11.000Z</published>
-    <updated>2017-05-26T06:34:20.504Z</updated>
+    <updated>2017-05-28T02:29:06.203Z</updated>
     
     <content type="html"><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>StrBlob需要const版本的<code>push_back</code>和<code>pop_back</code>吗？如果需要，添加进去。否则，解释为什么不需要。</p>
 <a id="more"></a>
@@ -102,10 +102,7 @@
 <p>如果没有const的版本，那么对const类型的对象进行操作时，程序就会报错，貌似加const版本的<code>push_back()</code>和<code>pop_back()</code>是必须的。但是要注意的是：</p>
 <p><strong>我们应该站在类的使用者的角度来看，而不是类的设计者的角度。虽然在类的具体实现中，数据成员是一个指向<code>vector&lt;string&gt;</code>的智能指针；但由于类的封装，在使用者看来，数据成员是<code>vector&lt;string&gt;</code>，他们并不知道具体实现使用了智能指针。那么当类的使用者声明类的常量对象时，他们期待的结果是<code>vector&lt;string&gt;</code>的内容不会改变。所以我们在设计这个类的时候，要考虑到类的使用者的真实意图，对于像<code>push_back()</code>和<code>pop_back()</code>这样会改变智能指针所指向的<code>vector&lt;string&gt;</code>内容的成员函数，我们不应该声明和定义成const版本。这样在类的使用者使用类的常量对象时，就不能调用<code>push_back()</code>和<code>pop_back()</code>成员函数，不能改变智能指针所指向的vector<string>的内容了，这正好与类的使用者意图相符。</string></strong></p>
 <p>通过以上的考虑，我认为<strong>StrBlob</strong>不需要const版本的<code>push_back</code>和<code>pop_back</code>。</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
-<li><a href="https://www.douban.com/group/topic/61573279/" target="_blank" rel="external">豆瓣 - 大家来讨论一下 exercise 12.3</a></li>
-<li><a href="https://stackoverflow.com/questions/20725190/operating-on-dynamic-memory-is-it-meaningful-to-overload-a-const-memeber-functi" target="_blank" rel="external">Stack Overflow - Operating on dynamic memory, is it meaningful to overload a const memeber function?</a></li>
-</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p> [1]:  <a href="https://www.douban.com/group/topic/61573279/" target="_blank" rel="external">豆瓣 - 大家来讨论一下 exercise 12.3</a><br> [2]:  <a href="https://stackoverflow.com/questions/20725190/operating-on-dynamic-memory-is-it-meaningful-to-overload-a-const-memeber-functi" target="_blank" rel="external">Stack Overflow - Operating on dynamic memory, is it meaningful to overload a const memeber function?</a></p>
 <p>End~</p>
 <hr>
 ]]></content>
