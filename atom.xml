@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://felon03.github.io/"/>
-  <updated>2017-05-26T06:34:20.504Z</updated>
+  <updated>2017-05-28T02:07:50.740Z</updated>
   <id>https://felon03.github.io/</id>
   
   <author>
@@ -14,6 +14,53 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【每周一坑】验证哥德巴赫猜想</title>
+    <link href="https://felon03.github.io/2017/05/28/%E3%80%90%E6%AF%8F%E5%91%A8%E4%B8%80%E5%9D%91%E3%80%91%E9%AA%8C%E8%AF%81%E5%93%A5%E5%BE%B7%E5%B7%B4%E8%B5%AB%E7%8C%9C%E6%83%B3/"/>
+    <id>https://felon03.github.io/2017/05/28/【每周一坑】验证哥德巴赫猜想/</id>
+    <published>2017-05-28T01:53:38.000Z</published>
+    <updated>2017-05-28T02:07:50.740Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>哥德巴赫在1742年给欧拉的信中提出了以下猜想：任一大于2的整数都可以写成三个质数之和。（因现今数学界已经不再使用“1也是质数”这个约定，原初猜想的现在陈述为：任一大于5的整数都可以写成三个质数之和。）欧拉在回信中也提出另一个等价的版本，即任一大于2的偶数都可以写成两个质数之和。今日常见的猜想陈述为欧拉的版本。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p><strong>本周题目</strong></p>
+<blockquote>
+<p>实现一段代码，输入一个大于2的偶数k，输出两个质数m、n，满足 m + n == k。</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>Goldbach(<span class="number">123456</span>)</div><div class="line"><span class="number">7</span> <span class="number">123449</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>Goldbach(<span class="number">12345678</span>)</div><div class="line"><span class="number">31</span> <span class="number">12345647</span></div></pre></td></tr></table></figure>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>这个问题其实就是在求k范围内的质数的基础上，在加一个判断，使得两个质数之和等于k即可。要注意的是，求得的解并不唯一。</p>
+<h2 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> math</div><div class="line"></div><div class="line"><span class="comment"># 求得小于等于n的所有质数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_prime</span><span class="params">(n)</span>:</span></div><div class="line">    prime = []</div><div class="line">    prime_dic = &#123;&#125;</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>, n+<span class="number">1</span>):</div><div class="line">        prime_dic[i] = <span class="number">1</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">2</span>, int(math.sqrt(n)) + <span class="number">1</span>):</div><div class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i * i, n + <span class="number">1</span>, i):</div><div class="line">            <span class="keyword">if</span> prime_dic[i] == <span class="number">1</span>:</div><div class="line">                prime_dic[j] = <span class="number">0</span></div><div class="line">    <span class="keyword">for</span> k, v <span class="keyword">in</span> prime.items():</div><div class="line">        <span class="keyword">if</span> v == <span class="number">1</span>:</div><div class="line">            prime.append(k)</div><div class="line">    <span class="keyword">return</span> prime</div><div class="line"></div><div class="line"><span class="comment"># 求满足猜想的质数和</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">gold_bach</span><span class="params">(n)</span>:</span></div><div class="line">    cnt = <span class="number">0</span></div><div class="line">    prime = get_prime(n)</div><div class="line">    <span class="keyword">for</span> prime1 <span class="keyword">in</span> prime:</div><div class="line">        prime2 = n - prime1</div><div class="line">        <span class="keyword">if</span> prime2 <span class="keyword">in</span> prime <span class="keyword">and</span> cnt != <span class="number">1</span>:    <span class="comment"># 只输出一种结果</span></div><div class="line">            cnt += <span class="number">1</span></div><div class="line">            <span class="keyword">return</span> prime1. prime2</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>：</div><div class="line">    print(gold_bach(<span class="number">123456</span>))</div><div class="line">    print(gold_bach(<span class="number">12345678</span>))</div></pre></td></tr></table></figure>
+<h2 id="输出结果"><a href="#输出结果" class="headerlink" title="输出结果"></a>输出结果</h2><p>print(gold_bach(123456))</p>
+<blockquote>
+<p>(7, 123449)</p>
+</blockquote>
+<p>print(gold_bach(12345678))</p>
+<blockquote>
+<p>(31, 12345647)</p>
+</blockquote>
+<p>与示例一致。</p>
+<p>End~</p>
+<hr>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;哥德巴赫在1742年给欧拉的信中提出了以下猜想：任一大于2的整数都可以写成三个质数之和。（因现今数学界已经不再使用“1也是质数”这个约定，原初猜想的现在陈述为：任一大于5的整数都可以写成三个质数之和。）欧拉在回信中也提出另一个等价的版本，即任一大于2的偶数都可以写成两个质数之和。今日常见的猜想陈述为欧拉的版本。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="Python" scheme="https://felon03.github.io/categories/Python/"/>
+    
+    
+      <category term="每周一坑" scheme="https://felon03.github.io/tags/%E6%AF%8F%E5%91%A8%E4%B8%80%E5%9D%91/"/>
+    
+  </entry>
   
   <entry>
     <title>C++ Primer 第五版 练习12.3</title>
@@ -79,7 +126,7 @@
     <link href="https://felon03.github.io/2017/05/19/%E3%80%90%E6%AF%8F%E5%91%A8%E4%B8%80%E5%9D%91%E3%80%91%E6%9D%A8%E8%BE%89%E4%B8%89%E8%A7%92%E5%BD%A2/"/>
     <id>https://felon03.github.io/2017/05/19/【每周一坑】杨辉三角形/</id>
     <published>2017-05-19T06:28:26.000Z</published>
-    <updated>2017-05-26T08:15:03.699Z</updated>
+    <updated>2017-05-28T01:46:45.628Z</updated>
     
     <content type="html"><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p><strong>本周题目</strong></p>
 <blockquote>
@@ -260,7 +307,7 @@
     <link href="https://felon03.github.io/2017/04/27/%E3%80%90%E6%AF%8F%E5%91%A8%E4%B8%80%E5%9D%91%E3%80%91%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E6%B5%AA%E6%BC%AB/"/>
     <id>https://felon03.github.io/2017/04/27/【每周一坑】程序员的浪漫/</id>
     <published>2017-04-27T07:39:22.000Z</published>
-    <updated>2017-05-26T08:14:47.542Z</updated>
+    <updated>2017-05-28T01:19:15.982Z</updated>
     
     <content type="html"><![CDATA[<p><img src="/images/imagesource/17-04-27.jpg" alt="wordcloud"></p>
 <p>关注了<strong>Crossin的编程教室</strong>，每周会出一个Python的小题目，本周的题目是关于hashlib和base64加密模块的。</p>
