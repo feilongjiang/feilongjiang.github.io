@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="FreedomLy">
 <meta property="og:description" content="我们经常看到软件的下载页面会注明这个软件的哈希值。可能你从没注意，但这其实是个蛮重要的东西，它可以用来验证你下载的软件是否被人动过手脚。早些时候Mac上爆出XCodeGhost木马事件，引发的一个重要环节就是因为部分开发人员既没有从官方渠道下载，也没有验证软件哈希值，以至于使用了被植入代码的开发工具。">
 <meta property="og:image" content="https://felon03.github.io/images/imagesource/17-06-09.png">
-<meta property="og:updated_time" content="2017-06-09T11:26:35.677Z">
+<meta property="og:updated_time" content="2017-06-09T11:58:01.477Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="【每周一坑】校验文件哈希">
 <meta name="twitter:description" content="我们经常看到软件的下载页面会注明这个软件的哈希值。可能你从没注意，但这其实是个蛮重要的东西，它可以用来验证你下载的软件是否被人动过手脚。早些时候Mac上爆出XCodeGhost木马事件，引发的一个重要环节就是因为部分开发人员既没有从官方渠道下载，也没有验证软件哈希值，以至于使用了被植入代码的开发工具。">
@@ -457,7 +457,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>please enter the path of the file:</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>文件路径，我这里是 C:\Users\Freed\Downloads\python<span class="number">-3.6</span><span class="number">.1</span>-amd64.exe</div></pre></td></tr></table></figure>
 <p>输出结果为：</p>
 <blockquote>
-<p><strong>md5</strong><br>ad69fdacde90f2ce8286c279b11ca188<br><strong>sha1</strong><br>bf54252c4065b20f4a111cc39cf5215fb1edccff<br><strong>sha256</strong><br>591922fbf5c4234b766dd672e539cba3d9a158e028e3c85c76bfec6ede56ded8<br><strong>sha512</strong><br>f0abf85afaf53eb7b706c17c3d8087d81fa57c397099f403f9d51dbd60c4e7b9ad9e79fc375dadcccf74d32eba8653b139e073d84c5eb0d03f35313a5c4c6873</p>
+<p><strong>md5</strong><br>ad69fdacde90f2ce8286c279b11ca188<br><strong>sha1</strong><br>bf54252c4065b20f4a111cc39cf5215fb1edccff<br><strong>sha256</strong><br>591922fbf5c4234b766dd672e539cba3d9a158e028e3c85c76bfec6ede56ded8<br><strong>sha512</strong><br>f0abf85afaf53eb7b706c17c3d8087d81fa57c397099f403f9d51dbd60c4e7<br>b9ad9e79fc375dadcccf74d32eba8653b139e073d84c5eb0d03f35313a5c4c6873</p>
 </blockquote>
 <p>然后是输入路径+指定加密算法：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>please enter the path of the file <span class="keyword">and</span> hash type:</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>C:\Users\Freed\Downloads\python<span class="number">-3.6</span><span class="number">.1</span>-amd64.exe md5</div></pre></td></tr></table></figure>
