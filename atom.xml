@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://felon03.github.io/"/>
-  <updated>2017-06-08T01:09:00.188Z</updated>
+  <updated>2017-06-09T11:26:35.677Z</updated>
   <id>https://felon03.github.io/</id>
   
   <author>
@@ -14,6 +14,66 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【每周一坑】校验文件哈希</title>
+    <link href="https://felon03.github.io/2017/06/09/%E3%80%90%E6%AF%8F%E5%91%A8%E4%B8%80%E5%9D%91%E3%80%91%E6%A0%A1%E9%AA%8C%E6%96%87%E4%BB%B6%E5%93%88%E5%B8%8C/"/>
+    <id>https://felon03.github.io/2017/06/09/【每周一坑】校验文件哈希/</id>
+    <published>2017-06-09T11:18:25.000Z</published>
+    <updated>2017-06-09T11:26:35.677Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/images/imagesource/17-06-09.png" alt="hash"></p>
+<p>我们经常看到软件的下载页面会注明这个软件的哈希值。可能你从没注意，但这其实是个蛮重要的东西，它可以用来验证你下载的软件是否被人动过手脚。<br>早些时候Mac上爆出XCodeGhost木马事件，引发的一个重要环节就是因为部分开发人员既没有从官方渠道下载，也没有验证软件哈希值，以至于使用了被植入代码的开发工具。</p>
+<a id="more"></a>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><blockquote>
+<p>请使用Python写一个小程序，用来计算指定文件的哈希值。</p>
+</blockquote>
+<p><strong>附加题</strong></p>
+<blockquote>
+<p>可以指定哈希加密算法，并让程序尽可能简单易用。</p>
+</blockquote>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>问题挺简单，可以使用hashlib这个库来生成哈希值。之前也用到过这个库<a href="https://felon03.github.io/2017/04/27/%E3%80%90%E6%AF%8F%E5%91%A8%E4%B8%80%E5%9D%91%E3%80%91%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E6%B5%AA%E6%BC%AB/">【每周一坑】程序员的浪漫</a>,具体用法在之前的文章中也讲过了。</p>
+<h2 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h2><h3 id="计算哈希值的函数："><a href="#计算哈希值的函数：" class="headerlink" title="计算哈希值的函数："></a>计算哈希值的函数：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 计算哈希值</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_hash</span><span class="params">(file)</span>:</span></div><div class="line">    <span class="keyword">with</span> open(file, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</div><div class="line">        s = f.read()</div><div class="line">        md5 = hashlib.md5(s).hexdigest()  <span class="comment"># 生成MD5</span></div><div class="line">        sha1 = hashlib.sha1(s).hexdigest()  <span class="comment"># 生成SHA1</span></div><div class="line">        sha256 = hashlib.sha256(s).hexdigest()  <span class="comment"># 生成SHA256</span></div><div class="line">        sha512 = hashlib.sha512(s).hexdigest()  <span class="comment"># 生成SHA512</span></div><div class="line">    <span class="keyword">return</span> md5, sha1, sha256, sha512</div></pre></td></tr></table></figure>
+<h3 id="可以指定哈希加密算法的函数："><a href="#可以指定哈希加密算法的函数：" class="headerlink" title="可以指定哈希加密算法的函数："></a>可以指定哈希加密算法的函数：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 计算哈希值</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_hash</span><span class="params">(file)</span>:</span></div><div class="line">    <span class="keyword">with</span> open(file, <span class="string">'rb'</span>) <span class="keyword">as</span> f:</div><div class="line">        s = f.read()</div><div class="line">        md5 = hashlib.md5(s).hexdigest()  <span class="comment"># 生成MD5</span></div><div class="line">        sha1 = hashlib.sha1(s).hexdigest()  <span class="comment"># 生成SHA1</span></div><div class="line">        sha256 = hashlib.sha256(s).hexdigest()  <span class="comment"># 生成SHA256</span></div><div class="line">        sha512 = hashlib.sha512(s).hexdigest()  <span class="comment"># 生成SHA512</span></div><div class="line">    <span class="keyword">return</span> md5, sha1, sha256, sha512</div></pre></td></tr></table></figure>
+<h3 id="测试程序："><a href="#测试程序：" class="headerlink" title="测试程序："></a>测试程序：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    file_path, hash_t = map(str, input(<span class="string">'Please enter the path of the file and hash type:'</span>).split())</div><div class="line">    md = generate_hash_type(file_path, hash_t)</div><div class="line">    print(md,<span class="string">'\n'</span>)</div><div class="line">    md = generate_hash(file_path)</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> md:</div><div class="line">        print(i)</div></pre></td></tr></table></figure>
+<p>最后别忘了引入<strong>hashlib</strong>库:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> hashlib</div></pre></td></tr></table></figure>
+<p>还有设置编码格式以防万一</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div></pre></td></tr></table></figure>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>这里我使用的是<a href="https://www.python.org/" target="_blank" rel="external">Python官网</a>下载的<em>python-3.6.1-amd64.exe</em>做的测试，官网也给出了它的md5哈希值，方便校验。<br>首先是用<code>generate_hash()</code>函数，分别生成<strong>md5</strong>,<strong>sha1</strong>,<strong>sha256</strong>和<strong>sha512</strong>的校验码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>please enter the path of the file:</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>文件路径，我这里是 C:\Users\Freed\Downloads\python<span class="number">-3.6</span><span class="number">.1</span>-amd64.exe</div></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<blockquote>
+<p><strong>md5</strong><br>ad69fdacde90f2ce8286c279b11ca188<br><strong>sha1</strong><br>bf54252c4065b20f4a111cc39cf5215fb1edccff<br><strong>sha256</strong><br>591922fbf5c4234b766dd672e539cba3d9a158e028e3c85c76bfec6ede56ded8<br><strong>sha512</strong><br>f0abf85afaf53eb7b706c17c3d8087d81fa57c397099f403f9d51dbd60c4e7b9ad9e79fc375dadcccf74d32eba8653b139e073d84c5eb0d03f35313a5c4c6873</p>
+</blockquote>
+<p>然后是输入路径+指定加密算法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>please enter the path of the file <span class="keyword">and</span> hash type:</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>C:\Users\Freed\Downloads\python<span class="number">-3.6</span><span class="number">.1</span>-amd64.exe md5</div></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<blockquote>
+<p>(‘md5’, ‘ad69fdacde90f2ce8286c279b11ca188’)</p>
+</blockquote>
+<p>再来看看官网给出的md5：</p>
+<blockquote>
+<p>ad69fdacde90f2ce8286c279b11ca188</p>
+</blockquote>
+<p>和程序计算的结果一致。</p>
+<p>End~</p>
+<hr>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;/images/imagesource/17-06-09.png&quot; alt=&quot;hash&quot;&gt;&lt;/p&gt;
+&lt;p&gt;我们经常看到软件的下载页面会注明这个软件的哈希值。可能你从没注意，但这其实是个蛮重要的东西，它可以用来验证你下载的软件是否被人动过手脚。&lt;br&gt;早些时候Mac上爆出XCodeGhost木马事件，引发的一个重要环节就是因为部分开发人员既没有从官方渠道下载，也没有验证软件哈希值，以至于使用了被植入代码的开发工具。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="Python" scheme="https://felon03.github.io/categories/Python/"/>
+    
+    
+      <category term="每周一坑" scheme="https://felon03.github.io/tags/%E6%AF%8F%E5%91%A8%E4%B8%80%E5%9D%91/"/>
+    
+  </entry>
   
   <entry>
     <title>C++ Primer 第五版 练习 12.33</title>
