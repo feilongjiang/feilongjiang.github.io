@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://felon03.github.io/"/>
-  <updated>2017-06-12T08:22:34.226Z</updated>
+  <updated>2017-06-15T08:27:44.207Z</updated>
   <id>https://felon03.github.io/</id>
   
   <author>
@@ -14,6 +14,62 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>C++中的explicit关键字</title>
+    <link href="https://felon03.github.io/2017/06/15/C-%E4%B8%AD%E7%9A%84explicit%E5%85%B3%E9%94%AE%E5%AD%97/"/>
+    <id>https://felon03.github.io/2017/06/15/C-中的explicit关键字/</id>
+    <published>2017-06-15T08:19:33.000Z</published>
+    <updated>2017-06-15T08:27:44.207Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="隐式的类类型转换"><a href="#隐式的类类型转换" class="headerlink" title="隐式的类类型转换"></a>隐式的类类型转换</h2><p>在介绍explicit关键字之前，先来了解一下什么是隐式的类类型转换，C++ Primer第五版中的描述如下：</p>
+<blockquote>
+<p>如果构造函数只接受一个实参，则它实际上定义了转化为次类类型的隐式转换规则，有时我们把这种构造函数称作<strong>转换构造函数(converting constructor)</strong></p>
+</blockquote>
+<a id="more"></a>
+<p>也就是说编译器允许将构造函数参数类型通过隐式的转换，转化为一个类类型，以便为参数获取正确的类型。</p>
+<h2 id="转换示例"><a href="#转换示例" class="headerlink" title="转换示例"></a>转换示例</h2><p>下面就给出一个例子，一个类的构造函数可以被用于隐式转换：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Foo &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="comment">// 单形参构造函数，可以用作隐式转换</span></div><div class="line">	Foo(<span class="keyword">int</span> foo) : m_foo(foo) &#123;&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">int</span> <span class="title">getFoo</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_foo; &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">	<span class="keyword">int</span> m_foo;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 定义一个函数，接受Foo类型的形参</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">Bar</span><span class="params">(Foo foo)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> i = foo.getFoo();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 主函数</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	Bar(<span class="number">42</span>);</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到在<code>main</code>函数中，传入<code>Bar</code>的并不是一个<code>Foo</code>的对象，而是内置类型<code>int</code>，但类<code>Foo</code>的构造函数接受一个<code>int</code>，因此这个构造函数可以用来将参数转换成正确的类型。</p>
+<h2 id="使用explicit抑制构造函数定义的隐式转换"><a href="#使用explicit抑制构造函数定义的隐式转换" class="headerlink" title="使用explicit抑制构造函数定义的隐式转换"></a>使用explicit抑制构造函数定义的隐式转换</h2><p>为了防止编译器使用单参数构造函数进行隐式转换，需要在构造函数前加一个<strong>explicit</strong>关键字：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">explicit Foo(int foo) : m_foo(foo) &#123;&#125;</div></pre></td></tr></table></figure>
+<p>这样就可以有效防止隐式转换。之前在<code>main</code>函数中<code>Bar(42)</code>就会报错：</p>
+<blockquote>
+<p>void Bar(Foo): 无法将参数1从”int”转换为”Foo”</p>
+</blockquote>
+<p>进行如下修改，对传入的<code>int</code>进行显式转换<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Bar(Foo(<span class="number">42</span>))</div></pre></td></tr></table></figure></p>
+<p>这样就不会报错了。使用<strong>explicit</strong>关键字的原因是为了防止预想之外的情况发生。<br>下面举个例子（感觉不太合适）：</p>
+<blockquote>
+<p>假设有一个MyString(int size)类，它有一个构造函数，可以构造给定size的字符串。还有一个函数print(cons MyString&amp;)，然后调用print(3)。我们期望它能输出”3”，但是它实际上输出的是一个长度为3的空string。</p>
+</blockquote>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>关于<strong>explicit</strong>的结论：</p>
+<ul>
+<li>关键字<strong>explicit</strong>只对一个实参的构造函数有效</li>
+<li>需要多个实参的构造函数不能用于执行隐式转换，所以无需将这些构造函数指定为<strong>explicit</strong>的</li>
+<li>只能在类内声明构造函数时使用<strong>explicit</strong>关键字，在类外部定义式不应重复</li>
+</ul>
+<p>当我们用<strong>explicit</strong>关键字声明构造函数时，它将只能以直接初始化的形式(例如<code>string s(&quot;Hello&quot;)</code>)使用。而且编译器将不会在自动转换过程中使用改构造函数。</p>
+<p>如果我们不希望函数进行隐式转换，那么最好将单形参构造函数定义为<strong>explicit</strong>的。这样可以避免错误，并且当需要转换时，我们也可以显式地构造对象。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]: <a href="https://stackoverflow.com/questions/121162/what-does-the-explicit-keyword-mean/121163#121163" target="_blank" rel="external">Stack OverFlow - What does the explicit keyword mean?</a></p>
+<p>End~</p>
+<hr>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;隐式的类类型转换&quot;&gt;&lt;a href=&quot;#隐式的类类型转换&quot; class=&quot;headerlink&quot; title=&quot;隐式的类类型转换&quot;&gt;&lt;/a&gt;隐式的类类型转换&lt;/h2&gt;&lt;p&gt;在介绍explicit关键字之前，先来了解一下什么是隐式的类类型转换，C++ Primer第五版中的描述如下：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;如果构造函数只接受一个实参，则它实际上定义了转化为次类类型的隐式转换规则，有时我们把这种构造函数称作&lt;strong&gt;转换构造函数(converting constructor)&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+      <category term="C++" scheme="https://felon03.github.io/categories/C/"/>
+    
+    
+      <category term="C++" scheme="https://felon03.github.io/tags/C/"/>
+    
+  </entry>
   
   <entry>
     <title>【每周一坑】校验文件哈希</title>

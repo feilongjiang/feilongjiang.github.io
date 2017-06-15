@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT, Freedomly, freedomly, JFL, jfl" />
+  <meta name="keywords" content="C++," />
 
 
 
@@ -96,16 +96,22 @@
 
 
 
-<meta name="description" content="Hope is a good thing, maybe the best of things, and no good thing ever dies.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="sitemap">
-<meta property="og:url" content="https://felon03.github.io/sitemap/index.html">
+<meta name="description" content="隐式的类类型转换在介绍explicit关键字之前，先来了解一下什么是隐式的类类型转换，C++ Primer第五版中的描述如下：
+
+如果构造函数只接受一个实参，则它实际上定义了转化为次类类型的隐式转换规则，有时我们把这种构造函数称作转换构造函数(converting constructor)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++中的explicit关键字">
+<meta property="og:url" content="https://felon03.github.io/2017/06/15/C-中的explicit关键字/index.html">
 <meta property="og:site_name" content="FreedomLy">
-<meta property="og:description" content="Hope is a good thing, maybe the best of things, and no good thing ever dies.">
-<meta property="og:updated_time" content="2017-03-21T14:17:04.891Z">
+<meta property="og:description" content="隐式的类类型转换在介绍explicit关键字之前，先来了解一下什么是隐式的类类型转换，C++ Primer第五版中的描述如下：
+
+如果构造函数只接受一个实参，则它实际上定义了转化为次类类型的隐式转换规则，有时我们把这种构造函数称作转换构造函数(converting constructor)">
+<meta property="og:updated_time" content="2017-06-15T08:27:44.207Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="sitemap">
-<meta name="twitter:description" content="Hope is a good thing, maybe the best of things, and no good thing ever dies.">
+<meta name="twitter:title" content="C++中的explicit关键字">
+<meta name="twitter:description" content="隐式的类类型转换在介绍explicit关键字之前，先来了解一下什么是隐式的类类型转换，C++ Primer第五版中的描述如下：
+
+如果构造函数只接受一个实参，则它实际上定义了转化为次类类型的隐式转换规则，有时我们把这种构造函数称作转换构造函数(converting constructor)">
 
 
 
@@ -133,19 +139,13 @@
 
 
 
-  <link rel="canonical" href="https://felon03.github.io/sitemap/"/>
+  <link rel="canonical" href="https://felon03.github.io/2017/06/15/C-中的explicit关键字/"/>
 
 
 
 
 
-  <title>
-  
-
-  
-    sitemap | FreedomLy
-  
-</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> C++中的explicit关键字 | FreedomLy </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -170,7 +170,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left  ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -319,23 +319,261 @@
             
 
   <div id="posts" class="posts-expand">
-  <header class="post-header">
+    
 
-	<h1 class="post-title" itemprop="name headline">sitemap</h1>
+  
 
+  
+  
+  
 
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://felon03.github.io/2017/06/15/C-中的explicit关键字/">
 
-</header>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="FreedomLy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FreedomLy">
+    </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                C++中的explicit关键字
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-15T16:19:33+08:00">
+                2017-06-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/15/C-中的explicit关键字/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2017/06/15/C-中的explicit关键字/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o">&nbsp;阅读总量</i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
     
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-    
-	
-  <div class="comments" id="comments">
-    
-  </div>
+      
 
+      
+        <h2 id="隐式的类类型转换"><a href="#隐式的类类型转换" class="headerlink" title="隐式的类类型转换"></a>隐式的类类型转换</h2><p>在介绍explicit关键字之前，先来了解一下什么是隐式的类类型转换，C++ Primer第五版中的描述如下：</p>
+<blockquote>
+<p>如果构造函数只接受一个实参，则它实际上定义了转化为次类类型的隐式转换规则，有时我们把这种构造函数称作<strong>转换构造函数(converting constructor)</strong></p>
+</blockquote>
+<a id="more"></a>
+<p>也就是说编译器允许将构造函数参数类型通过隐式的转换，转化为一个类类型，以便为参数获取正确的类型。</p>
+<h2 id="转换示例"><a href="#转换示例" class="headerlink" title="转换示例"></a>转换示例</h2><p>下面就给出一个例子，一个类的构造函数可以被用于隐式转换：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Foo &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">	<span class="comment">// 单形参构造函数，可以用作隐式转换</span></div><div class="line">	Foo(<span class="keyword">int</span> foo) : m_foo(foo) &#123;&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">int</span> <span class="title">getFoo</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> m_foo; &#125;</div><div class="line"></div><div class="line"><span class="keyword">private</span>:</div><div class="line">	<span class="keyword">int</span> m_foo;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 定义一个函数，接受Foo类型的形参</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">Bar</span><span class="params">(Foo foo)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> i = foo.getFoo();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 主函数</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	Bar(<span class="number">42</span>);</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到在<code>main</code>函数中，传入<code>Bar</code>的并不是一个<code>Foo</code>的对象，而是内置类型<code>int</code>，但类<code>Foo</code>的构造函数接受一个<code>int</code>，因此这个构造函数可以用来将参数转换成正确的类型。</p>
+<h2 id="使用explicit抑制构造函数定义的隐式转换"><a href="#使用explicit抑制构造函数定义的隐式转换" class="headerlink" title="使用explicit抑制构造函数定义的隐式转换"></a>使用explicit抑制构造函数定义的隐式转换</h2><p>为了防止编译器使用单参数构造函数进行隐式转换，需要在构造函数前加一个<strong>explicit</strong>关键字：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">explicit Foo(int foo) : m_foo(foo) &#123;&#125;</div></pre></td></tr></table></figure>
+<p>这样就可以有效防止隐式转换。之前在<code>main</code>函数中<code>Bar(42)</code>就会报错：</p>
+<blockquote>
+<p>void Bar(Foo): 无法将参数1从”int”转换为”Foo”</p>
+</blockquote>
+<p>进行如下修改，对传入的<code>int</code>进行显式转换<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Bar(Foo(<span class="number">42</span>))</div></pre></td></tr></table></figure></p>
+<p>这样就不会报错了。使用<strong>explicit</strong>关键字的原因是为了防止预想之外的情况发生。<br>下面举个例子（感觉不太合适）：</p>
+<blockquote>
+<p>假设有一个MyString(int size)类，它有一个构造函数，可以构造给定size的字符串。还有一个函数print(cons MyString&amp;)，然后调用print(3)。我们期望它能输出”3”，但是它实际上输出的是一个长度为3的空string。</p>
+</blockquote>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>关于<strong>explicit</strong>的结论：</p>
+<ul>
+<li>关键字<strong>explicit</strong>只对一个实参的构造函数有效</li>
+<li>需要多个实参的构造函数不能用于执行隐式转换，所以无需将这些构造函数指定为<strong>explicit</strong>的</li>
+<li>只能在类内声明构造函数时使用<strong>explicit</strong>关键字，在类外部定义式不应重复</li>
+</ul>
+<p>当我们用<strong>explicit</strong>关键字声明构造函数时，它将只能以直接初始化的形式(例如<code>string s(&quot;Hello&quot;)</code>)使用。而且编译器将不会在自动转换过程中使用改构造函数。</p>
+<p>如果我们不希望函数进行隐式转换，那么最好将单形参构造函数定义为<strong>explicit</strong>的。这样可以避免错误，并且当需要转换时，我们也可以显式地构造对象。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]: <a href="https://stackoverflow.com/questions/121162/what-does-the-explicit-keyword-mean/121163#121163" target="_blank" rel="external">Stack OverFlow - What does the explicit keyword mean?</a></p>
+<p>End~</p>
+<hr>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      FreedomLy
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://felon03.github.io/2017/06/15/C-中的explicit关键字/" title="C++中的explicit关键字">https://felon03.github.io/2017/06/15/C-中的explicit关键字/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C++</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/09/【每周一坑】校验文件哈希/" rel="next" title="【每周一坑】校验文件哈希">
+                <i class="fa fa-chevron-left"></i> 【每周一坑】校验文件哈希
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
   </div>
 
 
@@ -369,8 +607,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -478,6 +725,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#隐式的类类型转换"><span class="nav-number">1.</span> <span class="nav-text">隐式的类类型转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转换示例"><span class="nav-number">2.</span> <span class="nav-text">转换示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用explicit抑制构造函数定义的隐式转换"><span class="nav-number">3.</span> <span class="nav-text">使用explicit抑制构造函数定义的隐式转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结论"><span class="nav-number">4.</span> <span class="nav-text">结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -604,6 +867,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
@@ -629,7 +896,7 @@
 		_hcwp.push({widget:"Bloggerstream", widget_id: 90464, selector:".hc-comment-count", label: "{\%COUNT%\}" });
 
 		
-		_hcwp.push({widget:"Stream", widget_id: 90464, xid: "sitemap/index.html"});
+		_hcwp.push({widget:"Stream", widget_id: 90464, xid: "2017/06/15/C-中的explicit关键字/"});
 		
 
 		(function() {
