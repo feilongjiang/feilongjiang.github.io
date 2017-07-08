@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://felon03.github.io/"/>
-  <updated>2017-06-23T12:01:46.982Z</updated>
+  <updated>2017-07-08T06:53:31.323Z</updated>
   <id>https://felon03.github.io/</id>
   
   <author>
@@ -14,6 +14,160 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>【每周一坑】罗马数字转换</title>
+    <link href="https://felon03.github.io/2017/07/08/%E3%80%90%E6%AF%8F%E5%91%A8%E4%B8%80%E5%9D%91%E3%80%91%E7%BD%97%E9%A9%AC%E6%95%B0%E5%AD%97%E8%BD%AC%E6%8D%A2/"/>
+    <id>https://felon03.github.io/2017/07/08/【每周一坑】罗马数字转换/</id>
+    <published>2017-07-08T06:38:47.000Z</published>
+    <updated>2017-07-08T06:53:31.323Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/images/imagesource/17-07-08.jpg" alt="roman"></p>
+<p>罗马数字是欧洲在阿拉伯数字传入之前使用的一种数码，现在的使用已经非常少了，大概偶尔会在钟表、文章中的标号等地方还能见到。</p>
+<p>罗马数字采用七个罗马字母做数字，即I(1), V(5), X(10), L(50), C(100）, D(500), M(1000)。它有一套不同于阿拉伯数字的写法规则，简单来说可以总结为：</p>
+<ol>
+<li>相同的数字连写，所表示的数等于这些数字相加得到的数，如 Ⅲ= 3</li>
+<li>小的数字在大的数字的右边，表示的数等于这些数字相加得到的数，如 Ⅷ=8， Ⅻ=12</li>
+<li>小的数字(限于Ⅰ、Ⅹ、Ｃ)在大的数字的左边，所表示的数等于大数减小数得到的数，如Ⅳ=4、Ⅸ=9</li>
+<li>在一个数的上面画一条横线，表示这个数曾1000倍</li>
+</ol>
+<a id="more"></a>
+<p><strong>常见罗马字符表</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">数字</th>
+<th style="text-align:center">罗马字符</th>
+<th style="text-align:center">数字</th>
+<th style="text-align:center">罗马字符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">Ⅰ</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">Ⅱ</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">Ⅲ</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">Ⅳ</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">Ⅴ</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">Ⅵ</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">Ⅶ</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">Ⅷ</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:center">Ⅸ</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">Ⅹ</td>
+</tr>
+<tr>
+<td style="text-align:center">40</td>
+<td style="text-align:center">XL</td>
+<td style="text-align:center">50</td>
+<td style="text-align:center">L</td>
+</tr>
+<tr>
+<td style="text-align:center">90</td>
+<td style="text-align:center">XC</td>
+<td style="text-align:center">100</td>
+<td style="text-align:center">C</td>
+</tr>
+<tr>
+<td style="text-align:center">400</td>
+<td style="text-align:center">CD</td>
+<td style="text-align:center">500</td>
+<td style="text-align:center">D</td>
+</tr>
+<tr>
+<td style="text-align:center">900</td>
+<td style="text-align:center">CM</td>
+<td style="text-align:center">1000</td>
+<td style="text-align:center">M</td>
+</tr>
+<tr>
+<td style="text-align:center">2000</td>
+<td style="text-align:center">MM</td>
+<td style="text-align:center">2500</td>
+<td style="text-align:center">MMD</td>
+</tr>
+</tbody>
+</table>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>编写一个罗马数字和阿拉伯数字的转换器：</p>
+<blockquote>
+<p>给定一个小于3999的罗马数，将其转换为整数，例如:Ⅲ=3、Ⅳ=4、Ⅵ=6、XIX=19、XX=20、XLV=45、MCMLXXX=1980</p>
+</blockquote>
+<p><strong>附加题</strong></p>
+<blockquote>
+<p>给定一个小于3999的整数，将其转换为罗马数</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">romanToInt</span><span class="params">(s)</span>:</span></div><div class="line">    <span class="comment"># your code</span></div><div class="line">    <span class="keyword">return</span> i</div><div class="line"></div><div class="line"><span class="keyword">assert</span> romanToInt(<span class="string">'III'</span>) == <span class="number">3</span></div><div class="line"><span class="keyword">assert</span> romanToInt(<span class="string">'IV'</span>) == <span class="number">4</span></div><div class="line"><span class="keyword">assert</span> romanToInt(<span class="string">'VI'</span>) == <span class="number">6</span></div><div class="line"><span class="keyword">assert</span> romanToInt(<span class="string">'XIX'</span>) == <span class="number">19</span></div><div class="line"><span class="keyword">assert</span> romanToInt(<span class="string">'XX'</span>) == <span class="number">20</span></div><div class="line"><span class="keyword">assert</span> romaToInt(<span class="string">'XLV'</span>) == <span class="number">45</span></div><div class="line"><span class="keyword">assert</span> romanToInt(<span class="string">'MCMLXXX'</span>) == <span class="number">1980</span></div></pre></td></tr></table></figure>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><h3 id="罗马数转阿拉伯数"><a href="#罗马数转阿拉伯数" class="headerlink" title="罗马数转阿拉伯数"></a>罗马数转阿拉伯数</h3><p>根据罗马数的规则，要把罗马数转换为阿拉伯数只需把每位罗马数加起来即可，不过要<strong>注意IV、IX、XL、XC、CD、MC这些表示(5-1、10-1、50-10、100-10、500-100、1000-100)的情况</strong>。故在计算阿拉伯数时要判断是否是上述的数。观察可知以上数中，<strong>左边的罗马数均比右边的小</strong>，故可以以这个为判断条件，来确定是进行加操作还是减操作。可以<strong>将罗马数字符反转</strong>，然后从头遍历，如果<strong>当前罗马数小于上一位，则减去当前的罗马数所对应的数字；否则，加上当前罗马数所对应的数字</strong>。</p>
+<blockquote>
+<p>如 MCMLXXX，首先将其反转，得到XXXLMCM，再开始遍历(res表示结果，pre表示上一位罗马数)：</p>
+<ol>
+<li>第一位是X，表示10，pre = 0，res = 0 + 10</li>
+<li>第二位是X，表示10，pre = 10，与Pre相等，则res = 10 + 10</li>
+<li>第三位是X，表示10，pre = 10，与pre相等，则res = 20 + 10</li>
+<li>第四位是L，表示50，pre = 10，大于pre，则res = 30 + 50</li>
+<li>第五位是M，表示1000，pre = 50， 大于pre，则res = 80 + 1000</li>
+<li>第六位是C，表示100， pre = 1000， 小于pre，则res = 1080 - 100</li>
+<li>第七位是M，表示1000， pre = 100， 大于pre，则res = 980 + 1000</li>
+</ol>
+</blockquote>
+<p>经过上述步骤，得到MCMLXXX对应的阿拉伯数为1980,结果正确</p>
+<h3 id="阿拉伯数-整数-转罗马数"><a href="#阿拉伯数-整数-转罗马数" class="headerlink" title="阿拉伯数(整数)转罗马数"></a>阿拉伯数(整数)转罗马数</h3><p>将输入的整数不断除罗马数中的几个关键数(I、IV、V、IX、X、XL、CX、CD、D、CM、M)然后将由除法得到的数(即表示改罗马数的个数)加到结果中，再对整数取余，直到整数取余的结果为0</p>
+<blockquote>
+<p>如1980，(res表示结果):</p>
+<ol>
+<li>1980 // 1000 = 1, res += M, 1980 % 1000 = 980</li>
+<li>980 // 900 = 1, res += CM, 980 % 900 = 80</li>
+<li>80 // 50 = 1, res += L, 80 % 50 = 30</li>
+<li>30 // 10 = 3, res += 3*X, 30 % 10 = 0</li>
+</ol>
+</blockquote>
+<p>经过上述步骤即可得整数1980 = MCMLXXX</p>
+<h2 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"><span class="comment"># 罗马数字转换</span></div><div class="line"><span class="comment"># 1 I 4 IV 5V 9 IX 10X 40XL 50L 70 LXX 90XC 100C 200CC</span></div><div class="line"><span class="comment"># 400CCC;CD 500D 900CM 1000M 2500MMD</span></div><div class="line"></div><div class="line"><span class="comment"># e.g.</span></div><div class="line"><span class="comment"># 3-&gt;III</span></div><div class="line"><span class="comment"># 4-&gt;IV</span></div><div class="line"><span class="comment"># 6-&gt;VI</span></div><div class="line"><span class="comment"># 19-&gt;XIX</span></div><div class="line"><span class="comment"># 45-&gt;XLV</span></div><div class="line"><span class="comment"># 999-&gt;CMXCIX</span></div><div class="line"><span class="comment"># 1980-&gt;MCMLXXX</span></div><div class="line"><span class="comment"># 3999-&gt;MMMCMXCIX</span></div><div class="line"></div><div class="line"><span class="comment"># 罗马转数字</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">roman_to_int</span><span class="params">(s)</span>:</span></div><div class="line">    roman_int_dic = &#123;</div><div class="line">        <span class="string">'I'</span>: <span class="number">1</span>, <span class="string">'V'</span>: <span class="number">5</span>, <span class="string">'X'</span>: <span class="number">10</span>,</div><div class="line">        <span class="string">'L'</span>: <span class="number">50</span>, <span class="string">'C'</span>: <span class="number">100</span>, <span class="string">'D'</span>: <span class="number">500</span>,</div><div class="line">        <span class="string">'M'</span>: <span class="number">1000</span></div><div class="line">    &#125;</div><div class="line">    s = s[::<span class="number">-1</span>]</div><div class="line">    res, pre = <span class="number">0</span>, <span class="number">0</span></div><div class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> s:</div><div class="line">        <span class="keyword">if</span> roman_int_dic[x] &gt;= pre:</div><div class="line">            res += roman_int_dic[x]</div><div class="line">            pre = roman_int_dic[x]</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            res -= roman_int_dic[x]</div><div class="line">            pre = roman_int_dic[x]</div><div class="line">    <span class="keyword">return</span> res</div><div class="line"> </div><div class="line"></div><div class="line"><span class="comment"># 数字转罗马</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">int_to_roman</span><span class="params">(i)</span>:</span></div><div class="line">    dic = &#123;</div><div class="line">        <span class="number">1000</span>: <span class="string">'M'</span>, <span class="number">900</span>: <span class="string">'CM'</span>, <span class="number">500</span>: <span class="string">'D'</span>, <span class="number">400</span>: <span class="string">'CD'</span>,</div><div class="line">        <span class="number">100</span>: <span class="string">'C'</span>, <span class="number">90</span>: <span class="string">'XC'</span>, <span class="number">50</span>: <span class="string">'L'</span>, <span class="number">40</span>: <span class="string">'XL'</span>,</div><div class="line">        <span class="number">10</span>: <span class="string">'X'</span>, <span class="number">9</span>: <span class="string">'IX'</span>, <span class="number">5</span>: <span class="string">'V'</span>, <span class="number">4</span>: <span class="string">'IV'</span>, <span class="number">1</span>: <span class="string">'I'</span></div><div class="line">    &#125;</div><div class="line">    res = <span class="string">""</span></div><div class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> dic:</div><div class="line">        <span class="keyword">if</span> i != <span class="number">0</span>:</div><div class="line">            res += i // k * dic[k]</div><div class="line">            i %= k</div><div class="line">    <span class="keyword">return</span> res</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 测试</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    result = roman_to_int(<span class="string">'MMMCMXCIX'</span>)</div><div class="line">    print(result)</div><div class="line"></div><div class="line">    int_res = int_to_roman(<span class="number">3999</span>)</div><div class="line">    print(int_res)</div><div class="line"></div><div class="line">    result = roman_to_int(<span class="string">'MCMLXXX'</span>)</div><div class="line">    print(result)</div><div class="line"></div><div class="line">    int_res = int_to_roman(<span class="number">1980</span>)</div><div class="line">    print(int_res)</div><div class="line"></div><div class="line">    <span class="keyword">assert</span> roman_to_int(<span class="string">'III'</span>) == <span class="number">3</span></div><div class="line">    <span class="keyword">assert</span> roman_to_int(<span class="string">'IV'</span>) == <span class="number">4</span></div><div class="line">    <span class="keyword">assert</span> roman_to_int(<span class="string">'VI'</span>) == <span class="number">6</span></div><div class="line">    <span class="keyword">assert</span> roman_to_int(<span class="string">'XIX'</span>) == <span class="number">19</span></div><div class="line">    <span class="keyword">assert</span> roman_to_int(<span class="string">'XLV'</span>) == <span class="number">45</span></div><div class="line">    <span class="keyword">assert</span> roman_to_int(<span class="string">'MCMLXXX'</span>) == <span class="number">1980</span></div><div class="line">    <span class="keyword">assert</span> roman_to_int(<span class="string">'CMXCIX'</span>) == <span class="number">999</span></div><div class="line">    print(<span class="string">"OK"</span>)</div></pre></td></tr></table></figure>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>输出结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>roman_to_int(<span class="string">'MMMCMXCIX'</span>)</div><div class="line"><span class="number">3999</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>int_to_roman(<span class="number">3999</span>)</div><div class="line">MMMCMXCIX</div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>roman_to_int(MCMLXXX)</div><div class="line"><span class="number">1980</span></div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>int_to_roman(<span class="number">1980</span>)</div><div class="line">MCMLXXX</div></pre></td></tr></table></figure>
+<p>结果与要求一致</p>
+<p>End~</p>
+<hr>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;img src=&quot;/images/imagesource/17-07-08.jpg&quot; alt=&quot;roman&quot;&gt;&lt;/p&gt;
+&lt;p&gt;罗马数字是欧洲在阿拉伯数字传入之前使用的一种数码，现在的使用已经非常少了，大概偶尔会在钟表、文章中的标号等地方还能见到。&lt;/p&gt;
+&lt;p&gt;罗马数字采用七个罗马字母做数字，即I(1), V(5), X(10), L(50), C(100）, D(500), M(1000)。它有一套不同于阿拉伯数字的写法规则，简单来说可以总结为：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;相同的数字连写，所表示的数等于这些数字相加得到的数，如 Ⅲ= 3&lt;/li&gt;
+&lt;li&gt;小的数字在大的数字的右边，表示的数等于这些数字相加得到的数，如 Ⅷ=8， Ⅻ=12&lt;/li&gt;
+&lt;li&gt;小的数字(限于Ⅰ、Ⅹ、Ｃ)在大的数字的左边，所表示的数等于大数减小数得到的数，如Ⅳ=4、Ⅸ=9&lt;/li&gt;
+&lt;li&gt;在一个数的上面画一条横线，表示这个数曾1000倍&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+      <category term="Python" scheme="https://felon03.github.io/categories/Python/"/>
+    
+    
+      <category term="每周一坑" scheme="https://felon03.github.io/tags/%E6%AF%8F%E5%91%A8%E4%B8%80%E5%9D%91/"/>
+    
+  </entry>
   
   <entry>
     <title>【每周一坑】螺旋矩阵</title>
