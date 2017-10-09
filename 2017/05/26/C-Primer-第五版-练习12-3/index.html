@@ -442,7 +442,7 @@
 </code></pre><p>然后分别对<strong>b1</strong>调用<code>push_back()</code>和<code>pop_back()</code>：</p>
 <pre><code>b1.push_back(&quot;test&quot;);       // 向b1添加元素test
 </code></pre><p>此时<strong>b1</strong>保存的内容是 <strong>a</strong>, <strong>an</strong>, <strong>the</strong>, <strong>test</strong>;<br>接着就是</p>
-<pre><code>b1.pop_back();         // 删除刚刚添加的元素
+<pre><code> b1.pop_back();         // 删除刚刚添加的元素
 </code></pre><p>此时<strong>b1</strong>保存的内容是 <strong>a</strong>, <strong>an</strong>, <strong>the</strong>;<br>可以看到，我们定义的非const的<strong>StrBlob</strong>对象进行<code>push_back()</code>和<code>pop_back()</code>操作是没有问题的。</p>
 <h3 id="const-StrBlob对象"><a href="#const-StrBlob对象" class="headerlink" title="const StrBlob对象"></a>const StrBlob对象</h3><p>上面的操作都很顺利，那么当我们声明一个const <strong>StrBlob</strong>对象会怎么样呢？<br>接下来，我们声明一个const类型的<strong>StrBlob</strong>对象：</p>
 <pre><code>const StrBlob cb = {&quot;a&quot;, &quot;an&quot;, &quot;the&quot;};       // const 对象
@@ -633,7 +633,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">21</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -644,7 +644,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -655,7 +655,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
