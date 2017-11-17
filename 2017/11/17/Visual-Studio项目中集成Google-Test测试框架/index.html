@@ -120,7 +120,7 @@
 <meta property="og:image" content="https://felon03.github.io/images/imagesource/17-11-17/17-11-17-17.png">
 <meta property="og:image" content="https://felon03.github.io/images/imagesource/17-11-17/17-11-17-18.png">
 <meta property="og:image" content="https://felon03.github.io/images/imagesource/17-11-17/17-11-17-19.png">
-<meta property="og:updated_time" content="2017-11-17T07:47:49.259Z">
+<meta property="og:updated_time" content="2017-11-17T07:52:34.231Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Visual Studio项目中集成Google Test测试框架">
 <meta name="twitter:description" content="本文主要分成两个部分，第一部分介绍VS2015下Google Test的基本配置，第二部分讲一下我配置时遇到的问题。">
@@ -436,43 +436,43 @@
 <p>解压下载的文件，可以看到两个文件夹，这里我们要用的是<strong>googletest</strong>文件夹下的内容，其他的可以不用管。</p>
 <p><img src="/images/imagesource/17-11-17/17-11-17-1.png" alt="googletest"></p>
 <p>解压出来的文件夹存放位置没有要求。我们主要用到的是googletest文件夹下的<strong>include</strong>和<strong>src</strong>。其中<strong>include</strong>用于配置项目时添加到包含目录中；<strong>src</strong>是Google Test框架的源码。</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-2.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-2.png" alt="src&amp;include"></p>
 <h3 id="配置Google-Test"><a href="#配置Google-Test" class="headerlink" title="配置Google Test"></a>配置Google Test</h3><p>下载好文件后，我们开始配置Google Test。我们新建一个简单的项目作为测试。</p>
 <h4 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h4><p>打开VS2105，<strong>新建项目-&gt;Win32控制台应用程序</strong>，我们将项目名称设置为SimpleTest。然后选择<strong>空项目</strong>，完成即可。</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-3.png" alt="googletest"><br><img src="/images/imagesource/17-11-17/17-11-17-4.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-3.png" alt="newproject"><br><img src="/images/imagesource/17-11-17/17-11-17-4.png" alt="newproject1"></p>
 <p>我们为项目添加两个文件：一个头文件，一个运行的文件。代码如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// simple_math.h</span></div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span>  <span class="meta-string">&lt;cmath&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">double</span> <span class="title">square</span><span class="params">(<span class="keyword">double</span> num)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">return</span> <span class="built_in">pow</span>(num, <span class="number">2</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// simple_math.cpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"simple_math.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">auto</span> ans = square(<span class="number">10</span>);</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>我们在<code>simple_math.h</code>中定义了一个<code>square</code>函数，返回传入的参数的平方值。并在<code>simple_math.cpp</code>中调用了该函数。可以按<strong>Ctrl+F5</strong>来测试一下是否运行正确。准备工作完毕，接下来就是配置Google Test了。</p>
 <h4 id="配置Google-Test-1"><a href="#配置Google-Test-1" class="headerlink" title="配置Google Test"></a>配置Google Test</h4><p>接下来我们右键最上面的<strong>解决方案</strong>，选择<strong>添加-&gt;新建项目-&gt;Win32项目</strong>，我们把新的项目名叫作GoogleTest，在应用程序类型那里选择<strong>静态库</strong>，取消预编译头，然后点击完成。</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-6.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-6.png" alt="googletestproject"></p>
 <p>现在解决方案下面有两个项目，一个是我们之前创建的项目<strong>SimpleTest</strong>，一个是刚刚创建的<strong>GoogleTest</strong>。</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-7.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-7.png" alt="project2"></p>
 <p>下面我们给GoogleTest添加包含目录，就是之前下载的googletest文件夹下的目录。<strong>右键GoogleTest-&gt;属性-&gt;配置属性-&gt;VC++目录-&gt;包含目录</strong>，我们在包含目录中添加Google Test相关文件。我们<strong>googletest文件夹</strong>和googletest目录下的<strong>include</strong>文件夹都添加进去，然后点击确定。</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-8.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-8.png" alt="includefile"></p>
 <p>接着再给GoogleTest项目添加源文件。<strong>右键GoogleTest的源文件-&gt;添加-&gt;现有项</strong>，把之前提到的<strong>src</strong>目录下的<strong>gtest_main.cc</strong>和<strong>gtest-all.cc</strong>添加进去。</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-9.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-9.png" alt="addfile"></p>
 <p>现在GoogleTest项目下有两个源文件。</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-10.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-10.png" alt="sourcefiles"></p>
 <h4 id="生成静态库"><a href="#生成静态库" class="headerlink" title="生成静态库"></a>生成静态库</h4><p>上述配置完成后，我们<strong>右键GoogleTest-&gt;生成</strong>，就可以生成GoogleTest的静态库了。</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-11.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-11.png" alt="build"></p>
 <h4 id="添加单元测试"><a href="#添加单元测试" class="headerlink" title="添加单元测试"></a>添加单元测试</h4><p>下面我们测试一下GoogleTest是否配置正确，新建一个单元测试项目<strong>UnittestSimpleTest</strong>，<strong>右键解决方案-&gt;添加-&gt;新建项目-&gt;Win32控制台应用程序</strong>，选择空项目，然后完成即可。</p>
 <p>现在我们的解决方案中共有三个项目：<strong>GoogleTest，SimpleTest，UnittestSimpleTest</strong>。</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-12.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-12.png" alt="project3"></p>
 <p>同样，我们需要将googletest文件夹下的路径添加到UniitestSimpleTest的包含目录中。此外，我们还要添加SimpleTest的路径。</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-13.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-13.png" alt="includepath"></p>
 <p>添加完包含目录后，再为其添加引用：<strong>右键UnittestSimpleTest-&gt;添加-&gt;引用</strong>，将<strong>GoogleTest</strong>和<strong>SimpleTest</strong>全勾上</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-14.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-14.png" alt="references"></p>
 <p>单击确定即可。可以看到之前两个项目都作为引用添加到SimpleTest中了。</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-15.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-15.png" alt="references1"></p>
 <h4 id="新建测试"><a href="#新建测试" class="headerlink" title="新建测试"></a>新建测试</h4><p>我们现在可以添加源文件，编写单元测试了。新建一个源文件<strong>test.cpp</strong>，编写代码如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// test.cpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"simple_math.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"gtest/gtest.h"</span></span></div><div class="line"></div><div class="line">TEST(testSquare, mySquareTest)</div><div class="line">&#123;</div><div class="line">	EXPECT_EQ(<span class="number">100</span>, square(<span class="number">10</span>));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>然后我们将UnittestSimpleTest作为启动项目（<strong>右键项目-&gt;设为启动项目</strong>），然后运行即可。运行结果如图所示。</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-16.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-16.png" alt="result"></p>
 <h2 id="将现有的项目作为引用添加到其他项目中"><a href="#将现有的项目作为引用添加到其他项目中" class="headerlink" title="将现有的项目作为引用添加到其他项目中"></a>将现有的项目作为引用添加到其他项目中</h2><p>在配置Google Test时，我新建一个项目按照上面的步骤可以使用单元测试，但是在给现有项目同样的配置时，却在添加完GoogleTest和单元测试后报错，一大片的LNK 2019的错误。</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-17.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-17.png" alt="errorlnk2019"></p>
 <p>百度了半天没找到解决结果。后来看到了一篇文章，教我们怎么添加自己写的程序库，看了文章后我找到了链接错误的原因了：之前的项目没有作为<strong>静态库</strong>给新的项目引用，解决方法如下：<strong>右键项目-&gt;属性-&gt;配置属性-&gt;常规</strong>，将目标文件扩展名改为<strong>.lib</strong>，然后在下面的项目默认值中的<strong>配置类型</strong>改为<strong>静态库</strong>。</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-18.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-18.png" alt="buildall"></p>
 <p>然后重新生成解决方案，没有报错，生成成功！然后就可以进行单元测试了。测试结果如图所示：</p>
-<p><img src="/images/imagesource/17-11-17/17-11-17-19.png" alt="googletest"></p>
+<p><img src="/images/imagesource/17-11-17/17-11-17-19.png" alt="result1"></p>
 <p>在这边我只用到了静态库的生成和引用，以上所有操作都是debug模式下进行。</p>
 <h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
 <li><a href="http://www.bogotobogo.com/cplusplus/google_unit_test_gtest.php" title="GTEST" target="_blank" rel="external">C++ TUTORIAL - GOOGLE TEST (GTEST)</a></li>
