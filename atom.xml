@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://felon03.github.io/"/>
-  <updated>2017-11-17T07:52:34.231Z</updated>
+  <updated>2017-12-29T07:42:58.453Z</updated>
   <id>https://felon03.github.io/</id>
   
   <author>
@@ -16,11 +16,64 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>LeetCode 751. IP to CIDR</title>
+    <link href="https://felon03.github.io/2017/12/29/LeetCode-751-IP-to-CIDR/"/>
+    <id>https://felon03.github.io/2017/12/29/LeetCode-751-IP-to-CIDR/</id>
+    <published>2017-12-29T07:09:13.000Z</published>
+    <updated>2017-12-29T07:42:58.453Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>Given a start IP address <code>ip</code> and a number of ips we need to cover <code>n</code>, return a representation of the range as a list (of smallest possible length) of CIDR blocks.</p>
+<p>A CIDR block is a string consisting of an IP, followed by a slash, and then prefix length. For example: “123.45.67.89/20”. That prefix length “20” represents the number of common prefix bits in the specified range.</p>
+<a id="more"></a>
+<h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1"></a>Example 1</h3><blockquote>
+<p><strong>Input:</strong> ip = “255.0.0.7”, n = 10<br><strong>Output:</strong> [“255.0.0.7/32”, “255,0.0.8/29”, “255.0.0.16/32”]<br><strong>Explanation:</strong><br>The initial ip address, when convered to binary, look like this (spaces added for clarity):<br>255.0.0.7 -&gt; 1111111 00000000 00000000 00000111<br>The address “255.0.0.7/32” specifies all address with a common prefix of 32 bits to the given address,<br>ie. just this one address.</p>
+<p>The address “255.0.0.8/29” specifies all address with a common prefix of 29 bits to the given address:<br>255.0.0.8 -&gt; 11111111 00000000 0000000 00001000<br>Address with common prefix of 29 bits are:<br>11111111 00000000 00000000 00001000<br>11111111 00000000 00000000 00001001<br>11111111 00000000 00000000 00001010<br>11111111 00000000 00000000 00001011<br>11111111 00000000 00000000 00001100<br>11111111 00000000 00000000 00001101<br>11111111 00000000 00000000 00001110<br>11111111 00000000 00000000 00001111</p>
+<p>The address “255.0.0.16/32” specifies all address with a common prefix of 32 bits to the given address,<br>ie. just 11111111 00000000 00000000 00010000</p>
+<p>In total, the answer specifies the range of 10 ips starting with the address 255.0.0.7 .</p>
+<p>There were other representations, such as:<br>[“255.0.0.7/32”, “”255.0.0.8/30”, “255.0.0.12/30”, “255.0.0.16/32”],<br>but our answer was the shortest possible.</p>
+<p>Also note that a representation beginning with say, “255.0.0.7/30” would be incorrect,<br>because it includes address like 255.0.0.4 = 11111111 00000000 00000000 00000100<br>that are outside the specified range.</p>
+</blockquote>
+<h3 id="Note"><a href="#Note" class="headerlink" title="Note"></a>Note</h3><ol>
+<li><code>ip</code> will be a valid IPv4 address.</li>
+<li>Every implied address <code>ip + x</code> (for <code>x &lt; n</code>) will be a valid IPv4 address.</li>
+<li><code>n</code> will be an integer in the range <code>[1, 1000]</code>.</li>
+</ol>
+<h2 id="Answer"><a href="#Answer" class="headerlink" title="Answer"></a>Answer</h2><p>这个问题是在给定的起始IP地址，求最少的<a href="https://baike.baidu.com/item/%E6%97%A0%E7%B1%BB%E5%9F%9F%E9%97%B4%E8%B7%AF%E7%94%B1/240168?fr=aladdin&amp;fromid=3695195&amp;fromtitle=CIDR" target="_blank" rel="external">CIDR</a>正好覆盖n个IP地址。所求的地址要求是连续的，并且要在起始IP的后面。</p>
+<p>先说明一下<code>255.255.0.8/29</code>中29的含义：<br>一个IPv4的地址总共有32位，可以表示29表示的是IP的前29为是固定的，后三位可以改变，因此可以覆盖$2^3$(8)个IP。那么要使CIDR尽量的少，就让固定的IP的位数尽量少，同时要保证IP是连续的。</p>
+<p>比如我们以<code>255.0.0.7</code>开始，覆盖30个地址，那么就有：</p>
+<blockquote>
+<p>255.0.0.7/32<br>只有一个IP地址 剩余30 - 1 = 29</p>
+<p>接下来的IP地址是 255.0.0.8，最后8位是: 00001000，还有3位可以更改<br>则有255.0.0.8/29 可以覆盖8个IP，剩余29 - 8 = 21</p>
+<p>8个地址后的IP是255.0.0.16，最后8位是: 00010000，还有4位可以更改<br>则有255.0.0.16/28 可以覆盖16个IP，剩余21 - 16 = 5</p>
+<p>接下来的IP地址是255.0.0.32，最后8位是： 00100000，还有5位可以更改，而剩余的要覆盖的IP只有5个，因此要小于5，否则覆盖的IP范围就会超过给定的个数，因此是4个，即对最后两位进行更改<br>则有255.0.0.32/30 可以覆盖4个IP，剩余5 - 4 = 1</p>
+<p>那么最后一个要覆盖的就是255.0.0.36/32，剩余0个要覆盖<br>至此可以得到最少的CIDR。</p>
+</blockquote>
+<h3 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h3><p>将IP转为数字:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; split(<span class="keyword">const</span> <span class="built_in">string</span> &amp;str, <span class="keyword">char</span> delim)</div><div class="line">&#123;</div><div class="line">    <span class="function"><span class="built_in">stringstream</span> <span class="title">ss</span><span class="params">(str)</span></span>;</div><div class="line">    <span class="built_in">string</span> word;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; ret;</div><div class="line">    <span class="keyword">while</span> (getline(ss, word, delim))</div><div class="line">    &#123;</div><div class="line">        ret.emplace_back(word);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> ret;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">ip2Num</span><span class="params">(<span class="keyword">const</span> <span class="built_in">string</span> &amp;ip)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; vec = split(ip, <span class="string">'.'</span>);</div><div class="line">    <span class="keyword">int</span> num = <span class="number">0</span>;</div><div class="line">    num = <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(stoi(vec[<span class="number">0</span>));</div><div class="line">    num = num &lt;&lt; <span class="number">8</span> | <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(stoi(vec[<span class="number">1</span>]));</div><div class="line">    num = num &lt;&lt; <span class="number">8</span> | <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(stoi(vec[<span class="number">2</span>]));</div><div class="line">    num = num &lt;&lt; <span class="number">8</span> | <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(stoi(vec[<span class="number">3</span>]));</div><div class="line">    <span class="keyword">return</span> num;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>数字转换为IP<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="built_in">string</span> <span class="title">num2Ip</span><span class="params">(<span class="keyword">int</span> num)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; vec;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i)</div><div class="line">    &#123;</div><div class="line">        vec.emplace_back(to_string(num &amp; <span class="number">0xff</span>));</div><div class="line">        num &gt;&gt;= <span class="number">8</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">string</span> ret;</div><div class="line">    ret.append(vec[<span class="number">3</span>] + <span class="string">'.'</span>);</div><div class="line">    ret.append(vec[<span class="number">2</span>] + <span class="string">'.'</span>);</div><div class="line">    ret.append(vec[<span class="number">1</span>] + <span class="string">'.'</span>);</div><div class="line">    ret.append(vec[<span class="number">0</span>]);</div><div class="line">    <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>主函数<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; ipToCIDR(<span class="built_in">string</span> ip, <span class="keyword">int</span> range)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; ret;</div><div class="line">    <span class="keyword">unsigned</span> num = ip2Num(ip);</div><div class="line">    </div><div class="line">    <span class="keyword">while</span> (range)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">int</span> weight = <span class="number">1</span>;</div><div class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</div><div class="line">        <span class="keyword">while</span> (i &lt; <span class="number">32</span>)</div><div class="line">        &#123;</div><div class="line">            weight &lt;&lt;= <span class="number">1</span>;</div><div class="line">            <span class="keyword">if</span> ((<span class="number">1</span> &lt;&lt; i &amp; num) || (weight &gt; range))</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            ++i;</div><div class="line">        &#125;</div><div class="line">        weight &gt;&gt;= <span class="number">1</span>;</div><div class="line">        range -= weight;</div><div class="line">        ret.emplace_back(num2Ip(num) + <span class="string">"/"</span> + to_string(<span class="number">32</span> - i));</div><div class="line">        num += weight;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Problem&quot;&gt;&lt;a href=&quot;#Problem&quot; class=&quot;headerlink&quot; title=&quot;Problem&quot;&gt;&lt;/a&gt;Problem&lt;/h2&gt;&lt;p&gt;Given a start IP address &lt;code&gt;ip&lt;/code&gt; and a number of ips we need to cover &lt;code&gt;n&lt;/code&gt;, return a representation of the range as a list (of smallest possible length) of CIDR blocks.&lt;/p&gt;
+&lt;p&gt;A CIDR block is a string consisting of an IP, followed by a slash, and then prefix length. For example: “123.45.67.89/20”. That prefix length “20” represents the number of common prefix bits in the specified range.&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="LeetCode" scheme="https://felon03.github.io/categories/LeetCode/"/>
+    
+    
+      <category term="LeetCode" scheme="https://felon03.github.io/tags/LeetCode/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Visual Studio项目中集成Google Test测试框架</title>
     <link href="https://felon03.github.io/2017/11/17/Visual-Studio%E9%A1%B9%E7%9B%AE%E4%B8%AD%E9%9B%86%E6%88%90Google-Test%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6/"/>
     <id>https://felon03.github.io/2017/11/17/Visual-Studio项目中集成Google-Test测试框架/</id>
     <published>2017-11-17T07:22:38.000Z</published>
-    <updated>2017-11-17T07:52:34.231Z</updated>
+    <updated>2017-12-20T01:45:03.730Z</updated>
     
     <content type="html"><![CDATA[<p>本文主要分成两个部分，第一部分介绍VS2015下Google Test的基本配置，第二部分讲一下我配置时遇到的问题。</p>
 <a id="more"></a>
@@ -78,6 +131,8 @@
       &lt;p&gt;本文主要分成两个部分，第一部分介绍VS2015下Google Test的基本配置，第二部分讲一下我配置时遇到的问题。&lt;/p&gt;
     
     </summary>
+    
+      <category term="C++" scheme="https://felon03.github.io/categories/C/"/>
     
     
       <category term="C++" scheme="https://felon03.github.io/tags/C/"/>
@@ -1303,58 +1358,6 @@
     
     
       <category term="C++" scheme="https://felon03.github.io/tags/C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>C++ string输入问题</title>
-    <link href="https://felon03.github.io/2017/03/31/C-string%E8%BE%93%E5%85%A5%E9%97%AE%E9%A2%98/"/>
-    <id>https://felon03.github.io/2017/03/31/C-string输入问题/</id>
-    <published>2017-03-31T06:38:28.000Z</published>
-    <updated>2017-03-31T06:46:20.538Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><blockquote>
-<p>使用cin读入一组字符串并存入一个vector对象</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>使用如下代码<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="comment">/*用cin读入一组字符串并把它们存入一个vector对象*/</span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; text;</div><div class="line">	<span class="built_in">string</span> word;</div><div class="line">	<span class="keyword">while</span> (getline(<span class="built_in">cin</span>, word))</div><div class="line">	&#123;</div><div class="line">		text.push_back(word);</div><div class="line">	&#125;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"["</span>;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> i : text)</div><div class="line">		<span class="keyword">if</span> (i == text.back())</div><div class="line">			<span class="built_in">cout</span> &lt;&lt; i;</div><div class="line">		<span class="keyword">else</span></div><div class="line">			<span class="built_in">cout</span> &lt;&lt; i &lt;&lt; <span class="string">","</span>;</div><div class="line">	<span class="built_in">cout</span> &lt;&lt; <span class="string">"]"</span>;</div><div class="line"></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>在运行测试时发现了一个问题：<br>当输入为</p>
-<blockquote>
-<p>aa ss dd qq ww ee^Z (注意，^Z是在字符串输入完成后直接在后面加入的)</p>
-</blockquote>
-<p>按回车后发现输出卡出了，并不会输出所输入的字符串</p>
-<p>当输入为</p>
-<blockquote>
-<p>aa ss dd qq ww ee<br>^Z(换行后的^Z)</p>
-</blockquote>
-<p>就可以正确输出了</p>
-<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>百思不得其解，遂百度之。<br>看到了两种解释，感觉都有道理，就都贴上来好了<br>1.</p>
-<blockquote>
-<p>因为标准C++ I/O函数是有缓冲的，你输入aa dd ssctrl+z之后，cin调用read读到aa dd ss到缓冲中，返回aa给用户，再次调用直接返回dd，再次调用直接返回ss，从而忽略掉了ctrl+z，因为第一次read把它带过了。此刻调用cin，因为缓冲区空，于是read阻塞等待输入，你输入ctrl+z，read返回0，于是cin&gt;&gt;调用立即返回，cin状态为eof，while退出。</p>
-</blockquote>
-<p>2.</p>
-<blockquote>
-<p>windows认为，如果缓冲中还有其它内容，ctrl+z不表示输入结束，仅代表当前行输入结束，只在单独一个ctrl+z的时候才表示输入结束。</p>
-</blockquote>
-<p>意思就是说如果使用ctrl+z来结束输入的话，一定要是单独使用，不能在输入后面直接加。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;问题描述&quot;&gt;&lt;a href=&quot;#问题描述&quot; class=&quot;headerlink&quot; title=&quot;问题描述&quot;&gt;&lt;/a&gt;问题描述&lt;/h2&gt;&lt;blockquote&gt;
-&lt;p&gt;使用cin读入一组字符串并存入一个vector对象&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-      <category term="C++" scheme="https://felon03.github.io/categories/C/"/>
-    
-    
-      <category term="C++" scheme="https://felon03.github.io/tags/C/"/>
-    
-      <category term="String" scheme="https://felon03.github.io/tags/String/"/>
-    
-      <category term="vector" scheme="https://felon03.github.io/tags/vector/"/>
     
   </entry>
   
