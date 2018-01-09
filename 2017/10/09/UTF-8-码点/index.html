@@ -434,6 +434,7 @@
 
       
         <p>UTF-8的编码单元是8位字节，每个码点编成1至4个字节。它的编码方式很简单，按照码点的范围，把码点的二进制位拆分成1至最多4个字节：<br><a id="more"></a></p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -480,6 +481,7 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p> 1000 0000 -&gt; 80<br> 1100 0000 -&gt; C0<br> 1110 0000 -&gt; E0<br> 1111 0000 -&gt; F0</p>
 <p> 1111 1111 -&gt; FF<br> 0011 1111 -&gt; 3F</p>
 <p> e.g. U+20AC 0x0800 &lt; 0x20AC &lt; 0xFFFF<br> 所以0x20AC有16位码点,编成三字节<br> 0x20AC的二进制为 10 0000 1010 1100 需要16位，所以在前面补0，即<br> 0010 0000 1010 1100<br> 将其分成三组：<br> 0010， 000010， 101100<br> 加上前缀：<br> 1110 0010, 1000 0010, 1010 1100<br> 则得到 0xE2, 0x82, 0xAC</p>
@@ -646,7 +648,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">26</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -755,8 +757,8 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  &copy;  2017 - 
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-star"></i>
   </span>
