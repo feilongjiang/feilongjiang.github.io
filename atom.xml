@@ -106,7 +106,7 @@
     <link href="https://felon03.github.io/2017/11/17/Visual-Studio%E9%A1%B9%E7%9B%AE%E4%B8%AD%E9%9B%86%E6%88%90Google-Test%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6/"/>
     <id>https://felon03.github.io/2017/11/17/Visual-Studio项目中集成Google-Test测试框架/</id>
     <published>2017-11-17T07:22:38.000Z</published>
-    <updated>2017-12-20T01:45:03.730Z</updated>
+    <updated>2018-04-04T05:41:17.002Z</updated>
     
     <content type="html"><![CDATA[<p>本文主要分成两个部分，第一部分介绍VS2015下Google Test的基本配置，第二部分讲一下我配置时遇到的问题。</p>
 <a id="more"></a>
@@ -115,13 +115,14 @@
 <p><img src="/images/imagesource/17-11-17/17-11-17-1.png" alt="googletest"></p>
 <p>解压出来的文件夹存放位置没有要求。我们主要用到的是googletest文件夹下的<strong>include</strong>和<strong>src</strong>。其中<strong>include</strong>用于配置项目时添加到包含目录中；<strong>src</strong>是Google Test框架的源码。</p>
 <p><img src="/images/imagesource/17-11-17/17-11-17-2.png" alt="src&amp;include"></p>
-<h3 id="配置Google-Test"><a href="#配置Google-Test" class="headerlink" title="配置Google Test"></a>配置Google Test</h3><p>下载好文件后，我们开始配置Google Test。我们新建一个简单的项目作为测试。</p>
+<h3 id="配置Google-Test-2018-04-04更新"><a href="#配置Google-Test-2018-04-04更新" class="headerlink" title="配置Google Test(2018-04-04更新)"></a>配置Google Test(2018-04-04更新)</h3><p>感谢@LazyWolf Lin的指出，Google Test本身自带了msvc的项目文件，我们只需打开gtest提供的项目，编译生成得到静态库文件，然后在项目中设置运行库即可，不需要自己新建Google Test项目来生成静态库。具体的操作可以参考这一篇<a href="https://blog.csdn.net/lywzgzl/article/details/52203558" title="GTEST基础学习" target="_blank" rel="external">博客</a>。</p>
+<p>下载好文件后，我们开始配置Google Test。我们新建一个简单的项目作为测试。</p>
 <h4 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h4><p>打开VS2105，<strong>新建项目-&gt;Win32控制台应用程序</strong>，我们将项目名称设置为SimpleTest。然后选择<strong>空项目</strong>，完成即可。</p>
 <p><img src="/images/imagesource/17-11-17/17-11-17-3.png" alt="newproject"><br><img src="/images/imagesource/17-11-17/17-11-17-4.png" alt="newproject1"></p>
 <p>我们为项目添加两个文件：一个头文件，一个运行的文件。代码如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// simple_math.h</span></div><div class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span>  <span class="meta-string">&lt;cmath&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">double</span> <span class="title">square</span><span class="params">(<span class="keyword">double</span> num)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">return</span> <span class="built_in">pow</span>(num, <span class="number">2</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// simple_math.cpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"simple_math.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">auto</span> ans = square(<span class="number">10</span>);</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>我们在<code>simple_math.h</code>中定义了一个<code>square</code>函数，返回传入的参数的平方值。并在<code>simple_math.cpp</code>中调用了该函数。可以按<strong>Ctrl+F5</strong>来测试一下是否运行正确。准备工作完毕，接下来就是配置Google Test了。</p>
-<h4 id="配置Google-Test-1"><a href="#配置Google-Test-1" class="headerlink" title="配置Google Test"></a>配置Google Test</h4><p>接下来我们右键最上面的<strong>解决方案</strong>，选择<strong>添加-&gt;新建项目-&gt;Win32项目</strong>，我们把新的项目名叫作GoogleTest，在应用程序类型那里选择<strong>静态库</strong>，取消预编译头，然后点击完成。</p>
+<h4 id="配置Google-Test"><a href="#配置Google-Test" class="headerlink" title="配置Google Test"></a>配置Google Test</h4><p>接下来我们右键最上面的<strong>解决方案</strong>，选择<strong>添加-&gt;新建项目-&gt;Win32项目</strong>，我们把新的项目名叫作GoogleTest，在应用程序类型那里选择<strong>静态库</strong>，取消预编译头，然后点击完成。</p>
 <p><img src="/images/imagesource/17-11-17/17-11-17-6.png" alt="googletestproject"></p>
 <p>现在解决方案下面有两个项目，一个是我们之前创建的项目<strong>SimpleTest</strong>，一个是刚刚创建的<strong>GoogleTest</strong>。</p>
 <p><img src="/images/imagesource/17-11-17/17-11-17-7.png" alt="project2"></p>
@@ -156,6 +157,7 @@
 <li><a href="http://www.bogotobogo.com/cplusplus/google_unit_test_gtest.php" title="GTEST" target="_blank" rel="external">C++ TUTORIAL - GOOGLE TEST (GTEST)</a></li>
 <li><a href="http://blog.csdn.net/luoweifu/article/details/48895765" title="发布自己的程序库" target="_blank" rel="external">带你玩转Visual Studio——带你发布自己的工程库</a></li>
 <li><a href="http://blog.csdn.net/luoweifu/article/details/48915347" title="多工程开发" target="_blank" rel="external">带你玩转Visual Studio——带你多工程开发</a></li>
+<li><a href="https://blog.csdn.net/lywzgzl/article/details/52203558" title="GTEST基础学习" target="_blank" rel="external">GTEST基础学习</a></li>
 </ol>
 ]]></content>
     
