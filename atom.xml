@@ -106,7 +106,7 @@
     <link href="https://felon03.github.io/2017/11/17/Visual-Studio%E9%A1%B9%E7%9B%AE%E4%B8%AD%E9%9B%86%E6%88%90Google-Test%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6/"/>
     <id>https://felon03.github.io/2017/11/17/Visual-Studio项目中集成Google-Test测试框架/</id>
     <published>2017-11-17T07:22:38.000Z</published>
-    <updated>2018-04-04T05:41:17.002Z</updated>
+    <updated>2019-01-07T13:44:48.079Z</updated>
     
     <content type="html"><![CDATA[<p>本文主要分成两个部分，第一部分介绍VS2015下Google Test的基本配置，第二部分讲一下我配置时遇到的问题。</p>
 <a id="more"></a>
@@ -167,7 +167,7 @@
     
     </summary>
     
-      <category term="C++" scheme="https://felon03.github.io/categories/C/"/>
+      <category term="CPP" scheme="https://felon03.github.io/categories/CPP/"/>
     
     
       <category term="C++" scheme="https://felon03.github.io/tags/C/"/>
@@ -198,7 +198,6 @@
 <p>由于Python的字符串本身也用\转义，因此建议使用Python的r前缀，就可以避免Python字符串转义的问题了。</p>
 <h3 id="正则表达式特殊字符"><a href="#正则表达式特殊字符" class="headerlink" title="正则表达式特殊字符"></a>正则表达式特殊字符</h3><p>在这里介绍一下正在表达式的特殊字符，具体的匹配可以参考<a href="http://www.runoob.com/regexp/regexp-tutorial.html" target="_blank" rel="external">正则表达式-菜鸟教程</a>。</p>
 <p>特殊字符就是指有特殊含义的字符，在正则表达式中，它们负责了除本身字符含义之外的工作，如<code>*</code>表示匹配某字符串零次或多次，如果想要匹配<code>*</code>，则需要转义，即匹配<code>\*</code>，这样就是匹配<code>*</code>这个字符。正则表达式的特殊字符如下表所示：</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -208,7 +207,7 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left">$</td>
+<td style="text-align:left">\$</td>
 <td style="text-align:left">匹配输入字符串的结尾位置</td>
 </tr>
 <tr>
@@ -253,7 +252,6 @@
 </tr>
 </tbody>
 </table>
-</div>
 <h2 id="验证邮箱"><a href="#验证邮箱" class="headerlink" title="验证邮箱"></a>验证邮箱</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">checkEmail = re.compile(<span class="string">r'^(\w+_?-?\.?\w*)@([\w+\.]+[a-zA-Z]+$)'</span>)</div></pre></td></tr></table></figure>
 <h2 id="验证密码"><a href="#验证密码" class="headerlink" title="验证密码"></a>验证密码</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">checkPwd = re.compile(<span class="string">r'^(?=.*[0-9].*)(?=.*[A-Z].*)(?=.*[a-z].*).&#123;8,&#125;$'</span>)</div></pre></td></tr></table></figure>
 <h2 id="重名验证"><a href="#重名验证" class="headerlink" title="重名验证"></a>重名验证</h2><p>没有用数据库，采用了文本文档存储已注册邮箱的方式，每次注册都要查询文本中的邮箱，是否有重复的，如果有重复的，提示邮箱重复，输入其他邮箱；否则注册通过，将新的邮箱地址存入文本中。</p>
@@ -290,7 +288,7 @@
     <link href="https://felon03.github.io/2017/10/09/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98-%E8%BD%AC%E8%BD%BD/"/>
     <id>https://felon03.github.io/2017/10/09/二叉树相关问题-转载/</id>
     <published>2017-10-09T11:33:35.000Z</published>
-    <updated>2017-10-09T11:53:21.279Z</updated>
+    <updated>2019-01-07T13:25:14.786Z</updated>
     
     <content type="html"><![CDATA[<p>文章转自 <a href="http://blog.csdn.net/walkinginthewind/article/details/7518888" target="_blank" rel="external">http://blog.csdn.net/walkinginthewind/article/details/7518888</a></p>
 <h1 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h1><p>树是一种比较重要的数据结构，尤其是二叉树。二叉树是一种特殊的树，在二叉树中每个节点最多有两个子节点，一般称为左子节点和右子节点（或左孩子和右孩子），并且二叉树的子树有左右之分，其次序不能任意颠倒。二叉树是递归定义的，因此，与二叉树有关的题目基本都可以用递归思想解决，当然有些题目非递归解法也应该掌握，如非递归遍历节点等等。</p>
@@ -410,7 +408,7 @@
     
     </summary>
     
-      <category term="Data Structure" scheme="https://felon03.github.io/categories/Data-Structure/"/>
+      <category term="DataStructure" scheme="https://felon03.github.io/categories/DataStructure/"/>
     
     
       <category term="BinaryTree" scheme="https://felon03.github.io/tags/BinaryTree/"/>
@@ -422,10 +420,9 @@
     <link href="https://felon03.github.io/2017/10/09/UTF-8-%E7%A0%81%E7%82%B9/"/>
     <id>https://felon03.github.io/2017/10/09/UTF-8-码点/</id>
     <published>2017-10-09T02:34:48.000Z</published>
-    <updated>2017-10-09T02:42:13.105Z</updated>
+    <updated>2019-01-07T13:44:48.079Z</updated>
     
     <content type="html"><![CDATA[<p>UTF-8的编码单元是8位字节，每个码点编成1至4个字节。它的编码方式很简单，按照码点的范围，把码点的二进制位拆分成1至最多4个字节：<br><a id="more"></a></p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -472,7 +469,6 @@
 </tr>
 </tbody>
 </table>
-</div>
 <p> 1000 0000 -&gt; 80<br> 1100 0000 -&gt; C0<br> 1110 0000 -&gt; E0<br> 1111 0000 -&gt; F0</p>
 <p> 1111 1111 -&gt; FF<br> 0011 1111 -&gt; 3F</p>
 <p> e.g. U+20AC 0x0800 &lt; 0x20AC &lt; 0xFFFF<br> 所以0x20AC有16位码点,编成三字节<br> 0x20AC的二进制为 10 0000 1010 1100 需要16位，所以在前面补0，即<br> 0010 0000 1010 1100<br> 将其分成三组：<br> 0010， 000010， 101100<br> 加上前缀：<br> 1110 0010, 1000 0010, 1010 1100<br> 则得到 0xE2, 0x82, 0xAC</p>
@@ -490,7 +486,7 @@
     
     </summary>
     
-      <category term="C" scheme="https://felon03.github.io/categories/C/"/>
+      <category term="CPP" scheme="https://felon03.github.io/categories/CPP/"/>
     
     
       <category term="UTF-8" scheme="https://felon03.github.io/tags/UTF-8/"/>
@@ -520,7 +516,7 @@
 <h3 id="2-在原矩阵上进行操作"><a href="#2-在原矩阵上进行操作" class="headerlink" title="2. 在原矩阵上进行操作"></a>2. 在原矩阵上进行操作</h3><p>旋转90°可以看到变换前和变换后是按照对角线对称后再反转的 (<a href="http://blog.csdn.net/lion19930924/article/details/51661248" target="_blank" rel="external">原博客</a>)</p>
 <p>代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="string">'''</span></div><div class="line">将矩阵旋转90度，可以看出变换前和变换后的矩阵是按照</div><div class="line">对角线对称交换以后再进行反转后得到的</div><div class="line">'''</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">rotate1</span><span class="params">(matrix)</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    :param matrix: List(List(int))</div><div class="line">    :return: matrix</div><div class="line">    """</div><div class="line">    <span class="keyword">if</span> len(matrix[<span class="number">0</span>]) == <span class="number">0</span>:</div><div class="line">        <span class="keyword">return</span> matrix</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(matrix)):</div><div class="line">        j = i + <span class="number">1</span></div><div class="line">        <span class="keyword">while</span> j &lt; len(matrix[<span class="number">0</span>]):</div><div class="line">            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]</div><div class="line">            j += <span class="number">1</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(matrix)):</div><div class="line">        <span class="comment"># print(matrix[i])</span></div><div class="line">        matrix[i].reverse()</div><div class="line">        <span class="comment"># print(matrix[i])</span></div><div class="line">    <span class="comment"># matrix.reverse()</span></div><div class="line">    <span class="comment"># print(matrix)</span></div><div class="line">    <span class="keyword">return</span> matrix</div></pre></td></tr></table></figure>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://blog.csdn.net/lion19930924/article/details/51661248" target="_blank" rel="external">CSDN Blog — 二维数组旋转90度(by @lynne233)</a></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://blog.csdn.net/lion19930924/article/details/51661248" target="_blank" rel="external">CSDN Blog – 二维数组旋转90度(by @lynne233)</a></p>
 <p>End~</p>
 <hr>
 ]]></content>
@@ -560,8 +556,8 @@
 <a id="more"></a>
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>一眼看到阿姆斯特朗就想到了<a href="http://v.youku.com/v_show/id_XMjY1ODQ2MzM1Ng==.html?spm=a2h1n.8261147.0.0" target="_blank" rel="external">《银魂》</a><strong>阿姆斯特朗回旋加速喷气式阿姆斯特朗炮</strong>了，果然银魂毁节操QAQ。</p>
 <p>回到主题，其实阿姆斯特朗数和<a href="https://zh.wikipedia.org/wiki/%E6%B0%B4%E4%BB%99%E8%8A%B1%E6%95%B0" target="_blank" rel="external">水仙花数</a>差不多。<br>满足阿姆斯特朗数的公式如下，设 $ n = d_kd_{k-1}\cdots d_1 $，则有</p>
-<script type="math/tex; mode=display">
-n = d\_k^k + d\_{k-1}^k+\cdots+d\_2^k+d\_1^k</script><p>编写代码是只要得到整数n的各个位上的数，然后进行k次幂求和即可。</p>
+<p>$$<br>n = d_k^k + d_{k-1}^k+\cdots+d_2^k+d_1^k<br>$$</p>
+<p>编写代码是只要得到整数n的各个位上的数，然后进行k次幂求和即可。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">temp = num</div><div class="line"><span class="keyword">while</span> temp:</div><div class="line">    <span class="comment"># 求出每位数的k次幂的和</span></div><div class="line">    res += (temp % <span class="number">10</span>)**n</div><div class="line">    num //= <span class="number">10</span></div><div class="line"><span class="keyword">if</span> res == num:</div><div class="line">    <span class="comment"># 如果满足阿姆斯特朗数的条件，就返回这个数</span></div><div class="line">    <span class="keyword">return</span> num</div></pre></td></tr></table></figure>
 <h2 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># -*- coding: utf-8 -*-</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 得到bound以内的阿姆斯特朗数，bound默认为1000</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_number</span><span class="params">(bound=<span class="number">1000</span>)</span>:</span></div><div class="line">    armstrong_number = []</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(bound):</div><div class="line">        temp = i</div><div class="line">        n = len(str(i))</div><div class="line">        res = <span class="number">0</span></div><div class="line">        <span class="keyword">while</span> temp:</div><div class="line">            res += (temp % <span class="number">10</span>) ** n</div><div class="line">            temp //= <span class="number">10</span></div><div class="line">        <span class="keyword">if</span> res == i:</div><div class="line">            armstrong_number.append(i)</div><div class="line">    <span class="keyword">return</span> armstrong_number</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 得到离number最近的阿姆斯特朗数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_nearest_number</span><span class="params">(num)</span>:</span></div><div class="line">    <span class="keyword">if</span> is_arm_num(num):</div><div class="line">        <span class="keyword">return</span> num</div><div class="line">    temp = num</div><div class="line">    res = get_number(temp)[<span class="number">-1</span>]</div><div class="line">    <span class="keyword">while</span> <span class="keyword">not</span> is_arm_num(temp):</div><div class="line">        temp += <span class="number">1</span></div><div class="line">    res_new = temp</div><div class="line">    <span class="keyword">if</span> abs(res_new - num) &lt; abs(res - num):</div><div class="line">        <span class="keyword">return</span> res_new</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        <span class="keyword">return</span> res</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># 判断num是否是阿姆斯特朗数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_arm_num</span><span class="params">(num)</span>:</span></div><div class="line">    temp = num</div><div class="line">    res = <span class="number">0</span></div><div class="line">    n = len(str(num))</div><div class="line">    <span class="keyword">while</span> temp:</div><div class="line">        res += (temp % <span class="number">10</span>) ** n</div><div class="line">        temp //= <span class="number">10</span></div><div class="line">    <span class="keyword">return</span> res == num</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    print(get_number())</div><div class="line">    print(get_nearest_number(<span class="number">390</span>))</div><div class="line">    print(get_nearest_number(<span class="number">389</span>))</div></pre></td></tr></table></figure>
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>输出结果</p>
@@ -614,7 +610,6 @@ n = d\_k^k + d\_{k-1}^k+\cdots+d\_2^k+d\_1^k</script><p>编写代码是只要得
 </ol>
 <a id="more"></a>
 <p><strong>常见罗马字符表</strong></p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -687,7 +682,6 @@ n = d\_k^k + d\_{k-1}^k+\cdots+d\_2^k+d\_1^k</script><p>编写代码是只要得
 </tr>
 </tbody>
 </table>
-</div>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>编写一个罗马数字和阿拉伯数字的转换器：</p>
 <blockquote>
 <p>给定一个小于3999的罗马数，将其转换为整数，例如:Ⅲ=3、Ⅳ=4、Ⅵ=6、XIX=19、XX=20、XLV=45、MCMLXXX=1980</p>
@@ -804,7 +798,7 @@ n = d\_k^k + d\_{k-1}^k+\cdots+d\_2^k+d\_1^k</script><p>编写代码是只要得
     <link href="https://felon03.github.io/2017/06/15/C-%E4%B8%AD%E7%9A%84explicit%E5%85%B3%E9%94%AE%E5%AD%97/"/>
     <id>https://felon03.github.io/2017/06/15/C-中的explicit关键字/</id>
     <published>2017-06-15T08:19:33.000Z</published>
-    <updated>2017-06-15T08:27:44.207Z</updated>
+    <updated>2019-01-07T13:44:48.077Z</updated>
     
     <content type="html"><![CDATA[<h2 id="隐式的类类型转换"><a href="#隐式的类类型转换" class="headerlink" title="隐式的类类型转换"></a>隐式的类类型转换</h2><p>在介绍explicit关键字之前，先来了解一下什么是隐式的类类型转换，C++ Primer第五版中的描述如下：</p>
 <blockquote>
@@ -848,7 +842,7 @@ n = d\_k^k + d\_{k-1}^k+\cdots+d\_2^k+d\_1^k</script><p>编写代码是只要得
     
     </summary>
     
-      <category term="C++" scheme="https://felon03.github.io/categories/C/"/>
+      <category term="CPP" scheme="https://felon03.github.io/categories/CPP/"/>
     
     
       <category term="C++" scheme="https://felon03.github.io/tags/C/"/>
@@ -920,7 +914,7 @@ n = d\_k^k + d\_{k-1}^k+\cdots+d\_2^k+d\_1^k</script><p>编写代码是只要得
     <link href="https://felon03.github.io/2017/06/07/C-Primer-%E7%AC%AC%E4%BA%94%E7%89%88-%E7%BB%83%E4%B9%A0-12-33/"/>
     <id>https://felon03.github.io/2017/06/07/C-Primer-第五版-练习-12-33/</id>
     <published>2017-06-07T14:39:56.000Z</published>
-    <updated>2017-06-08T01:09:00.188Z</updated>
+    <updated>2019-01-07T13:44:48.222Z</updated>
     
     <content type="html"><![CDATA[<p>C++ Primer 第五版 第12章的动态内存终于（zou）看（ma）完（guan）了（hua）！！！记录一下本章的最后一个大练习——<strong>文本查询程序</strong>。<br><a id="more"></a></p>
 <h2 id="文本查询程序"><a href="#文本查询程序" class="headerlink" title="文本查询程序"></a>文本查询程序</h2><blockquote>
@@ -941,7 +935,7 @@ n = d\_k^k + d\_{k-1}^k+\cdots+d\_2^k+d\_1^k</script><p>编写代码是只要得
     
     </summary>
     
-      <category term="C++" scheme="https://felon03.github.io/categories/C/"/>
+      <category term="CPP" scheme="https://felon03.github.io/categories/CPP/"/>
     
     
       <category term="C++ Primer" scheme="https://felon03.github.io/tags/C-Primer/"/>
@@ -1002,7 +996,7 @@ n = d\_k^k + d\_{k-1}^k+\cdots+d\_2^k+d\_1^k</script><p>编写代码是只要得
     <link href="https://felon03.github.io/2017/05/26/C-Primer-%E7%AC%AC%E4%BA%94%E7%89%88-%E7%BB%83%E4%B9%A012-3/"/>
     <id>https://felon03.github.io/2017/05/26/C-Primer-第五版-练习12-3/</id>
     <published>2017-05-26T06:27:11.000Z</published>
-    <updated>2017-05-28T02:29:06.203Z</updated>
+    <updated>2019-01-07T13:44:48.223Z</updated>
     
     <content type="html"><![CDATA[<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>StrBlob需要const版本的<code>push_back</code>和<code>pop_back</code>吗？如果需要，添加进去。否则，解释为什么不需要。</p>
 <a id="more"></a>
@@ -1013,7 +1007,7 @@ n = d\_k^k + d\_{k-1}^k+\cdots+d\_2^k+d\_1^k</script><p>编写代码是只要得
 </code></pre><p>然后分别对<strong>b1</strong>调用<code>push_back()</code>和<code>pop_back()</code>：</p>
 <pre><code>b1.push_back(&quot;test&quot;);       // 向b1添加元素test
 </code></pre><p>此时<strong>b1</strong>保存的内容是 <strong>a</strong>, <strong>an</strong>, <strong>the</strong>, <strong>test</strong>;<br>接着就是</p>
-<pre><code> b1.pop_back();         // 删除刚刚添加的元素
+<pre><code>b1.pop_back();         // 删除刚刚添加的元素
 </code></pre><p>此时<strong>b1</strong>保存的内容是 <strong>a</strong>, <strong>an</strong>, <strong>the</strong>;<br>可以看到，我们定义的非const的<strong>StrBlob</strong>对象进行<code>push_back()</code>和<code>pop_back()</code>操作是没有问题的。</p>
 <h3 id="const-StrBlob对象"><a href="#const-StrBlob对象" class="headerlink" title="const StrBlob对象"></a>const StrBlob对象</h3><p>上面的操作都很顺利，那么当我们声明一个const <strong>StrBlob</strong>对象会怎么样呢？<br>接下来，我们声明一个const类型的<strong>StrBlob</strong>对象：</p>
 <pre><code>const StrBlob cb = {&quot;a&quot;, &quot;an&quot;, &quot;the&quot;};       // const 对象
@@ -1046,7 +1040,7 @@ n = d\_k^k + d\_{k-1}^k+\cdots+d\_2^k+d\_1^k</script><p>编写代码是只要得
     
     </summary>
     
-      <category term="C++" scheme="https://felon03.github.io/categories/C/"/>
+      <category term="CPP" scheme="https://felon03.github.io/categories/CPP/"/>
     
     
       <category term="C++ Primer" scheme="https://felon03.github.io/tags/C-Primer/"/>
@@ -1123,8 +1117,8 @@ n = d\_k^k + d\_{k-1}^k+\cdots+d\_2^k+d\_1^k</script><p>编写代码是只要得
 <h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>在解决问题之前，要先了解一个东西 —— “幻方”。<br>Wiki上给出的中文定义：</p>
 <blockquote>
 <p><strong>幻方</strong>(Magic Square)，有时又称<strong>魔方</strong>（该称呼现一般指立方体的魔术方块）或<strong>纵横图</strong>，由一组排放在正方形中的整数组成，其每行、每列以及两条对角线上的数之和均相等。通常幻方由从$1$到 $N^{2}$的连续整数组成，其中$N$为正方形的行或列的数目。因此$N$阶幻方有$N$行$N$列，并且所填充的数为从$1$到$N^{2}$。</p>
-<p>幻方可以使用$N$阶方阵来表示，方阵的每行、每列以及两条对角线的和都等于常数 $M_{2}(N)$，如果填充数为$1,2,\dots ,N^{2}$，那么有</p>
-<script type="math/tex; mode=display">M_{2}(N)={\frac  {N(N^{2}+1)}{2}}</script></blockquote>
+<p>幻方可以使用$N$阶方阵来表示，方阵的每行、每列以及两条对角线的和都等于常数 $M_{2}(N)$，如果填充数为$1,2,\dots ,N^{2}$，那么有<br>$$M_{2}(N)={\frac  {N(N^{2}+1)}{2}}$$</p>
+</blockquote>
 <p>$N$阶幻方的解题思路分为三种情况：</p>
 <ol>
 <li>$N$为奇数</li>
@@ -1139,11 +1133,8 @@ n = d\_k^k + d\_{k-1}^k+\cdots+d\_2^k+d\_1^k</script><p>编写代码是只要得
 </ul>
 <h3 id="2-N-为-4-的倍数"><a href="#2-N-为-4-的倍数" class="headerlink" title="2. $N$为$4$的倍数"></a>2. $N$为$4$的倍数</h3><p>采用对称元素交换法。首先把数$1$到$n*n$按从上至下、从左至又的顺序填入矩阵。<br>然后将方阵的所有$N*N$子方阵中的两对角线上位置的数关于方阵中心作对称交换，即$a(i,j)$与$a(n-1-i, n-1-j)$交换，所有其它位置上的数不变。</p>
 <h3 id="3-N-为非-4-的倍数的偶数-即-4n-2"><a href="#3-N-为非-4-的倍数的偶数-即-4n-2" class="headerlink" title="3. $N$为非$4$的倍数的偶数(即$4n+2$)"></a>3. $N$为非$4$的倍数的偶数(即$4n+2$)</h3><p>首先把大方阵分解为$4$个奇数字方阵。<br>按上述奇数幻方给分解的4个子方阵对应赋值,其中：<br>上左子阵最小$(i)$，下右子阵次小$(i+v)$，下左子阵最大$(i+3v)$，上右子阵次大$(i+2v)$<br>即$4$个子方阵对应元素相差$v$，其中$v={\frac {n*n}{4}}$<br>四个子矩阵由小到大排列方式为</p>
-<script type="math/tex; mode=display">
-        \begin{bmatrix}
-        1 & 3 \\
-        4 & 2 \\
-        \end{bmatrix}</script><p>然后作相应的元素交换：$a(i,j)$ 与 $a(i+k,j)$在同一列做对应交换，$(j\lt t或j\gt n-t)$， $a(t,0)与a(t+k,0)$； $a(t,t)$ 与 $a(t+k,t)$ 两对元素交换，其中<br>$k = n//2，t=(n-2)//4$。</p>
+<p>$$<br>        \begin{bmatrix}<br>        1 &amp; 3 \<br>        4 &amp; 2 \<br>        \end{bmatrix}<br>$$</p>
+<p>然后作相应的元素交换：$a(i,j)$ 与 $a(i+k,j)$在同一列做对应交换，$(j\lt t或j\gt n-t)$， $a(t,0)与a(t+k,0)$； $a(t,t)$ 与 $a(t+k,t)$ 两对元素交换，其中<br>$k = n//2，t=(n-2)//4$。</p>
 <h2 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># n为奇数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">oddN</span><span class="params">()</span>:</span></div><div class="line">    <span class="comment"># 构造二维列表</span></div><div class="line">    lst = [[<span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(n)] <span class="keyword">for</span> i <span class="keyword">in</span> range(n)]</div><div class="line">    <span class="comment"># 初始化列表位置</span></div><div class="line">    x, y = <span class="number">0</span>, n//<span class="number">2</span></div><div class="line">    <span class="keyword">for</span> num <span class="keyword">in</span> range(<span class="number">1</span>, n*n+<span class="number">1</span>):</div><div class="line">        lst[x][y] = num</div><div class="line">        xa, ya = x<span class="number">-1</span>, y+<span class="number">1</span></div><div class="line">        <span class="comment"># 回绕情况</span></div><div class="line">        <span class="keyword">if</span> xa &lt; <span class="number">0</span>:</div><div class="line">            xa = n<span class="number">-1</span></div><div class="line">        <span class="keyword">if</span> ya &gt; n<span class="number">-1</span>:</div><div class="line">            ya = <span class="number">0</span></div><div class="line">        <span class="comment"># 占位情况</span></div><div class="line">        <span class="keyword">if</span> lst[xa][ya] != <span class="number">0</span>:</div><div class="line">            x = x+<span class="number">1</span></div><div class="line">            <span class="keyword">if</span> x &gt; n<span class="number">-1</span>:</div><div class="line">                x = <span class="number">0</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            x, y = xa, ya</div><div class="line">    <span class="keyword">return</span> lst</div><div class="line">    </div><div class="line"><span class="comment"># n为4的倍数</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fourN</span><span class="params">(n)</span>:</span></div><div class="line">    <span class="comment"># 初始化列表</span></div><div class="line">    lst = [[i+j <span class="keyword">for</span> i <span class="keyword">in</span> list(range(<span class="number">1</span>,n*n+<span class="number">1</span>))[::n]] <span class="keyword">for</span> j <span class="keyword">in</span> range(n)]</div><div class="line">    <span class="comment"># 交换对角线位置</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n//<span class="number">2</span>):</div><div class="line">        lst[i][i],lst[n<span class="number">-1</span>-i][n<span class="number">-1</span>-i] = lst[n<span class="number">-1</span>-i][n<span class="number">-1</span>-i],lst[i][i]</div><div class="line">        lst[i][n<span class="number">-1</span>-i],lst[n<span class="number">-1</span>-i][i] = lst[n<span class="number">-1</span>-i][i],lst[i][n<span class="number">-1</span>-i]</div><div class="line">    <span class="keyword">return</span> lst</div><div class="line"></div><div class="line"><span class="comment"># n为非4倍数的偶数</span></div><div class="line"><span class="comment"># 累加子矩阵</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">acc</span><span class="params">(p, lst)</span>:</span></div><div class="line">    <span class="comment"># print(lst)</span></div><div class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> lst:</div><div class="line">        <span class="keyword">for</span> index <span class="keyword">in</span> range(len(row)):</div><div class="line">            row[index] += p</div><div class="line"></div><div class="line">    <span class="keyword">return</span> lst</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fourNplus2</span><span class="params">(n)</span>:</span></div><div class="line">    m = n // <span class="number">2</span></div><div class="line">    A, B, C, D = oddN(m), oddN(m), oddN(m), oddN(m)</div><div class="line">    B = acc(m ** <span class="number">2</span>, B)</div><div class="line">    C = acc(m ** <span class="number">2</span> * <span class="number">2</span>, C)</div><div class="line">    D = acc(m ** <span class="number">2</span> * <span class="number">3</span>, D)</div><div class="line">    <span class="keyword">for</span> row_index <span class="keyword">in</span> range(len(A)):</div><div class="line">        A[row_index].extend(C[row_index])</div><div class="line">        D[row_index].extend(B[row_index])</div><div class="line">    <span class="comment"># 合并子矩阵</span></div><div class="line">    matrix = A + D</div><div class="line">    t = (n - <span class="number">2</span>) // <span class="number">4</span></div><div class="line">    <span class="comment"># 列交换</span></div><div class="line">    <span class="keyword">for</span> col_index <span class="keyword">in</span> range(len(matrix[<span class="number">0</span>])):</div><div class="line">        <span class="keyword">if</span> col_index &lt; t <span class="keyword">or</span> col_index &gt; n - t:</div><div class="line">            <span class="keyword">for</span> row_index <span class="keyword">in</span> range(len(matrix) // <span class="number">2</span>):</div><div class="line">                matrix[row_index][col_index], matrix[row_index + m][col_index] = \</div><div class="line">                    matrix[row_index + m][col_index], matrix[row_index][col_index]</div><div class="line">                <span class="comment"># 交换特殊位置</span></div><div class="line">    matrix[t][<span class="number">0</span>], matrix[m + t][<span class="number">0</span>] = matrix[m + t][<span class="number">0</span>], matrix[t][<span class="number">0</span>]</div><div class="line">    matrix[t][t], matrix[m + t][t] = matrix[m + t][t], matrix[t][t]</div><div class="line">    <span class="keyword">return</span> matrix</div></pre></td></tr></table></figure>
 <p>End~</p>
 <hr>
@@ -1315,7 +1306,7 @@ n = d\_k^k + d\_{k-1}^k+\cdots+d\_2^k+d\_1^k</script><p>编写代码是只要得
     <link href="https://felon03.github.io/2017/04/15/%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%E6%88%96%E6%95%B0%E7%BB%84%E5%BC%95%E7%94%A8/"/>
     <id>https://felon03.github.io/2017/04/15/函数返回数组指针或数组引用/</id>
     <published>2017-04-15T11:05:14.000Z</published>
-    <updated>2017-04-15T11:08:49.766Z</updated>
+    <updated>2019-01-07T13:44:48.079Z</updated>
     
     <content type="html"><![CDATA[<p>因为数组不能被拷贝，所以函数不能返回数组。不过，函数可以返回数组的指针或引用。<br>下面就介绍几种方法：</p>
 <a id="more"></a>
@@ -1351,7 +1342,7 @@ n = d\_k^k + d\_{k-1}^k+\cdots+d\_2^k+d\_1^k</script><p>编写代码是只要得
     
     </summary>
     
-      <category term="C++" scheme="https://felon03.github.io/categories/C/"/>
+      <category term="CPP" scheme="https://felon03.github.io/categories/CPP/"/>
     
     
       <category term="C++" scheme="https://felon03.github.io/tags/C/"/>
