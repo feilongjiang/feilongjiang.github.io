@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://felon03.github.io/"/>
-  <updated>2018-01-09T10:55:04.243Z</updated>
+  <updated>2019-01-08T13:59:54.347Z</updated>
   <id>https://felon03.github.io/</id>
   
   <author>
@@ -14,6 +14,54 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>VSCode 常用插件记录</title>
+    <link href="https://felon03.github.io/2019/01/08/VSCode-Extensions/"/>
+    <id>https://felon03.github.io/2019/01/08/VSCode-Extensions/</id>
+    <published>2019-01-08T13:50:16.000Z</published>
+    <updated>2019-01-08T13:59:54.347Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="VSCode-常用插件记录"><a href="#VSCode-常用插件记录" class="headerlink" title="VSCode 常用插件记录"></a>VSCode 常用插件记录</h1><p><img src="/images/imagesource/19-01-08.png" alt="vscode"><br>诈尸更新~~🤣🤣🤣<br>这篇文章用于记录我常用的 VSCode 插件，用以换新设备或者重装系统后重新安装插件使用。<br><a id="more"></a></p>
+<p>VSCode 下载地址：<a href="https://code.visualstudio.com/" target="_blank" rel="external">Visual Studio Code</a></p>
+<h2 id="语言相关"><a href="#语言相关" class="headerlink" title="语言相关"></a>语言相关</h2><h3 id="C-C"><a href="#C-C" class="headerlink" title="C/C++"></a>C/C++</h3><p>推荐微软官方推出的 <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools" target="_blank" rel="external">C/C++</a>插件，支持智能提示和debug，很方便。</p>
+<p>如何在 VSCode 上配置 C/C++ 环境可以参考知乎<a href="https://www.zhihu.com/question/30315894/answer/154979413" target="_blank" rel="external">Visual Studio Code如何编写运行C、C++？</a> 这个问题下的高赞回答。</p>
+<p>通过 <a href="https://marketplace.visualstudio.com/items?itemName=mikey.vscode-fileheader" target="_blank" rel="external">vscode-fileheader</a> 插件可以一键为新建的 C/C++ 文件添加头部注释，如作者信息、文档新建日期、最后修改日期等。</p>
+<h3 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h3><p>同样推荐微软官方的 <a href="https://marketplace.visualstudio.com/items?itemName=ms-python.python" target="_blank" rel="external">Python</a> 插件。本来是民间大神写的，后来被微软收编了。只要安装好 <a href="https://www.python.org/downloads/" target="_blank" rel="external">Python</a> 环境，然后再装这个插件，写起 Python 代码来美滋滋！</p>
+<p>同时再推荐 <a href="https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode" target="_blank" rel="external">Visual Studio IntelliCode</a> 插件，可以用于 Python 的代码智能提示插件。利用 AI 让代码提示更加智能，可以根据语境来推荐调用函数等。支持都多种语言，包括 TypeScript/JavaScript，Java，Python 等语言。</p>
+<h2 id="文章书写"><a href="#文章书写" class="headerlink" title="文章书写"></a>文章书写</h2><h3 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h3><p>VSCode 对 Markdown 也有很好的支持。推荐如下几个插件：</p>
+<ol>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one" target="_blank" rel="external">Markdown All in One</a>，为 Markdown 提供一站式支持，加快文章编写，提高行文效率。</li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced" target="_blank" rel="external">Markdown Preview Enhanced</a>，增强 Markdown 的预览，同时支持输出 PDF (需要安装额外的工具) 以及 HTML 等格式。</li>
+</ol>
+<h3 id="LaTeX"><a href="#LaTeX" class="headerlink" title="LaTeX"></a>LaTeX</h3><p>VSCode 还能用于书写 LaTeX，对于一些英文论文，使用 LaTeX 可以省去在排版上的精力。这里推荐 <a href="https://www.tug.org/texlive/" target="_blank" rel="external">TeX Live</a> 作为 TeX 环境。有了 TeX 环境后，再安装 <a href="https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop" target="_blank" rel="external">LaTeX Workshop</a> 插件，即可愉快地写 LaTeX 文档了。LaTeX Workshop 支持 TeX 智能提示、Tex 文件编译以及预览 PDF 文件等。同时还能自定义编译工具链。是一款十分强大的插件。</p>
+<p>同时推荐 <a href="https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker" target="_blank" rel="external">Code Spell Checker</a>，可以用于单词拼写检查，这样就不怕单词经常拼错了。支持多种文件类型，除了 LaTex 以外，还支持众多编程语言。也可以单独为某种语言设置是否开启单词拼写检查。当有自定义的单词时，还能够添加到词典中，添加到词典中的单词不会提示错误，如果误添加，可以在 setting 中删除。</p>
+<h2 id="美化相关"><a href="#美化相关" class="headerlink" title="美化相关"></a>美化相关</h2><p>VSCode 默认有亮色和暗色主题，但用久了会出现审美疲劳。这里推荐几款 VSCode 主题和图标。</p>
+<h3 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h3><ol>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=zhuangtongfa.Material-theme" target="_blank" rel="external">One Dark Pro</a>，一款仿照 Atom 的 One Dark 主题</li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=Equinusocio.vsc-material-theme" target="_blank" rel="external">Material Theme</a>，Google Material Design 风格的主题，有多种颜色可以选择</li>
+</ol>
+<h3 id="图标"><a href="#图标" class="headerlink" title="图标"></a>图标</h3><p>这里只推荐一个，个人最喜欢的一套图标 <a href="https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme" target="_blank" rel="external">Material Icon Theme</a>，也是 Material Design 风格的。个人搭配 One Dark Pro 主题使用，非常耐看。</p>
+<h3 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h3><p>VSCode 同时支持自定义字体，个人的字体设置为 <code>&#39;Consolas&#39;, &#39;思源黑体 Regular&#39;, monospace</code>，Consolas 比较适合编程，思源黑体用于中文字体显示。看起来比较舒服。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="HTML-文件预览"><a href="#HTML-文件预览" class="headerlink" title="HTML 文件预览"></a>HTML 文件预览</h3><p>写 HTML 文档时需要经常预览其样式和内容的改变，推荐使用 <a href="https://marketplace.visualstudio.com/items?itemName=qinjia.view-in-browser" target="_blank" rel="external">View In Browser</a>，通过快捷键 <code>Ctrl+F1</code> 即可在默认的浏览器中预览 HTML 文档了。</p>
+<h3 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h3><p><a href="https://marketplace.visualstudio.com/items?itemName=KnisterPeter.vscode-github" target="_blank" rel="external">GitHub</a> 插件支持 GitHub pull/push 等源代码相关操作。</p>
+<h3 id="代码运行"><a href="#代码运行" class="headerlink" title="代码运行"></a>代码运行</h3><p><a href="https://marketplace.visualstudio.com/items?itemName=formulahendry.code-runner" target="_blank" rel="external">Code Runner</a> 插件支持海量编程语言的一键运行。只要编写完代码，点击 run code 即可运行(前提是安装已经安装好对应的语言环境)。可以说是真神器。</p>
+<h3 id="语言环境"><a href="#语言环境" class="headerlink" title="语言环境"></a>语言环境</h3><p>新版 VSCode 默认界面为英文，如果需要其他语言，需要安装对应的语言包，如<a href="https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-zh-hans" target="_blank" rel="external">简体中文</a>，安装完成后重新加载即可使用中文界面。其他语言同理。</p>
+<p>以上就是个人常用的 VSCode 插件。涵盖了多个方面。如果以后有更好用的插件，再继续更新。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;VSCode-常用插件记录&quot;&gt;&lt;a href=&quot;#VSCode-常用插件记录&quot; class=&quot;headerlink&quot; title=&quot;VSCode 常用插件记录&quot;&gt;&lt;/a&gt;VSCode 常用插件记录&lt;/h1&gt;&lt;p&gt;&lt;img src=&quot;/images/imagesource/19-01-08.png&quot; alt=&quot;vscode&quot;&gt;&lt;br&gt;诈尸更新~~🤣🤣🤣&lt;br&gt;这篇文章用于记录我常用的 VSCode 插件，用以换新设备或者重装系统后重新安装插件使用。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Development" scheme="https://felon03.github.io/categories/Development/"/>
+    
+    
+      <category term="VSCode" scheme="https://felon03.github.io/tags/VSCode/"/>
+    
+  </entry>
   
   <entry>
     <title>LeetCode 19. Remove Nth Node From End of List</title>
@@ -1298,54 +1346,6 @@
     
     
       <category term="每周一坑" scheme="https://felon03.github.io/tags/%E6%AF%8F%E5%91%A8%E4%B8%80%E5%9D%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>函数返回数组指针或数组引用</title>
-    <link href="https://felon03.github.io/2017/04/15/%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E6%95%B0%E7%BB%84%E6%8C%87%E9%92%88%E6%88%96%E6%95%B0%E7%BB%84%E5%BC%95%E7%94%A8/"/>
-    <id>https://felon03.github.io/2017/04/15/函数返回数组指针或数组引用/</id>
-    <published>2017-04-15T11:05:14.000Z</published>
-    <updated>2019-01-07T13:44:48.079Z</updated>
-    
-    <content type="html"><![CDATA[<p>因为数组不能被拷贝，所以函数不能返回数组。不过，函数可以返回数组的指针或引用。<br>下面就介绍几种方法：</p>
-<a id="more"></a>
-<h2 id="方法一：-使用类型别名"><a href="#方法一：-使用类型别名" class="headerlink" title="方法一： 使用类型别名"></a>方法一： 使用类型别名</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> arrT[<span class="number">10</span>];       <span class="comment">// arrT是一个类型别名，表示的类型</span></div><div class="line">                            <span class="comment">// 是含有10个整型的数组</span></div><div class="line"><span class="keyword">using</span> arrT = <span class="keyword">int</span>[<span class="number">10</span>];       <span class="comment">// arrT的等价声明</span></div><div class="line"><span class="function">arrT* <span class="title">func</span><span class="params">(<span class="keyword">int</span> i)</span></span>;          <span class="comment">// func返回一个指向含有10个整数的数组的指针</span></div></pre></td></tr></table></figure>
-<p>其中<code>arrT</code>是含有10个整数的数组别名。因为无法返回数组，所以将返回类型定义成数组的指针。因此<code>func</code>函数接受一个<code>int</code>实参，返回一个指向包含10个整数的数组的指针。</p>
-<h2 id="方法二：-声明一个返回数组指针的函数"><a href="#方法二：-声明一个返回数组指针的函数" class="headerlink" title="方法二： 声明一个返回数组指针的函数"></a>方法二： 声明一个返回数组指针的函数</h2><p>要想在声明<code>func</code>时不适用类型别名，我们必须牢记被定义的名字后面数组的维度：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> arr[<span class="number">10</span>];            <span class="comment">// arr是一个含有10个整数的数组</span></div><div class="line"><span class="keyword">int</span> *p1[<span class="number">10</span>];            <span class="comment">// p1是一个含有10个指针的数组</span></div><div class="line"><span class="keyword">int</span> (*p2)[<span class="number">10</span>] = &amp;arr;   <span class="comment">// p2是一个指针，他只想含有10个整数的数组</span></div></pre></td></tr></table></figure></p>
-<p>和这些声明一样，如果想定义一个返回数组指针的函数，则数组的维度必须跟在函数名字之后。然而，函数的形参列表也更在函数名字后面且形参列表应该咸鱼数组的维度。因此，返回数组指针的函数形式如下所示：</p>
-<blockquote>
-<p>Type (*function(parameter_list)) [dimension]</p>
-</blockquote>
-<p>类似于其他数组的声明，<code>Type</code>表示元素的类型，<code>dimension</code>表示数组的大小。<code>(*function(parameter_list))</code>两段的括号必须存在，就像定义<code>p2</code>时两段必须有括号一样。如果没有这对括号，函数返回的类型将是指针的数组。</p>
-<p>举个具体点的例子，下面这个func函数的声明没有使用类型别名：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> (*func(<span class="keyword">int</span> i)) [<span class="number">10</span>];</div></pre></td></tr></table></figure></p>
-<p>可以按照以下的顺序来逐层理解该声明的含义：</p>
-<ul>
-<li><code>func(int i)</code>表示调用<code>func</code>函数时需要一个<code>int</code>类型的实参</li>
-<li><code>(*func(int i))</code>意味这我们可以对函数调用的结果执行解引用操作</li>
-<li><code>(*func(int i)) [10]</code>表示解引用<code>func</code>的调用将得到一个大小是10的数组</li>
-<li><code>int(*func(int i)) [10]</code>表示数组中元素是<code>int</code>类型</li>
-</ul>
-<h2 id="方法三：-使用尾置返回类型"><a href="#方法三：-使用尾置返回类型" class="headerlink" title="方法三： 使用尾置返回类型"></a>方法三： 使用尾置返回类型</h2><p>在C++11新标准中海油可以简化上述<code>func</code>声明的方法，就是使用<strong>尾置返回类型(trailing return type)</strong>。任何函数的定义都能使用尾置返回，但是这样形式对于返回类型比较复杂的函数最有效，比如返回类型是数组的指针或者数组的引用。位置返回类型跟在形参列表后面并以一个-&gt;符号开头。为了表示函数真正的返回类型跟在形参列表之后，我们在本应该出现返回类型的地方放置一个<code>auto</code>：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// func接受一个int类型的实参，返回一个指针，该指针指向含有10个整数的数组</div><div class="line">auto func(int i) -&gt; int(*) [10];</div></pre></td></tr></table></figure>
-<p>因为我们把函数的返回类型放在了形参列表之后，所以可以清楚地看到func函数返回的是一个指针，并且该指针指向了含有10个整数的数组。</p>
-<h2 id="方法四：-使用decltype"><a href="#方法四：-使用decltype" class="headerlink" title="方法四： 使用decltype"></a>方法四： 使用decltype</h2><p>还有一种情况，如果我们知道函数返回的指针将指向哪个数组，就可以使用decltype关键字声明返回类型。例如，下面的函数返回一个指针，该指针根据参数<code>i</code>的不同指向两个已知数组中的某一个：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> odd[] = &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>&#125;;</div><div class="line"><span class="keyword">int</span> even[] = &#123;<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>&#125;;</div><div class="line"><span class="comment">// 返回一个指针，该指针指向含有5个整数的数组</span></div><div class="line"><span class="keyword">decltype</span>(odd) *addPtr(<span class="keyword">int</span> i)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> (i % <span class="number">2</span>) ? &amp;odd : &amp;even;      <span class="comment">// 返回一个指向数组的指针</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p><code>arrPtr</code>使用关键字decltype表示它的返回类型是个指针，并且该指针所指的对象与<code>odd</code>类型一致。因为<code>odd</code>是数组，所以<code>arrPtr</code>返回一个指向含有5个整数的数组的指针。有一个地方需要注意： decltype并不负责把数组类型转换成对应的指针，所以decltype的结果是个数组，想要表示arrPtr返回指针还必须在函数声明是加一个<code>*</code>符号。</p>
-<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><h3 id="1-编写一个程序，使其返回数组的引用并且该数组白喊10个string对象。不要使用尾置返回类型、decltype或者类型别名。"><a href="#1-编写一个程序，使其返回数组的引用并且该数组白喊10个string对象。不要使用尾置返回类型、decltype或者类型别名。" class="headerlink" title="1. 编写一个程序，使其返回数组的引用并且该数组白喊10个string对象。不要使用尾置返回类型、decltype或者类型别名。"></a>1. 编写一个程序，使其返回数组的引用并且该数组白喊10个string对象。不要使用尾置返回类型、decltype或者类型别名。</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">string</span> (&amp;func(<span class="built_in">string</span> (&amp;arr)[<span class="number">10</span>])) [<span class="number">10</span>];</div></pre></td></tr></table></figure>
-<h3 id="2-为上一题的函数再写三个声明，一个使用类型别名，另一个使用尾置返回类型，最后一个使用decltype关键字。"><a href="#2-为上一题的函数再写三个声明，一个使用类型别名，另一个使用尾置返回类型，最后一个使用decltype关键字。" class="headerlink" title="2. 为上一题的函数再写三个声明，一个使用类型别名，另一个使用尾置返回类型，最后一个使用decltype关键字。"></a>2. 为上一题的函数再写三个声明，一个使用类型别名，另一个使用尾置返回类型，最后一个使用decltype关键字。</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// 使用类型别名</div><div class="line">using arrT = string[10];</div><div class="line">arrT&amp; func1(arrT&amp; arr);</div><div class="line"></div><div class="line">// 使用尾置返回类型</div><div class="line">auto func2(arrT&amp; arr)-&gt;string(&amp;) [10];</div><div class="line"></div><div class="line">// 使用decltype关键字</div><div class="line">string arrS[10];</div><div class="line">decltype(arrS) &amp;func3(arrT&amp; arr);</div></pre></td></tr></table></figure>
-<h3 id="3-修改arrPtr函数，使其返回数组的引用"><a href="#3-修改arrPtr函数，使其返回数组的引用" class="headerlink" title="3. 修改arrPtr函数，使其返回数组的引用"></a>3. 修改arrPtr函数，使其返回数组的引用</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> odd[] = &#123;<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>&#125;;</div><div class="line"><span class="keyword">int</span> even[] = &#123;<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>&#125;;</div><div class="line"><span class="keyword">decltype</span>(odd) &amp;arrPtr(<span class="keyword">int</span> i)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> (i % <span class="number">2</span>) ? odd : even;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;因为数组不能被拷贝，所以函数不能返回数组。不过，函数可以返回数组的指针或引用。&lt;br&gt;下面就介绍几种方法：&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="CPP" scheme="https://felon03.github.io/categories/CPP/"/>
-    
-    
-      <category term="C++" scheme="https://felon03.github.io/tags/C/"/>
     
   </entry>
   
