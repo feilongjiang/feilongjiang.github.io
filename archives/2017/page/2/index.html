@@ -687,7 +687,21 @@
             <!-- profile -->
             
         </div>
-        <footer class="footer footer-unloaded">
+        <script>
+    function auto_copyright($year) {
+        var $currentdate = new Date();
+        var $currentyear = $currentdate.getFullYear();
+        var $cty = $currentyear.toString();
+        var $sty = $year.toString();
+        if ($currentyear > $year) {
+            document.write($sty + ' - ' + $cty);
+            console.log($cty);
+        } else {
+            document.write($cty);
+        }
+    }
+</script>
+<footer class="footer footer-unloaded">
     <!-- social  -->
     
     <div class="social">
@@ -764,7 +778,7 @@
     
     <!-- powered by Hexo  -->
     <div class="copyright">
-        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a><br></span><span>Copyright &copy; <script>auto_copyright(2017);</script> FreedomLy</span>
     </div>
     <!-- 不蒜子  -->
     
