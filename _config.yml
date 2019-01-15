@@ -73,7 +73,7 @@ theme: archer
 deploy:
   type: git
   # repo: git@github.com:Felon03/Felon03.github.io.git
-  repo: https://gh_token@github.com:Felon03/Felon03.github.io.git
+  repo: https://gh_token@github.com/Felon03/Felon03.github.io.git
   branch: master
   
 # Local Serach
