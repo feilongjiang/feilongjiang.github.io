@@ -1,5 +1,5 @@
 ---
-title: 使用 Travis CI 对托管在 GitHub Pages 上的 Hexo 博客实现自动部署
+title: 使用 Travis CI 实现 Hexo 自动构建和部署
 date: 2019-01-16 13:54:52
 category: Tech
 tags: [Travis-CI, Hexo]
