@@ -32,7 +32,7 @@ after_script:
   - git config user.email "Freedom.JFL@gmail.com"
   - git clone https://github.com/Felon03/Felon03.github.io.git # 解决 commit 清空问题
   - cd .deploy_git
-  - git checkout master
+  - git checkout source
   - cd ../
   - sed -i "s/gh_token/${GH_TOKEN}/g" ./_config.yml
   - cat ./_config.yml
