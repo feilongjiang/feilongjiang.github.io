@@ -1,5 +1,5 @@
 ---
-title: 使用 Travis CI 实现 Hexo 自动构建和部署
+title: 使用 Travis CI 实现 Hexo 博客自动构建和部署
 date: 2019-01-16 13:54:52
 category: Tech
 tags: [Travis-CI, Hexo]
@@ -68,7 +68,7 @@ Travis CI 提供持续集成服务(Continuous Integration, CI)。它可以绑定
 
 ![Travis token](/images/imagesource/19-01-16/2019-01-16-6.png)
 
-在 Name 中填入 token 的别名，Value 中填入刚刚得到的 token，然后点击 Add 进行添加即可。注意 token 一旦生成，只能在生成时到其值，后面无法查看。所以如果还有需要，可以记下来或者重新生成新的 token。
+在 Name 中填入 token 的别名，Value 中填入刚刚得到的 token，然后点击 Add 进行添加即可。注意 token 一旦生成，只能在生成时得到其值，后面无法查看。所以如果还有需要，可以记下来或者重新生成新的 token。
 
 #### Travis 配置文件
 
