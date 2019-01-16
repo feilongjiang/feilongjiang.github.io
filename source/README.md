@@ -4,7 +4,7 @@
 
 ## 博客
 
-[FreedomLy](https://www.freedomly.tk) 
+[FreedomLy](https://www.freedomly.tk)
 
 ## 主题
 
