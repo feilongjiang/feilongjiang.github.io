@@ -1,10 +1,10 @@
-# README
+# GitHub Pages & Hexo
+
+[![Build Status](https://travis-ci.org/Felon03/Felon03.github.io.svg?branch=source)](https://travis-ci.org/Felon03/Felon03.github.io)
 
 ## 博客
 
 [FreedomLy](https://www.freedomly.tk) 
-
-[![Build Status](https://travis-ci.org/Felon03/Felon03.github.io.svg?branch=source)](https://travis-ci.org/Felon03/Felon03.github.io)
 
 ## 主题
 
