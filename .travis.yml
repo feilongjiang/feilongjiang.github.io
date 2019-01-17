@@ -13,6 +13,7 @@ branches:
 
 git:
   depth: false
+  submodules: false
 
 before_install:
   - export TZ='Asia/Shanghai' # 更改时区
