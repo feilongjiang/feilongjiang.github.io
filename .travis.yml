@@ -18,7 +18,9 @@ before_install:
   - export TZ='Asia/Shanghai' # 更改时区
   - npm install -g hexo-cli
   # Restore last modified time
-  - "git ls-files -z | while read -d '' path; do touch -d \"$(git log -1 --format=\"@%ct\" \"$path\")\" \"$path\"; done"
+  # - "git ls-files -z | while read -d '' path; do touch -d \"$(git log -1 --format=\"@%ct\" \"$path\")\" \"$path\"; done"
+  - chmod +x git_reset_mtime.py
+  - python3 ./git_reset_mtime.py
 
 
 # S: Build Lifecycle
