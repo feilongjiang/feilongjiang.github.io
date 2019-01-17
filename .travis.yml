@@ -11,9 +11,15 @@ branches:
   only:
     - source 
 
+git:
+  depth: false
+
 before_install:
   - export TZ='Asia/Shanghai' # 更改时区
   - npm install -g hexo-cli
+  # Restore last modified time
+  - "git ls-files -z | while read -d '' path; do touch -d \"$(git log -1 --format=\"@%ct\" \"$path\")\" \"$path\"; done"
+
 
 # S: Build Lifecycle
 install:

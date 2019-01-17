@@ -152,3 +152,4 @@ deploy:
 [1]: [Hexo遇上Travis-CI: 可能是最通俗易懂的自动发布博客图文教程](https://blog.csdn.net/Xiong_IT/article/details/78675874)
 [2]: [使用Travis CI自动部署Hexo博客](https://www.itfanr.cc/2017/08/09/using-travis-ci-automatic-deploy-hexo-blogs/)
 [3]: [使用Travis Ci使hexo自动生成并部署](https://blog.xingoxu.com/2016/12/use-travis-ci-your-blog/)
+[4]: [解决 Travis CI 总是更新旧博客的问题](https://wafer.li/Hexo/%E8%A7%A3%E5%86%B3%20Travis%20CI%20%E6%80%BB%E6%98%AF%E6%9B%B4%E6%96%B0%E6%97%A7%E5%8D%9A%E5%AE%A2%E7%9A%84%E9%97%AE%E9%A2%98/)
