@@ -1,6 +1,7 @@
 ---
 title: C++中的explicit关键字
 date: 2017-06-15 16:19:33
+updated: 2019-01-07 21:44:48
 category: CPP
 tags: C++
 comments: true

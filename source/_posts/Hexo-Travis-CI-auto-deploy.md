@@ -1,6 +1,7 @@
 ---
 title: 使用 Travis CI 实现 Hexo 博客自动构建和部署
 date: 2019-01-16 13:54:52
+updated: 2019-01-17 22:38:14
 category: Tech
 tags: [Travis-CI, Hexo]
 comments: true

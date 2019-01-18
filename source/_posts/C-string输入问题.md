@@ -1,6 +1,7 @@
 ---
 title: C++ string输入问题
 date: 2017-03-31 14:38:28
+updated: 2019-01-07 21:44:48
 category: CPP
 tags:
 - C++

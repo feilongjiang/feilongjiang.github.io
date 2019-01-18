@@ -1,6 +1,7 @@
 ---
 title: LeetCode 19. Remove Nth Node From End of List
 date: 2018-01-09 18:46:44
+updated: 2018-01-09 18:55:04
 category: LeetCode
 tags: LeetCode
 comments: true

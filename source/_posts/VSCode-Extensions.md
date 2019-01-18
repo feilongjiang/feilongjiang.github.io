@@ -1,6 +1,7 @@
 ---
 title: VSCode 常用插件记录
 date: 2019-01-08 21:50:16
+updated: 2019-01-14 10:47:08
 category: Development
 tags: VSCode
 comments: true
