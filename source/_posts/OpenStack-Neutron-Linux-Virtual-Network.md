@@ -81,19 +81,19 @@ yum install tunctl
 >
 > 1. 添加安装源配置文件 /etc/yun.repos.d/nux-misc.repo
 >
->> ```ini
->> [nux-misc]
->> name=Nux Misc
->> baseurl=http://li.nux.ro/download/nux/misc/el7/x86_64
->> enabled=0
->> gpgcheck=1
->> gpgkey=http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
->> ```
+> ```ini
+> [nux-misc]
+> name=Nux Misc
+> baseurl=http://li.nux.ro/download/nux/misc/el7/x86_64
+> enabled=0
+> gpgcheck=1
+> gpgkey=http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
+> ```
 > 2. 重新执行安装命令：
 >
->> ```bash
->> yum --enablerepo=nux-misc install tunctl
->> ```
+> ```bash
+> yum --enablerepo=nux-misc install tunctl
+> ```
 > ref: [CentOS 7 安装tunctl](<https://blog.csdn.net/lopng/article/details/72821438>)
 
 具备了 tun 和 tunctl 后，就可以创建一个 TAP 设备了：
