@@ -1,5 +1,5 @@
 ---
-title: 深入理解 OpenStack Neutron -- Linux 虚拟网络基础
+title: OpenStack Neutron -- Linux 虚拟网络基础
 date: 2019-05-14 11:59:26
 updated: 2019-05-14 12:28:54
 category: OpenStack
@@ -89,13 +89,11 @@ yum install tunctl
 >> gpgcheck=1
 >> gpgkey=http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
 >> ```
->
 > 2. 重新执行安装命令：
 >
 >> ```bash
 >> yum --enablerepo=nux-misc install tunctl
 >> ```
->
 > ref: [CentOS 7 安装tunctl](<https://blog.csdn.net/lopng/article/details/72821438>)
 
 具备了 tun 和 tunctl 后，就可以创建一个 TAP 设备了：
