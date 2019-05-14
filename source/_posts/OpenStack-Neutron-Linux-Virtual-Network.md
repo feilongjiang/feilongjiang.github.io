@@ -80,7 +80,6 @@ yum install tunctl
 > 若安装时出现 no package tunctl avaliable 时，需要手动添加安装源：
 >
 > 1. 添加安装源配置文件 /etc/yun.repos.d/nux-misc.repo
->
 > ```ini
 > [nux-misc]
 > name=Nux Misc
@@ -90,7 +89,6 @@ yum install tunctl
 > gpgkey=http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
 > ```
 > 2. 重新执行安装命令：
->
 > ```bash
 > yum --enablerepo=nux-misc install tunctl
 > ```
