@@ -91,7 +91,7 @@ yum install tunctl
 > {% endcodeblock %}
 >
 > 2. 重新执行安装命令：
-> {% codeblock lang:ini %}
+> {% codeblock lang:bash %}
 > yum --enablerepo=nux-misc install tunctl
 > {% endcodeblock %}
 > 
