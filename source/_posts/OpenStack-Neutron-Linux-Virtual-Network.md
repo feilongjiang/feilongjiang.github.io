@@ -1,7 +1,7 @@
 ---
 title: 深入理解 OpenStack Neutron -- Linux 虚拟网络基础
 date: 2019-05-14 11:59:26
-updated: 2019-05-14 11:59:26
+updated: 2019-05-14 12:28:54
 category: OpenStack
 tags: [Neutron]
 comments: true
@@ -19,11 +19,11 @@ Linux 中设备的含义并不是指实际的物理硬件，而是一个类似�
 
 ```c
 struct tun_struct {
-    char name[8];						// 设备名
-    unsigned long flags;				// 区分 TAP 和 TUN 设备
+    char name[8];				// 设备名
+    unsigned long flags;			// 区分 TAP 和 TUN 设备
     struct fasync_struct *fasync;		// 文件异步通知结构
     wait_queue_head_t read_wait;		// 文件等待队列
-    struct net_device dev;				// Linux 抽象网络设备结构
+    struct net_device dev;			// Linux 抽象网络设备结构
     struct sk_buff_head txq;			// 网络缓冲区队列
     struct net_device_status stats;		// 网卡状态信息结构
 };
@@ -46,9 +46,9 @@ TAP 从功能定位上来讲，位于数据链路层，数据链路层的主要�
 ```bash
 # 如果输入 Linux 命令 modinfo tun，有如下输出，则说明有 tun 模块
 modinfo tun
-filename:		/lib/modules/3.10.0-862.14.4.el7.x86_64/kernel/drivers/net/tun.ko.xz
-alias:			devname:net/tun
-alias:			char-major-10-200
+filename:	/lib/modules/3.10.0-862.14.4.el7.x86_64/kernel/drivers/net/tun.ko.xz
+alias:		devname:net/tun
+alias:		char-major-10-200
 ......
 ```
 
@@ -81,20 +81,20 @@ yum install tunctl
 >
 > 1. 添加安装源配置文件 /etc/yun.repos.d/nux-misc.repo
 >
-> ```ini
-> [nux-misc]
-> name=Nux Misc
-> baseurl=http://li.nux.ro/download/nux/misc/el7/x86_64
-> enabled=0
-> gpgcheck=1
-> gpgkey=http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
-> ```
+>> ```ini
+>> [nux-misc]
+>> name=Nux Misc
+>> baseurl=http://li.nux.ro/download/nux/misc/el7/x86_64
+>> enabled=0
+>> gpgcheck=1
+>> gpgkey=http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
+>> ```
 >
 > 2. 重新执行安装命令：
 >
-> ```bash
-> yum --enablerepo=nux-misc install tunctl
-> ```
+>> ```bash
+>> yum --enablerepo=nux-misc install tunctl
+>> ```
 >
 > ref: [CentOS 7 安装tunctl](<https://blog.csdn.net/lopng/article/details/72821438>)
 
@@ -164,15 +164,15 @@ Linux 操作 namespace 的命令为 `ip netns`，可以通过如下命令查看�
 
 ```bash
 ip netns help
-Usage: ip netns list
-	   ip netns add NAME
-	   ip netns set NAME NETNSID
-	   ip [-all] netns delete [NAME]
-	   ip netns identify [PID]
-	   ip netns pids NAME
-	   ip [-all] netns exec [name] cmd ...
-	   ip netns monitor
-	   ip netns list-id
+Usage:	ip netns list
+	ip netns add NAME
+	ip netns set NAME NETNSID
+	ip [-all] netns delete [NAME]
+	ip netns identify [PID]
+	ip netns pids NAME
+	ip [-all] netns exec [name] cmd ...
+	ip netns monitor
+	ip netns list-id
 ```
 
 首先可以创建一个 namespace ：
@@ -264,22 +264,22 @@ Bridge/Switch 可以实现两个以上 namespace 之间的互通。在 Linux 的
 brctl
 Usage: brctl [Commands]
 commands:
-		addbr			<bridge>					add bridge
-		delbr			<bridge>					delete bridge
-		addif			<bridge> <device>			add interface to bridge
-		delif			<bridge> <device>			delete interface from bridge
-		hairpin			<bridge> <port> {on|off}	turn hairpin on/off
-		setageing		<bridge> <time>				set ageing time
-		setbridgeprio	<bridge> <prio>				set bridge priority
-		setfd			<bridge> <time>				set bridge forward delay
-		sethello		<bridge> <time>				set hello time
-		setmaxage		<bridge> <time>				set max message age
-		setpathcost		<bridge> <prot> <cost>		set path cost
-		setportprio		<bridge> <prot> <prio>		set port priority
-		show			[ <bridge> ]				show a list of bridges
-		showmacs		<bridge>					show a list of mac addrs
-		showstp			<bridge>					show bridge stp info
-		stp				<bridge> {on|off}			turn stp on/off
+	addbr			<bridge>			add bridge
+	delbr			<bridge>			delete bridge
+	addif			<bridge> <device>		add interface to bridge
+	delif			<bridge> <device>		delete interface from bridge
+	hairpin			<bridge> <port> {on|off}	turn hairpin on/off
+	setageing		<bridge> <time>			set ageing time
+	setbridgeprio	        <bridge> <prio>			set bridge priority
+	setfd			<bridge> <time>			set bridge forward delay
+	sethello		<bridge> <time>			set hello time
+	setmaxage		<bridge> <time>			set max message age
+	setpathcost		<bridge> <prot> <cost>		set path cost
+	setportprio		<bridge> <prot> <prio>		set port priority
+	show			[ <bridge> ]			show a list of bridges
+	showmacs		<bridge>			show a list of mac addrs
+	showstp			<bridge>			show bridge stp info
+	stp			<bridge> {on|off}		turn stp on/off
 ```
 
 若未安装，可通过如下命令进行安装：
