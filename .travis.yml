@@ -37,6 +37,7 @@ before_script:
 script:
   - hexo clean
   - hexo generate
+  - export HEXO_ALGOLIA_INDEXING_KEY='5e82fb4a75535312cb85cdb8b298443e'
   - hexo algolia
 
 after_script:
