@@ -30,15 +30,16 @@ before_install:
 install:
   - npm install
   - npm install hexo-deployer-git --save
+  - npm install --save hexo-algolia
 
 before_script:
  # - npm install -g gulp
 
 script:
   - hexo clean
-  - hexo generate
   - export HEXO_ALGOLIA_INDEXING_KEY='5e82fb4a75535312cb85cdb8b298443e'
   - hexo algolia
+  - hexo generate
 
 after_script:
   - git config user.name "FreedomLy"
