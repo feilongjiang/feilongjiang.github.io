@@ -139,11 +139,11 @@ site_state: true
 # Key is the link label showing to end users.
 # Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
 social:
-  GitHub: https://github.com/yourname || fab fa-github
+  GitHub: https://github.com/Felon03 || fab fa-github
   E-Mail: mailto:freedom.jfl@live.com || fa fa-envelope
-  Weibo: https://weibo.com/yourname || fab fa-weibo
-  Steam: https://www.steam.com || fab fa-steam
-  Bilibili: https://www.bilibili.com || fab fa-youtube
+  Weibo: https://weibo.com/freedomly1003 || fab fa-weibo
+  Steam: http://steamcommunity.com/id/freedom1003/ || fab fa-steam
+  Bilibili: http://space.bilibili.com/2462359 || fab fa-youtube
   RSS: /atom.xml || fa fa-rss
   #Twitter: https://twitter.com/yourname || fab fa-twitter
   #FB Page: https://www.facebook.com/yourname || fab fa-facebook
@@ -205,11 +205,11 @@ footer:
   # Icon between year and copyright info.
   icon:
     # Icon name in Font Awesome. See: https://fontawesome.com/icons
-    name: fa fa-heart
+    name: fa fa-star
     # If you want to animate the icon, set it to true.
-    animated: false
+    animated: true
     # Change the color of icon, using Hex Code.
-    color: "#ff0000"
+    color: "#ffffff"
 
   # If not defined, `author` from Hexo `_config.yml` will be used.
   copyright:
