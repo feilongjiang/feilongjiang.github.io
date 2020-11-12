@@ -4,11 +4,11 @@
 
 ## 博客
 
-[FreedomLy](https://freedomly.tk)
+[FreedomLy](https://www.freedomly.tk)
 
 ## 主题
 
-hexo theme [archer](https://github.com/fi3ework/hexo-theme-archer)
+hexo theme [next](https://github.com/next-theme/hexo-theme-next)
 
 ## 免费域名申请
 

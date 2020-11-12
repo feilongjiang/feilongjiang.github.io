@@ -140,7 +140,7 @@ Neutron 的 Router 模型中，蕴含三种路由：直连路由、默认静态�
 
 路由表中的路由也是静态路由，它与默认静态路由一样，都是通往外部网络（Neutron 管理范围外的网络）。静态路由中的外部网络，一般指的是私网，而默认静态路由中的外部网络，一般指的是公网。
 
-#### Floating IP
+### Floating IP
 
 Floating IP 首先是一个 SNAT/DNAT 转换规则：floating_ip_address（外网/公网 IP）与 fixed_ip_address （内网/私网 IP）互相转换。然后，从实现角度来讲，他才是绑定到一个 Router（router_id）的端口（port_id）上，以让报文在进出这个端口时，Router 能对其做 SNAT/DNAT 转换。
 

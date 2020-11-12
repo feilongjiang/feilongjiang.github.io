@@ -9,7 +9,7 @@ layout: about
 Name: Feilong Jiang
 Birthday: 1993-10-03
 Location: Hangzhou, Zhejiang, China
-Contact me: <Freedom.JFL@gmail.com>， <Freedom.JFL@live.com>
+Contact me: <Freedom.JFL@live.com>, <Freedom.JFL@gmail.com>
 
 ---
 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=500 height=86 
