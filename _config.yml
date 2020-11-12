@@ -123,6 +123,7 @@ symbols_count_time:
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: git@github.com:Felon03/Felon03.github.io.git
+  # repo: git@github.com:Felon03/Felon03.github.io.git
+  repo: https://gh_token@github.com/Felon03/Felon03.github.io.git
   branch: master
   
