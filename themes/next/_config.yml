@@ -139,7 +139,7 @@ site_state: true
 # Key is the link label showing to end users.
 # Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
 social:
-  GitHub: https://github.com/Felon03 || fab fa-github
+  GitHub: https://github.com/feilongjiang || fab fa-github
   E-Mail: mailto:freedom.jfl@live.com || fa fa-envelope
   Weibo: https://weibo.com/freedomly1003 || fab fa-weibo
   Steam: http://steamcommunity.com/id/freedom1003/ || fab fa-steam

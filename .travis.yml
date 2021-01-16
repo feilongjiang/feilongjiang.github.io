@@ -44,7 +44,7 @@ script:
 after_script:
   - git config user.name "FreedomLy"
   - git config user.email "Freedom.JFL@gmail.com"
-  - git clone https://github.com/Felon03/Felon03.github.io.git .deploy_git # 解决 commit 清空问题
+  - git clone https://github.com/feilongjiang/feilongjiang.github.io.git .deploy_git # 解决 commit 清空问题
   - cd .deploy_git
   - git checkout master
   - cd ../

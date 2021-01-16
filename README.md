@@ -1,6 +1,6 @@
 # GitHub Pages & Hexo
 
-[![Build Status](https://travis-ci.org/Felon03/Felon03.github.io.svg?branch=source)](https://travis-ci.org/Felon03/Felon03.github.io)
+[![Build Status](https://travis-ci.org/felongjiang/felongjiang.github.io.svg?branch=source)](https://travis-ci.org/feilongjiang/feilongjiang.github.io)
 
 ## 博客
 

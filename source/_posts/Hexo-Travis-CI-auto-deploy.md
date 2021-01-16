@@ -53,7 +53,7 @@ Travis CI 提供持续集成服务(Continuous Integration, CI)。它可以绑定
 
 #### 网页端配置
 
-首先进入 [Travis CI 官网](https://travis-ci.org/)，这里我们使用的是免费版的，因为考虑到一般放在 GitHub 上的博客都是公开的，所以不需要付费版本。如果有私有仓库要使用这种方式，可以使用 [付费版的 Travis CI](https://travis-ci.com/)。然后直接通过 GitHub 账户登陆即可，登陆后可以看到我们的共有仓库，找到博客的仓库，我这里是 `Felon03.github.io`，把旁边的勾勾上，然后点击旁边的 `Settings` 进入设置页面。
+首先进入 [Travis CI 官网](https://travis-ci.org/)，这里我们使用的是免费版的，因为考虑到一般放在 GitHub 上的博客都是公开的，所以不需要付费版本。如果有私有仓库要使用这种方式，可以使用 [付费版的 Travis CI](https://travis-ci.com/)。然后直接通过 GitHub 账户登陆即可，登陆后可以看到我们的共有仓库，找到博客的仓库，我这里是 `feilongjiang.github.io`，把旁边的勾勾上，然后点击旁边的 `Settings` 进入设置页面。
 
 ![Travis enable](/images/imagesource/19-01-16/2019-01-16-3.png)
 
@@ -111,7 +111,7 @@ script:
 after_script:
   - git config user.name "FreedomLy"
   - git config user.email "Freedom.JFL@gmail.com"
-  - git clone https://github.com/Felon03/Felon03.github.io.git .deploy_git # 解决 commit 清空问题
+  - git clone https://github.com/feilongjiang/feilongjiang.github.io.git .deploy_git # 解决 commit 清空问题
   - cd .deploy_git
   - git checkout master
   - cd ../
@@ -127,7 +127,7 @@ after_script:
 ```yml
 deploy:
   type: git
-  repo: git@github.com:Felon03/Felon03.github.io.git
+  repo: git@github.com:feilongjiang/feilongjiang.github.io.git
   branch: master
 ```
 
@@ -136,7 +136,7 @@ deploy:
 ```yml
 deploy:
   type: git
-  repo: https://gh_token@github.com/Felon03/Felon03.github.io.git
+  repo: https://gh_token@github.com/feilongjiang/feilongjiang.github.io.git
   branch: master
 ```
 
