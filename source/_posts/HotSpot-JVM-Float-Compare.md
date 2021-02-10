@@ -1,7 +1,7 @@
 ---
 title: HotSpot JVM 浮点比较
 date: 2021-02-10 21:55:52
-updated: 2021-02-10 21:55:52
+updated: 2021-02-10 22:31:45
 category: JVM
 tags: [HotSpot, JVM]
 comments: true
@@ -420,5 +420,5 @@ HotSpot JVM 中对于浮点的比较，可以分为 `fcmpl/dcmpl` 和 `fcmpl/dcm
 
 ## 参考资料
 
-[1]: [openjdk/jdk11u](https://github.com/openjdk/jdk11u)
+[1]: [jdk11u ](https://github.com/openjdk/jdk11u)
 [2]: [Chapter 6. The Java Virtual Machine Instruction Set](https://docs.oracle.com/javase/specs/jvms/se15/html/jvms-6.html)
