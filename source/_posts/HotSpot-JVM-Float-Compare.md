@@ -416,7 +416,7 @@ instruct compD3_reg_reg(iRegINoSp dst, vRegD src1, vRegD src2, rFlagsReg cr)
 
 ## 总结
 
-HotSpot JVM 中对于浮点的比较，可以分为 `fcmpl/dcmpl` 和 `fcmpl/dcmpg` 两种，两个操作数的比较有三个结果：1，0，-1。因此，为了返回两个浮点数的比较结果，一般均会伴随一个 `ifxx` 字节码，用于跳转到正确的比较结果并返回。而对于操作数包含 NaN 的场景，`fcmpl/dcmpl` 和 `fcmpl/dcmpg` 的结果稍有不同，`fcmpl/dcmpl` 返回 -1，`fcmpl/dcmpl` 则返回 1。
+HotSpot JVM 中对于浮点的比较，可以分为 `fcmpl/dcmpl` 和 `fcmpg/dcmpg` 两种，两个操作数的比较有三个结果：1，0，-1。因此，为了返回两个浮点数的比较结果，一般均会伴随一个 `ifxx` 字节码，用于跳转到正确的比较结果并返回。而对于操作数包含 NaN 的场景，`fcmpl/dcmpl` 和 `fcmpg/dcmpg` 的结果稍有不同，`fcmpl/dcmpl` 返回 -1，`fcmpg/dcmpg` 则返回 1。
 
 ## 参考资料
 
