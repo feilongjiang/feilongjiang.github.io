@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.freedomly.tk","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"algolia":{"appID":"3V8CYA0BZJ","apiKey":"5e82fb4a75535312cb85cdb8b298443e","indexName":"myBlog","hits":{"per_page":10}}}</script><script src="/js/config.js"></script>
+<meta name="description" content="在 JVM 中，比较主要有两类，一类是整型比较，还有一类就是本文要讲的浮点比较(Float Compare)。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HotSpot JVM 浮点比较">
+<meta property="og:url" content="https://www.freedomly.tk/2021/02/10/HotSpot-JVM-Float-Compare/index.html">
+<meta property="og:site_name" content="FreedomLy">
+<meta property="og:description" content="在 JVM 中，比较主要有两类，一类是整型比较，还有一类就是本文要讲的浮点比较(Float Compare)。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-10T13:55:52.000Z">
+<meta property="article:modified_time" content="2021-02-10T14:31:45.000Z">
+<meta property="article:author" content="Freedomly">
+<meta property="article:tag" content="HotSpot">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://www.freedomly.tk/2021/02/10/HotSpot-JVM-Float-Compare/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.freedomly.tk/2021/02/10/HotSpot-JVM-Float-Compare/","path":"2021/02/10/HotSpot-JVM-Float-Compare/","title":"HotSpot JVM 浮点比较"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>HotSpot JVM 浮点比较 | FreedomLy</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">FreedomLy</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Welcome to my blog. <3</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">34</span></a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container">
+  <div class="algolia-stats"><hr></div>
+  <div class="algolia-hits"></div>
+  <div class="algolia-pagination"></div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM-%E5%AF%B9%E6%B5%AE%E7%82%B9%E6%AF%94%E8%BE%83%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">JVM 对浮点比较的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Interpreter-%E4%B8%AD-Float-Compare-%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">Interpreter 中 Float Compare 的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C1-%E4%B8%AD-Float-Compare-%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">C1 中 Float Compare 的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C2-%E4%B8%AD-Float-Compare-%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">C2 中 Float Compare 的实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freedomly</p>
+  <div class="site-description" itemprop="description">Hope is a good thing, maybe the best of things, and no good thing ever dies.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feilongjiang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feilongjiang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:freedom.jfl@live.com" title="E-Mail → mailto:freedom.jfl@live.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/freedomly1003" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;freedomly1003" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://steamcommunity.com/id/freedom1003/" title="Steam → http:&#x2F;&#x2F;steamcommunity.com&#x2F;id&#x2F;freedom1003&#x2F;" rel="noopener" target="_blank"><i class="fab fa-steam fa-fw"></i>Steam</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://space.bilibili.com/2462359" title="Bilibili → http:&#x2F;&#x2F;space.bilibili.com&#x2F;2462359" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>Bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.freedomly.tk/2021/02/10/HotSpot-JVM-Float-Compare/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freedomly">
+      <meta itemprop="description" content="Hope is a good thing, maybe the best of things, and no good thing ever dies.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FreedomLy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          HotSpot JVM 浮点比较
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-02-10 21:55:52 / 修改时间：22:31:45" itemprop="dateCreated datePublished" datetime="2021-02-10T21:55:52+08:00">2021-02-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JVM/" itemprop="url" rel="index"><span itemprop="name">JVM</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>19 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>在 JVM 中，比较主要有两类，一类是整型比较，还有一类就是本文要讲的浮点比较(Float Compare)。</p>
+<span id="more"></span>
+
+<h2 id="JVM-对浮点比较的定义"><a href="#JVM-对浮点比较的定义" class="headerlink" title="JVM 对浮点比较的定义"></a>JVM 对浮点比较的定义</h2><p>浮点比较时，会出现操作数为非数 (NaN, not an number) 的情况。对于比较的操作数是否包含 NaN，分为 ordered 和 unordered 两种。其中，unordered 表示包含 NaN 的情况。</p>
+<p>浮点比较的字节码有四个：</p>
+<ul>
+<li>fcmpl (字节码序: 149, 0x95)</li>
+<li>fcmpg (字节码序: 150, 0x96)</li>
+<li>dcmpl (字节码序: 151, 0x97)</li>
+<li>dcmpg (字节码序: 152, 0x98)</li>
+</ul>
+<p>其中 <code>fcmpl/fcmpg</code> 用作单精度浮点 (Float 类型数据) 的比较，而 <code>dcmpl/dcmpg</code> 则用作双精度浮点 (Double 类型数据) 的比较。除单/双进度的区别意外，<code>fcmp</code> 和 <code>dcmp</code> 的行为是一致的。</p>
+<p>对于两个比较数 value1 和 value2，value1 和 value2 从操作数栈中弹出并作了值转换，成为了 value1’ 和 value2’，然后进行比较。<code>fcmp/dcmp</code> 的比较结果如下：</p>
+<ul>
+<li>如果 <code>value1&#39; &gt; value2&#39;</code>，那么将会把 1 作为比较结果，并 push 到操作数栈上</li>
+<li>否则，如果 <code>value1&#39; == value2&#39;</code>，那么将把 0 作为比较结果，并 push 到操作数栈上</li>
+<li>否则，如果 <code>value1&#39; &lt; value2&#39;</code>，那么将把 -1 作为比较结果，并 push 到操作数栈上</li>
+<li>否则，在 <code>value1&#39;</code> 和 <code>value2&#39;</code> 中至少有一个数为 NaN。则 <code>fcmpg/dcmpg</code> 将会把 1 作为比较结果，<code>fcmpl/dcmpl</code> 则会把 -1 作为比较结果，push 到操作数栈上</li>
+</ul>
+<p>浮点比较遵循的是 IEEE 745 标准。除 NaN 以外的浮点比较均为 ordered，其中负无穷 (negative infinity) 小于任意的有穷值 (finite values)；正无穷 (positive infinity) 则大于任意有穷值；正零 (positive zero) 和负零 (negative zero) 则相等。</p>
+<p>Oracle 的文档中对于 <code>fcmpg/dcmpg</code> 和 <code>fcmpl/dcmpl</code> 的区别是这样描述的：</p>
+<blockquote>
+<p>The fcmpg/dcmpg and fcmpl/dcmpl instructions differ only in their treatment of a comparison involving NaN. NaN is unordered, so any float/double comparison fails if either or both of its operands are NaN. With both fcmpg/dcmpg and fcmpl/dcmpl available, any float/double comparison may be compiled to push the same result onto the operand stack whether the comparison fails on non-NaN values or fails because it encountered a NaN.</p>
+</blockquote>
+<p>也就是说，对于 <code>fcmpg/dcmpg</code> 和 <code>fcmpl/dcmpl</code> 的区别仅在于比较 NaN 时返回的值不同。NaN 表示 unordered 比较，当一个或多个数为 NaN 时，任何浮点比较都不应该成立。对于任意浮点比较指令，无论比较熟是否包含 NaN，比较不成立时所产生的值应该保持一致。</p>
+<p>下面举个例子来说明一下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">lessThan100</span><span class="params">(<span class="keyword">double</span> d)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (d &lt; <span class="number">100.0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码对应的字节码为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">int lessThan100(double);</span><br><span class="line">  Code:</span><br><span class="line">     0: dload_1</span><br><span class="line">     1: ldc2_w        #2                  // double 100.0d</span><br><span class="line">     4: dcmpg</span><br><span class="line">     5: ifge          10</span><br><span class="line">     8: iconst_1</span><br><span class="line">     9: ireturn</span><br><span class="line">    10: iconst_m1</span><br><span class="line">    11: ireturn</span><br></pre></td></tr></table></figure>
+
+<p>如果 d 不是 NaN 且 d &lt; 100.0，则 dcmpg 将会将 -1 push 到操作数栈上，由于结果为 -1，<code>ifge</code> 并不会跳转，而是继续执行 <code>iconst_1</code> (1) 。而如果 <code>d &gt; 100.0</code> 或者为 NaN，则会将 1 push 到操作数栈上，<code>ifge</code> 会跳转到 <code>iconst_m1</code> (-1)，如果 <code>d == 100.0</code>，则会将 0 push 到操作数栈上，<code>ifge</code> 跳转到 <code>iconst_m1</code> (-1)。那么最终方法的返回值为：</p>
+<ul>
+<li><code>d &lt; 100.0</code>，返回 1</li>
+<li><code>d &gt;= 100.0</code>，返回 -1</li>
+<li>d 为 NaN，返回 -1</li>
+</ul>
+<p>可以看到 d 为 NaN 时与 <code>d &gt;= 100.0</code> 时，<code>lessThan100</code> 都返回了 -1，即比较数包含 NaN 时 与比较不成立时返回的结果保持一致。</p>
+<p>而对于 dcmpl，则可以通过下面的例子说明：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">greaterThan100</span><span class="params">(<span class="keyword">double</span> d)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (d &gt; <span class="number">100.0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其对应的字节码为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">int greaterThan100(double);</span><br><span class="line">  Code:</span><br><span class="line">       0: dload_1</span><br><span class="line">       1: ldc2_w        #2                  // double 100.0d</span><br><span class="line">       4: dcmpl</span><br><span class="line">       5: ifle          10</span><br><span class="line">       8: iconst_1</span><br><span class="line">       9: ireturn</span><br><span class="line">      10: iconst_m1</span><br><span class="line">      11: ireturn</span><br></pre></td></tr></table></figure>
+
+<p>同样的，最终方法的返回结果如下：</p>
+<ul>
+<li><code>d &lt;= 100.0</code>，返回 -1</li>
+<li><code>d &gt; 100</code>，返回 1</li>
+<li>d 为 NaN，返回 -1</li>
+</ul>
+<p>对于 <code>greaterThan100</code> 方法，d 为 NaN 时返回的结果与 <code>d &gt; 100.0</code> 比较不成立时返回的结果一致。</p>
+<h2 id="Interpreter-中-Float-Compare-的实现"><a href="#Interpreter-中-Float-Compare-的实现" class="headerlink" title="Interpreter 中 Float Compare 的实现"></a>Interpreter 中 Float Compare 的实现</h2><blockquote>
+<p>下面所涉及的代码均基于 OpenJDK 11u 分支的代码：<a target="_blank" rel="noopener" href="https://github.com/openjdk/jdk11u">https://github.com/openjdk/jdk11u</a></p>
+</blockquote>
+<p>在 <code>share/interpreter/bytecodeInterpreter.hpp</code> 中有定义 VMfloatCompare 和 VMdoubleCompare：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Comparisons (returning an int value: 0, 1, or -1)</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Between operands:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Compare &quot;op1&quot; and &quot;op2&quot; according to the semantics of the</span></span><br><span class="line"><span class="comment"> * &quot;fcmpl&quot; (direction is -1) or &quot;fcmpg&quot; (direction is 1) bytecodes.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int32_t</span> <span class="title">VMfloatCompare</span><span class="params">(jfloat op1, jfloat op2,</span></span></span><br><span class="line"><span class="params"><span class="function">                              <span class="keyword">int32_t</span> direction)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Comparisons (returning an int32_t value: 0, 1, or -1)</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Between operands:</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Compare &quot;op1&quot; and &quot;op2&quot; according to the semantics of the</span></span><br><span class="line"><span class="comment"> * &quot;dcmpl&quot; (direction is -1) or &quot;dcmpg&quot; (direction is 1) bytecodes.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int32_t</span> <span class="title">VMdoubleCompare</span><span class="params">(jdouble op1, jdouble op2, <span class="keyword">int32_t</span> direction)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里的 direction 用于区分 <code>fcmpl/dcmpl</code> 和 <code>dcmpg/dcmpg</code>。下面就以 double 类型为例 (float 与 double 一致)。</p>
+<p>在 <code>share/interpreter/templateTable.cpp</code> 中定义了 <code>Bytecodes::_dcmpl</code> 和 <code>Bytecodes::_dcmpg</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">def</span>(Bytecodes::_dcmpl, ____|____|____|____, dtos, itos, double_cmp, <span class="number">-1</span>);</span><br><span class="line"><span class="built_in">def</span>(Bytecodes::_dcmpg, ____|____|____|____, dtos, itos, double_cmp,  <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p>在同一文件中，<code>double_cmp</code> 的定义如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TemplateTable::double_cmp</span><span class="params">(<span class="keyword">int</span> unordered_result)</span> </span>&#123;</span><br><span class="line">  <span class="built_in">transition</span>(dtos, itos);</span><br><span class="line">  <span class="built_in">float_cmp</span>(<span class="literal">false</span>, unordered_result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从这两处代码，可以看到在定义字节码是传入的 -1 和 1 是给 <code>double_cmp</code> 中的 <code>unordered_result</code> 赋值用的。然后在 <code>float_cmp</code> 方法中做了平台相关的比较。这里的 false 表示的是比较的类型是 float (true) 还是 double (false)。</p>
+<p>以 AArch64 的 <code>float_cmp</code> 方法为例，其定义位于 <code>cpu/aarch64/templateTable_aarch64.cpp</code> 中：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">TemplateTable::float_cmp</span><span class="params">(<span class="keyword">bool</span> is_float, <span class="keyword">int</span> unordered_result)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  Label done;</span><br><span class="line">  <span class="keyword">if</span> (is_float) &#123;</span><br><span class="line">    <span class="comment">// XXX get rid of pop here, use ... reg, mem32</span></span><br><span class="line">    <span class="function">__ <span class="title">pop_f</span><span class="params">(v1)</span></span>;</span><br><span class="line">    <span class="function">__ <span class="title">fcmps</span><span class="params">(v1, v0)</span></span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// XXX get rid of pop here, use ... reg, mem64</span></span><br><span class="line">    __ <span class="built_in">pop_d</span>(v1);</span><br><span class="line">    <span class="function">__ <span class="title">fcmpd</span><span class="params">(v1, v0)</span></span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (unordered_result &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// we want -1 for unordered or less than, 0 for equal and 1 for</span></span><br><span class="line">    <span class="comment">// greater than.</span></span><br><span class="line">    <span class="function">__ <span class="title">mov</span><span class="params">(r0, (<span class="keyword">u_int64_t</span>)<span class="number">-1L</span>)</span></span>;</span><br><span class="line">    <span class="comment">// for FP LT tests less than or unordered</span></span><br><span class="line">    <span class="function">__ <span class="title">br</span><span class="params">(Assembler::LT, done)</span></span>;</span><br><span class="line">    <span class="comment">// install 0 for EQ otherwise 1</span></span><br><span class="line">    <span class="function">__ <span class="title">csinc</span><span class="params">(r0, zr, zr, Assembler::EQ)</span></span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// we want -1 for less than, 0 for equal and 1 for unordered or</span></span><br><span class="line">    <span class="comment">// greater than.</span></span><br><span class="line">    __ <span class="built_in">mov</span>(r0, <span class="number">1L</span>);</span><br><span class="line">    <span class="comment">// for FP HI tests greater than or unordered</span></span><br><span class="line">    <span class="function">__ <span class="title">br</span><span class="params">(Assembler::HI, done)</span></span>;</span><br><span class="line">    <span class="comment">// install 0 for EQ otherwise ~0</span></span><br><span class="line">    <span class="function">__ <span class="title">csinv</span><span class="params">(r0, zr, zr, Assembler::EQ)</span></span>;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function">__ <span class="title">bind</span><span class="params">(done)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于 AArch64 中存在 flag 寄存器，因此比较一般都是先通过 <code>cmp</code> 指令来改变 flag 寄存器，然后通过读取 flag 寄存器的值来确定比较结果。我们只需关注源码中 unordered_result 的那个 if/else 分支。可以看到，对于 unordered_result 的取值不同，比较返回的结果是不一样的，总结如下：</p>
+<ul>
+<li>unordered_result &lt; 0 (Bytecodes::_dcmpl)<ul>
+<li>-1: lt or unordered (NaN)</li>
+<li>0: eq</li>
+<li>1: gt</li>
+</ul>
+</li>
+<li>unordered_result &gt; 0 (Bytecodes::_dcmpg)<ul>
+<li>-1: lt</li>
+<li>0: eq</li>
+<li>1: gt or unordered (NaN)</li>
+</ul>
+</li>
+</ul>
+<p>从对字节码的定义来看，<code>unordered_result &lt; 0</code> 对应的是 <code>Bytecodes::_dcmpl</code>，<code>unordered_result &gt; 0</code> 对应的则是 <code>Bytecodes::_dcmpg</code>，这与 Oracle 文档中的描述一致。此外，由于 <code>dcmpl/dcmpg</code> 会产生 -1，0，1 三种结果，并不表示最终的比较结果，因此后面往往会跟随一条 <code>ifxx</code> (<code>_ifeq</code>/<code>_ifne</code>/<code>_iflt</code>/<code>_ifle</code>/<code>_ifgt</code>/<code>_ifge</code>，均与 0 进行比较) 字节码，也就是说实际 Java 代码中的浮点 Double 的比较结果，是由 <code>dcmpl/dcmpg + ifxx</code> 组合产生的。</p>
+<h2 id="C1-中-Float-Compare-的实现"><a href="#C1-中-Float-Compare-的实现" class="headerlink" title="C1 中 Float Compare 的实现"></a>C1 中 Float Compare 的实现</h2><p>C1 <code>LIRGenerator::do_CompareOp</code> 方法用于生成 <code>_dcmpl</code> 和 <code>_dcmpg</code> 对应的汇编指令 (位于 <code>cpu/aarch64/c1_LIRGenerator_aarch64.cpp</code>)：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// _lcmp, _fcmpl, _fcmpg, _dcmpl, _dcmpg</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LIRGenerator::do_CompareOp</span><span class="params">(CompareOp* x)</span> </span>&#123;</span><br><span class="line">  <span class="function">LIRItem <span class="title">left</span><span class="params">(x-&gt;x(), <span class="keyword">this</span>)</span></span>;</span><br><span class="line">  <span class="function">LIRItem <span class="title">right</span><span class="params">(x-&gt;y(), <span class="keyword">this</span>)</span></span>;</span><br><span class="line">  ValueTag tag = x-&gt;<span class="built_in">x</span>()-&gt;<span class="built_in">type</span>()-&gt;<span class="built_in">tag</span>();</span><br><span class="line">  <span class="keyword">if</span> (tag == longTag) &#123;</span><br><span class="line">    left.<span class="built_in">set_destroys_register</span>();</span><br><span class="line">  &#125;</span><br><span class="line">  left.<span class="built_in">load_item</span>();</span><br><span class="line">  right.<span class="built_in">load_item</span>();</span><br><span class="line">  LIR_Opr reg = <span class="built_in">rlock_result</span>(x);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (x-&gt;<span class="built_in">x</span>()-&gt;<span class="built_in">type</span>()-&gt;<span class="built_in">is_float_kind</span>()) &#123;</span><br><span class="line">    Bytecodes::Code code = x-&gt;<span class="built_in">op</span>();</span><br><span class="line">    <span class="function">__ <span class="title">fcmp2int</span><span class="params">(left.result(), right.result(), reg, (code == Bytecodes::_fcmpl || code == Bytecodes::_dcmpl))</span></span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (x-&gt;<span class="built_in">x</span>()-&gt;<span class="built_in">type</span>()-&gt;<span class="built_in">tag</span>() == longTag) &#123;</span><br><span class="line">    __ <span class="built_in">lcmp2int</span>(left.<span class="built_in">result</span>(), right.<span class="built_in">result</span>(), reg);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">Unimplemented</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于浮点比较，只需的是 <code>fcmp2int</code> 这个方法，其定义位于 <code>share/c1/c1_LIR.cpp</code> 中：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LIR_List::fcmp2int</span><span class="params">(LIR_Opr left, LIR_Opr right, LIR_Opr dst, <span class="keyword">bool</span> is_unordered_less)</span> </span>&#123;</span><br><span class="line">  <span class="built_in">append</span>(<span class="keyword">new</span> <span class="built_in">LIR_Op2</span>(is_unordered_less ? lir_ucmp_fd2i : lir_cmp_fd2i,</span><br><span class="line">                     left,</span><br><span class="line">                     right,</span><br><span class="line">                     dst));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里根据 <code>is_unordered_less</code> 的取值会选择 <code>lir_ucmp_fd2i</code> 或者 <code>lir_cmp_fd2i</code>。而 <code>is_unordered_lsee</code> 为 true 的情况为<code>Bytecodes::_fcmpl</code> 或者 <code>Bytecodes::_dcmpl</code>。也就是说，这里的 <code>is_unordered_less</code> 的含义与解释器中的 unordered_result 一致：</p>
+<ul>
+<li>is_unordered_less == true ===&gt; unordered_result &lt; 0 ===&gt; <code>dcmpl</code></li>
+<li>is_unordered_less == false ===&gt; unordered_result &gt; 0 ===&gt; <code>dcmpg</code></li>
+</ul>
+<p>而 C1 的浮点比较是通过 <code>LIR_Assembler::comp_fl2i</code> 来完成的 (位于 <code>cpu/aarch64/c1_LIRAssembler_aarch64.cpp</code>)：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LIR_Assembler::comp_fl2i</span><span class="params">(LIR_Code code, LIR_Opr left, LIR_Opr right, LIR_Opr dst, LIR_Op2* op)</span></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (code == lir_cmp_fd2i || code == lir_ucmp_fd2i) &#123;</span><br><span class="line">    <span class="keyword">bool</span> is_unordered_less = (code == lir_ucmp_fd2i);</span><br><span class="line">    <span class="keyword">if</span> (left-&gt;<span class="built_in">is_single_fpu</span>()) &#123;</span><br><span class="line">      <span class="function">__ <span class="title">float_cmp</span><span class="params">(<span class="literal">true</span>, is_unordered_less ? <span class="number">-1</span> : <span class="number">1</span>, left-&gt;as_float_reg(), right-&gt;as_float_reg(), dst-&gt;as_register())</span></span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (left-&gt;<span class="built_in">is_double_fpu</span>()) &#123;</span><br><span class="line">      __ <span class="built_in">float_cmp</span>(<span class="literal">false</span>, is_unordered_less ? <span class="number">-1</span> : <span class="number">1</span>, left-&gt;<span class="built_in">as_double_reg</span>(), right-&gt;<span class="built_in">as_double_reg</span>(), dst-&gt;<span class="built_in">as_register</span>());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">ShouldNotReachHere</span>();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (code == lir_cmp_l2i) &#123;</span><br><span class="line">    Label done;</span><br><span class="line">    <span class="function">__ <span class="title">cmp</span><span class="params">(left-&gt;as_register_lo(), right-&gt;as_register_lo())</span></span>;</span><br><span class="line">    <span class="function">__ <span class="title">mov</span><span class="params">(dst-&gt;as_register(), (<span class="keyword">u_int64_t</span>)<span class="number">-1L</span>)</span></span>;</span><br><span class="line">    <span class="function">__ <span class="title">br</span><span class="params">(Assembler::LT, done)</span></span>;</span><br><span class="line">    <span class="function">__ <span class="title">csinc</span><span class="params">(dst-&gt;as_register(), zr, zr, Assembler::EQ)</span></span>;</span><br><span class="line">    <span class="function">__ <span class="title">bind</span><span class="params">(done)</span></span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">ShouldNotReachHere</span>();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于浮点数 (fpu)，最终的比较在 <code>float_cmp</code> 中 (位于 <code>cpu/aarch64/c1_MacroAssembler_aarch64.cpp</code>)：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">C1_MacroAssembler::float_cmp</span><span class="params">(<span class="keyword">bool</span> is_float, <span class="keyword">int</span> unordered_result,</span></span></span><br><span class="line"><span class="params"><span class="function">                                  FloatRegister f0, FloatRegister f1,</span></span></span><br><span class="line"><span class="params"><span class="function">                                  Register result)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  Label done;</span><br><span class="line">  <span class="keyword">if</span> (is_float) &#123;</span><br><span class="line">    <span class="built_in">fcmps</span>(f0, f1);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">fcmpd</span>(f0, f1);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (unordered_result &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment">// we want -1 for unordered or less than, 0 for equal and 1 for</span></span><br><span class="line">    <span class="comment">// greater than.</span></span><br><span class="line">    <span class="built_in">cset</span>(result, NE);  <span class="comment">// Not equal or unordered</span></span><br><span class="line">    <span class="built_in">cneg</span>(result, result, LT);  <span class="comment">// Less than or unordered</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// we want -1 for less than, 0 for equal and 1 for unordered or</span></span><br><span class="line">    <span class="comment">// greater than.</span></span><br><span class="line">    <span class="built_in">cset</span>(result, NE);  <span class="comment">// Not equal or unordered</span></span><br><span class="line">    <span class="built_in">cneg</span>(result, result, LO);  <span class="comment">// Less than</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，<code>C1_MacroAssembler::float_cmp</code> 的实现逻辑基本与解释器中的 <code>fcmp</code> 一致：</p>
+<ul>
+<li>unordered_result &lt; 0 (is_unordered_less == -1) ===&gt; <code>Bytecodes::_dcmpl</code><ul>
+<li>-1: lt or unordered (NaN)</li>
+<li>0: eq</li>
+<li>1: gt</li>
+</ul>
+</li>
+<li>unordered_result &gt; 0 (is_unordered_less == 1) ===&gt; <code>Bytecodes::_dcmpg</code><ul>
+<li>-1: lt</li>
+<li>0: eq</li>
+<li>1: gt or unordered (NaN)</li>
+</ul>
+</li>
+</ul>
+<p>对于浮点比较的逻辑，解释器与 C1 是保持一致的。</p>
+<h2 id="C2-中-Float-Compare-的实现"><a href="#C2-中-Float-Compare-的实现" class="headerlink" title="C2 中 Float Compare 的实现"></a>C2 中 Float Compare 的实现</h2><p>C2 中对于 <code>Bytecodes::_dcmpl</code> 和 <code>Bytecodes::_dcmpg</code> 的处理与解释器/C1 稍有区别 (位于 <code>share/opto/parse2.cpp</code>)，</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> Bytecodes::_dcmpl:</span><br><span class="line">  b = <span class="built_in">pop_pair</span>();</span><br><span class="line">  a = <span class="built_in">pop_pair</span>();</span><br><span class="line">  c = _gvn.<span class="built_in">transform</span>( <span class="keyword">new</span> <span class="built_in">CmpD3Node</span>( a, b));</span><br><span class="line">  <span class="built_in">push</span>(c);</span><br><span class="line">  <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> Bytecodes::_dcmpg:</span><br><span class="line">  b = <span class="built_in">pop_pair</span>();</span><br><span class="line">  a = <span class="built_in">pop_pair</span>();</span><br><span class="line">  <span class="comment">// Same as dcmpl but need to flip the unordered case.</span></span><br><span class="line">  <span class="comment">// Commute the inputs, which negates the result sign except for unordered.</span></span><br><span class="line">  <span class="comment">// Flip the unordered as well by using CmpD3 which implements</span></span><br><span class="line">  <span class="comment">// unordered-lesser instead of unordered-greater semantics.</span></span><br><span class="line">  <span class="comment">// Finally, negate the result bits.  Result is same as using a</span></span><br><span class="line">  <span class="comment">// CmpD3Greater except we did it with CmpD3 alone.</span></span><br><span class="line">  c = _gvn.<span class="built_in">transform</span>( <span class="keyword">new</span> <span class="built_in">CmpD3Node</span>( b, a));</span><br><span class="line">  c = _gvn.<span class="built_in">transform</span>( <span class="keyword">new</span> <span class="built_in">SubINode</span>(_gvn.<span class="built_in">intcon</span>(<span class="number">0</span>),c) );</span><br><span class="line">  <span class="built_in">push</span>(c);</span><br><span class="line">  <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure>
+
+<p>C2 中 <code>dcmpl</code> 和 <code>dcmpg</code> 的比较是通过 <code>CmpD3Node</code> 来实现的，其比较对应的 C2 instruct 为 <code>compD3_reg_reg</code> (定义在 <code>cpu/aarch64/aarch64.ad</code> 中)：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">instruct <span class="title">compD3_reg_reg</span><span class="params">(iRegINoSp dst, vRegD src1, vRegD src2, rFlagsReg cr)</span></span></span><br><span class="line"><span class="function">%</span>&#123;</span><br><span class="line">  <span class="built_in">match</span>(Set <span class="built_in">dst</span> (CmpD3 src1 src2));</span><br><span class="line">  <span class="built_in">effect</span>(KILL cr);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">ins_cost</span>(<span class="number">5</span> * INSN_COST);</span><br><span class="line">  format %&#123; <span class="string">&quot;fcmpd $src1, $src2\n\t&quot;</span></span><br><span class="line">            <span class="string">&quot;csinvw($dst, zr, zr, eq\n\t&quot;</span></span><br><span class="line">            <span class="string">&quot;csnegw($dst, $dst, $dst, lt)&quot;</span></span><br><span class="line">  %&#125;</span><br><span class="line"></span><br><span class="line">  ins_encode %&#123;</span><br><span class="line">    Label done;</span><br><span class="line">    FloatRegister s1 = <span class="built_in">as_FloatRegister</span>($src1$$reg);</span><br><span class="line">    FloatRegister s2 = <span class="built_in">as_FloatRegister</span>($src2$$reg);</span><br><span class="line">    Register d = <span class="built_in">as_Register</span>($dst$$reg);</span><br><span class="line">    <span class="function">__ <span class="title">fcmpd</span><span class="params">(s1, s2)</span></span>;</span><br><span class="line">    <span class="comment">// installs 0 if EQ else -1</span></span><br><span class="line">    <span class="function">__ <span class="title">csinvw</span><span class="params">(d, zr, zr, Assembler::EQ)</span></span>;</span><br><span class="line">    <span class="comment">// keeps -1 if less or unordered else installs 1</span></span><br><span class="line">    <span class="function">__ <span class="title">csnegw</span><span class="params">(d, d, d, Assembler::LT)</span></span>;</span><br><span class="line">    <span class="function">__ <span class="title">bind</span><span class="params">(done)</span></span>;</span><br><span class="line">  %&#125;</span><br><span class="line">  <span class="built_in">ins_pipe</span>(pipe_class_default);</span><br><span class="line"></span><br><span class="line">%&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里返回的结果为：</p>
+<ul>
+<li>-1: lt or unordered (NaN)</li>
+<li>0: eq</li>
+<li>1: gt</li>
+</ul>
+<p>即 C2 中的 <code>compD3_reg_reg</code> 的结果与 <code>dcmpl</code> 期望的结果一致。</p>
+<p>但是 <code>compD3_reg_reg</code> 只有 <code>is_unordered &lt; 0</code> (也就是 <code>unordered_less</code>) 的情况，并没有考虑 <code>is_unordered &gt;0</code>。而在解释器/C1 中，两种情况均有考虑。我们再回到 C2 中对应 <code>Bytecodes::_dcmpg</code> 处，可以发现相比 <code>dcmpl</code>，<code>dcmpg</code> 把两个比较的操作数位置互换了，并且比较完以后，并没有直接将结果返回，而是通过一个 <code>SubINode</code> 做了一个减法，将 0 减去 compare 所产生的结果，这样就会让结果完全反过来，也即原本的 -1，0，1经过 <code>SubINode</code> 后变成了 1，0，-1。那么对于 NaN，<code>dcmpg</code> 的返回值时多少呢？</p>
+<p>由于将比较的操作数交换了，那么原来 <code>dcmpl</code> 中比较的 a compare b 就变成了 b compare a。对于 <code>compD3_reg_reg</code> 来说，并没有任何影响。对于 a compare b 的结果如下：</p>
+<ul>
+<li>-1: a lt b or unordered</li>
+<li>0: a eq b</li>
+<li>1: a gt b</li>
+</ul>
+<p>那么现在 b compare a 的结果为：</p>
+<ul>
+<li>-1: b lt a or unordered</li>
+<li>0: b eq a</li>
+<li>1: b gt a</li>
+</ul>
+<p>在通过 <code>SubINode</code>：</p>
+<ul>
+<li>1: b lt a or unordered</li>
+<li>0: b eq a</li>
+<li>-1: b gt a</li>
+</ul>
+<p>那么最终就等于：</p>
+<ul>
+<li>-1: a lt b</li>
+<li>0: a eq b</li>
+<li>1: a gt b or unordered</li>
+</ul>
+<p>这样就与解释器/C1 中的 <code>unordered_result &lt; 0</code> 一致了。也就是说，C2 平台相关的部分只实现了 <code>unordered_result &lt; 0</code> 的情况，而通过 <code>unordered_result &lt; 0</code> 、交换比较操作数以及将比较结果取反，巧妙地得到了 <code>unordered_result &gt; 0</code> 的结果。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>HotSpot JVM 中对于浮点的比较，可以分为 <code>fcmpl/dcmpl</code> 和 <code>fcmpg/dcmpg</code> 两种，两个操作数的比较有三个结果：1，0，-1。因此，为了返回两个浮点数的比较结果，一般均会伴随一个 <code>ifxx</code> 字节码，用于跳转到正确的比较结果并返回。而对于操作数包含 NaN 的场景，<code>fcmpl/dcmpl</code> 和 <code>fcmpg/dcmpg</code> 的结果稍有不同，<code>fcmpl/dcmpl</code> 返回 -1，<code>fcmpg/dcmpg</code> 则返回 1。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]: <a target="_blank" rel="noopener" href="https://github.com/openjdk/jdk11u">jdk11u </a><br>[2]: <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/specs/jvms/se15/html/jvms-6.html">Chapter 6. The Java Virtual Machine Instruction Set</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Freedomly
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://www.freedomly.tk/2021/02/10/HotSpot-JVM-Float-Compare/" title="HotSpot JVM 浮点比较">https://www.freedomly.tk/2021/02/10/HotSpot-JVM-Float-Compare/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/HotSpot/" rel="tag"># HotSpot</a>
+              <a href="/tags/JVM/" rel="tag"># JVM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/05/24/OpenStack-Neutron-Architecture/" rel="prev" title="OpenStack Neutron -- Neutron 架构分析">
+                  <i class="fa fa-chevron-left"></i> OpenStack Neutron -- Neutron 架构分析
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-star"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freedomly</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">101k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:04</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch-lite.umd.js" integrity="sha256-HWlivbjXc58GuU4EIZziqIE83FFZ/da42de13pGZnMA=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.30.2/dist/instantsearch.production.min.js" integrity="sha256-eqhx/eer5fsD7YooSb21wsfJaQkJ/4gF3bmRBZP7q2o=" crossorigin="anonymous"></script><script src="/js/third-party/search/algolia-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.freedomly.tk","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"algolia":{"appID":"3V8CYA0BZJ","apiKey":"5e82fb4a75535312cb85cdb8b298443e","indexName":"myBlog","hits":{"per_page":10}}}</script><script src="/js/config.js"></script>
+<meta name="description" content="之前跟着 Vim 自带的 《Vim 教程》过了一遍常用的快捷键和命令，下面作一下记录，方便后续查找和回忆。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Vim 教程》指令记录">
+<meta property="og:url" content="https://www.freedomly.tk/2019/05/17/Vimtutor-commands/index.html">
+<meta property="og:site_name" content="FreedomLy">
+<meta property="og:description" content="之前跟着 Vim 自带的 《Vim 教程》过了一遍常用的快捷键和命令，下面作一下记录，方便后续查找和回忆。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-17T05:54:10.000Z">
+<meta property="article:modified_time" content="2019-05-17T05:54:10.000Z">
+<meta property="article:author" content="Freedomly">
+<meta property="article:tag" content="Vim教程">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://www.freedomly.tk/2019/05/17/Vimtutor-commands/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.freedomly.tk/2019/05/17/Vimtutor-commands/","path":"2019/05/17/Vimtutor-commands/","title":"《Vim 教程》指令记录"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>《Vim 教程》指令记录 | FreedomLy</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">FreedomLy</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Welcome to my blog. <3</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">34</span></a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container">
+  <div class="algolia-stats"><hr></div>
+  <div class="algolia-hits"></div>
+  <div class="algolia-pagination"></div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E5%85%89%E6%A0%87"><span class="nav-number">1.1.</span> <span class="nav-text">移动光标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vim-%E7%9A%84%E8%BF%9B%E5%85%A5%E5%92%8C%E9%80%80%E5%87%BA"><span class="nav-number">1.2.</span> <span class="nav-text">Vim 的进入和退出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E4%B9%8B%E5%88%A0%E9%99%A4"><span class="nav-number">1.3.</span> <span class="nav-text">文本编辑之删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E7%BC%96%E7%BC%96%E8%BE%91%E4%B9%8B%E6%8F%92%E5%85%A5"><span class="nav-number">1.4.</span> <span class="nav-text">文编编辑之插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E4%B9%8B%E6%B7%BB%E5%8A%A0"><span class="nav-number">1.5.</span> <span class="nav-text">文本编辑之添加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E6%96%87%E4%BB%B6"><span class="nav-number">1.6.</span> <span class="nav-text">编辑文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E4%B8%8E%E6%92%A4%E9%94%80"><span class="nav-number">2.</span> <span class="nav-text">删除与撤销</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E7%B1%BB%E5%91%BD%E4%BB%A4"><span class="nav-number">2.1.</span> <span class="nav-text">删除类命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E5%A4%9A%E5%88%A0%E9%99%A4%E7%B1%BB%E5%91%BD%E4%BB%A4"><span class="nav-number">2.2.</span> <span class="nav-text">更多删除类命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E5%91%BD%E4%BB%A4%E5%92%8C%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.3.</span> <span class="nav-text">关于命令和对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%AE%A1%E6%95%B0%E6%8C%87%E5%AE%9A%E5%8A%A8%E4%BD%9C"><span class="nav-number">2.4.</span> <span class="nav-text">使用计数指定动作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E8%AE%A1%E6%95%B0%E4%BB%A5%E5%88%A0%E9%99%A4%E6%9B%B4%E5%A4%9A"><span class="nav-number">2.5.</span> <span class="nav-text">使用计数以删除更多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E6%95%B4%E8%A1%8C"><span class="nav-number">2.6.</span> <span class="nav-text">操作整行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%92%A4%E9%94%80%E7%B1%BB%E5%91%BD%E4%BB%A4"><span class="nav-number">2.7.</span> <span class="nav-text">撤销类命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%AE%E5%85%A5%E3%80%81%E6%9B%B4%E6%94%B9%E5%92%8C%E6%9B%BF%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text">置入、更改和替换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%AE%E5%85%A5%E7%B1%BB%E5%91%BD%E4%BB%A4"><span class="nav-number">3.1.</span> <span class="nav-text">置入类命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2%E7%B1%BB%E5%91%BD%E4%BB%A4"><span class="nav-number">3.2.</span> <span class="nav-text">替换类命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E7%B1%BB%E5%91%BD%E4%BB%A4"><span class="nav-number">3.3.</span> <span class="nav-text">更改类命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-c-%E6%9B%B4%E6%94%B9%E6%9B%B4%E5%A4%9A"><span class="nav-number">3.4.</span> <span class="nav-text">使用 c 更改更多</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8D%E3%80%81%E6%9F%A5%E6%89%BE%E5%92%8C%E6%9B%BF%E6%8D%A2"><span class="nav-number">4.</span> <span class="nav-text">定位、查找和替换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%BD%8D%E5%8F%8A%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81"><span class="nav-number">4.1.</span> <span class="nav-text">定位及文件状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2%E7%B1%BB%E5%91%BD%E4%BB%A4"><span class="nav-number">4.2.</span> <span class="nav-text">搜索类命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E5%AF%B9%E6%8B%AC%E5%8F%B7%E7%9A%84%E6%9F%A5%E6%89%BE"><span class="nav-number">4.3.</span> <span class="nav-text">配对括号的查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%BF%E6%8D%A2%E5%91%BD%E4%BB%A4"><span class="nav-number">4.4.</span> <span class="nav-text">替换命令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C"><span class="nav-number">5.</span> <span class="nav-text">文件相关操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8-Vim-%E5%86%85%E6%89%A7%E8%A1%8C%E5%A4%96%E9%83%A8%E5%91%BD%E4%BB%A4%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">5.1.</span> <span class="nav-text">在 Vim 内执行外部命令的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E4%BF%9D%E5%AD%98%E6%96%87%E4%BB%B6%E7%9A%84%E6%9B%B4%E5%A4%9A%E4%BF%A1%E6%81%AF"><span class="nav-number">5.2.</span> <span class="nav-text">关于保存文件的更多信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%B8%AA%E5%85%B7%E6%9C%89%E9%80%89%E6%8B%A9%E6%80%A7%E7%9A%84%E4%BF%9D%E5%AD%98%E5%91%BD%E4%BB%A4"><span class="nav-number">5.3.</span> <span class="nav-text">一个具有选择性的保存命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E5%8F%96%E5%92%8C%E5%90%88%E5%B9%B6%E6%96%87%E4%BB%B6"><span class="nav-number">5.4.</span> <span class="nav-text">提取和合并文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%93%E5%BC%80%E3%80%81%E9%99%84%E5%8A%A0%E3%80%81%E6%9B%BF%E6%8D%A2%E3%80%81%E5%A4%8D%E5%88%B6%E5%92%8C%E8%AE%BE%E7%BD%AE%E7%B1%BB%E5%91%BD%E4%BB%A4"><span class="nav-number">6.</span> <span class="nav-text">打开、附加、替换、复制和设置类命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%93%E5%BC%80%E7%B1%BB%E5%91%BD%E4%BB%A4"><span class="nav-number">6.1.</span> <span class="nav-text">打开类命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%84%E5%8A%A0%E7%B1%BB%E5%91%BD%E4%BB%A4"><span class="nav-number">6.2.</span> <span class="nav-text">附加类命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%A6%E4%B8%80%E4%B8%AA%E7%BD%AE%E6%8D%A2%E5%91%BD%E4%BB%A4%E7%9A%84%E7%89%88%E6%9C%AC"><span class="nav-number">6.3.</span> <span class="nav-text">另一个置换命令的版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E7%B2%98%E8%B4%B4%E6%96%87%E6%9C%AC"><span class="nav-number">6.4.</span> <span class="nav-text">复制粘贴文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%B1%BB%E5%91%BD%E4%BB%A4%E9%80%89%E9%A1%B9"><span class="nav-number">6.5.</span> <span class="nav-text">设置类命令选项</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E5%91%BD%E4%BB%A4"><span class="nav-number">7.</span> <span class="nav-text">其他命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E7%BA%BF%E5%B8%AE%E5%8A%A9%E7%B3%BB%E7%BB%9F"><span class="nav-number">7.1.</span> <span class="nav-text">在线帮助系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%90%AF%E5%8A%A8%E8%84%9A%E6%9C%AC"><span class="nav-number">7.2.</span> <span class="nav-text">创建启动脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%A5%E5%85%A8%E5%8A%9F%E8%83%BD"><span class="nav-number">7.3.</span> <span class="nav-text">补全功能</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freedomly</p>
+  <div class="site-description" itemprop="description">Hope is a good thing, maybe the best of things, and no good thing ever dies.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feilongjiang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feilongjiang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:freedom.jfl@live.com" title="E-Mail → mailto:freedom.jfl@live.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/freedomly1003" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;freedomly1003" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://steamcommunity.com/id/freedom1003/" title="Steam → http:&#x2F;&#x2F;steamcommunity.com&#x2F;id&#x2F;freedom1003&#x2F;" rel="noopener" target="_blank"><i class="fab fa-steam fa-fw"></i>Steam</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://space.bilibili.com/2462359" title="Bilibili → http:&#x2F;&#x2F;space.bilibili.com&#x2F;2462359" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>Bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.freedomly.tk/2019/05/17/Vimtutor-commands/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freedomly">
+      <meta itemprop="description" content="Hope is a good thing, maybe the best of things, and no good thing ever dies.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FreedomLy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          《Vim 教程》指令记录
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-05-17 13:54:10" itemprop="dateCreated datePublished" datetime="2019-05-17T13:54:10+08:00">2019-05-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Vim/" itemprop="url" rel="index"><span itemprop="name">Vim</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>之前跟着 <a target="_blank" rel="noopener" href="https://www.vim.org/download.php">Vim</a> 自带的 《Vim 教程》过了一遍常用的快捷键和命令，下面作一下记录，方便后续查找和回忆。</p>
+<span id="more"></span>
+
+
+<p>在命令行输入 <code>vimtutor</code> 进入 Vim 自带的教程。</p>
+<h2 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h2><h3 id="移动光标"><a href="#移动光标" class="headerlink" title="移动光标"></a>移动光标</h3><p>移动光标分别为 <code>h</code>、<code>j</code>、<code>k</code>、<code>l</code> 键，当然也可以通过键盘上的方向键进行移动。不过考虑方向键离主键盘较远，因此使用<code>h</code>、<code>j</code>、<code>k</code>、<code>l</code>会更加高效。如果不确定当前的指令，只需要按下 <code>ESC</code> 键即可回到正常模式，然后再次输入指令。</p>
+<h3 id="Vim-的进入和退出"><a href="#Vim-的进入和退出" class="headerlink" title="Vim 的进入和退出"></a>Vim 的进入和退出</h3><p>在正常模式下，输入 <code>:q!</code> 然后再按下回车键即可退出当前打开的文档，该指令会丢弃之前对文件所作的所有改动。<br>如果是命令提示符中通过 <code>vimtutor</code> 进入教程的，这时会返回至命令行的界面，这时只需重新输入 <code>vimtutor</code>，即可重新进入教程，只不过之前对文档的修改都未得到保存（不管保存与否，通过 <code>vimtutor</code> 进入教程每次都会打开一个副本）。</p>
+<blockquote>
+<p>若未对文档进行修改，输入 <code>:q</code> 即可退出 Vim，<code>:q!</code> 用于对文档有修改，但是不保存的情况，表示强制退出。</p>
+</blockquote>
+<h3 id="文本编辑之删除"><a href="#文本编辑之删除" class="headerlink" title="文本编辑之删除"></a>文本编辑之删除</h3><p>在正常模式下（如果不知道是否处于正常模式，可以按下 <code>ESC</code> 来确保处于正常模式），可以按下 <code>x</code> 键来删除光标所在位置的字符。</p>
+<h3 id="文编编辑之插入"><a href="#文编编辑之插入" class="headerlink" title="文编编辑之插入"></a>文编编辑之插入</h3><p>在正常模式下，按下 <code>i</code> 键来插入文本。这时会进入插入模式，当完成插入后，可按下 <code>ESC</code> 键返回正常模式。</p>
+<h3 id="文本编辑之添加"><a href="#文本编辑之添加" class="headerlink" title="文本编辑之添加"></a>文本编辑之添加</h3><p>在正常模式下，按下 <code>A</code> 键来添加文本。与插入文本不同的是，添加文本操作会将光标移至当前行的行末。同样地，添加完成后，按下 <code>ESC</code> 键返回正常模式。</p>
+<h3 id="编辑文件"><a href="#编辑文件" class="headerlink" title="编辑文件"></a>编辑文件</h3><p>之前讲到如何退出 Vim，下面介绍如何保存修改后的文件。</p>
+<p>在命令行输入 <code>vim &lt;filename&gt;</code> 并回车，会进入名为 <code>&lt;filename&gt;</code> 的文档，通过之前的命令对文档进行修改，修改完成后，输入 <code>:wq</code> 并按下回车键即可保存改动并退出 Vim。</p>
+<h2 id="删除与撤销"><a href="#删除与撤销" class="headerlink" title="删除与撤销"></a>删除与撤销</h2><h3 id="删除类命令"><a href="#删除类命令" class="headerlink" title="删除类命令"></a>删除类命令</h3><p>确保处于正常模式，输入 <code>dw</code> 即可从光标处删除至一个单词的末尾。</p>
+<blockquote>
+<p>当我们输入时，字母 <code>d</code> 会同时出现在屏幕的最后一行。Vim 在等待输入字母 <code>w</code>。如果看到的是除 <code>d</code> 以外的其他字符，表明输入了错误的指令，这时可以按下 <code>ESC</code> 键，并重新输入。</p>
+</blockquote>
+<h3 id="更多删除类命令"><a href="#更多删除类命令" class="headerlink" title="更多删除类命令"></a>更多删除类命令</h3><p>在正常模式下，输入 <code>d$</code> 从当前光标删除到行末。</p>
+<h3 id="关于命令和对象"><a href="#关于命令和对象" class="headerlink" title="关于命令和对象"></a>关于命令和对象</h3><p>许多改变文本的命令都由一个操作符和一个动作构成。</p>
+<p>使用删除操作符 <code>d</code> 的删除命令的格式如下：</p>
+<p><strong>d motion</strong></p>
+<p>其中：</p>
+<ul>
+<li><code>d</code> 表示删除操作符</li>
+<li><code>motion</code> 表示操作符的操作对象</li>
+</ul>
+<p>基本的动作列表如下所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">操作对象</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">w</td>
+<td align="left">从当前光标当前位置直到下一个单词起始处，不包括它的第一个字符</td>
+</tr>
+<tr>
+<td align="center">e</td>
+<td align="left">从当前光标当前位置直到单词末尾，包括最后一个字符</td>
+</tr>
+<tr>
+<td align="center">$</td>
+<td align="left">从当前光标当前位置直到当前行末</td>
+</tr>
+</tbody></table>
+<p>因此输入 <code>de</code> 会从当前光标位置删除到单词末尾。</p>
+<blockquote>
+<p>若不输入操作符，只按下代表相应动作的键，则光标的移动将会按照上述动作进行。</p>
+</blockquote>
+<h3 id="使用计数指定动作"><a href="#使用计数指定动作" class="headerlink" title="使用计数指定动作"></a>使用计数指定动作</h3><p>在动作前输入数字会使它重复那么多次。例如：</p>
+<ul>
+<li>输入 <code>2w</code> 使光标向前移动两个单词。</li>
+<li>输入 <code>3e</code> 使光标向前移动到第三个单词的末尾。</li>
+<li>输入 <code>0</code> 移动光标到行首。</li>
+</ul>
+<p>通过输入不同的数值，可以执行相应的操作。</p>
+<h3 id="使用计数以删除更多"><a href="#使用计数以删除更多" class="headerlink" title="使用计数以删除更多"></a>使用计数以删除更多</h3><p>使用操作符时输入数字可以使它重复那么多次。上面已经提到过删除操作和动作的组合，我们还可以在组合中动作之前插入一个数字以删除更多：</p>
+<p><strong>d number motion</strong></p>
+<p>例如：</p>
+<ul>
+<li>输入 <code>d2w</code> 可以删除两个单词</li>
+</ul>
+<h3 id="操作整行"><a href="#操作整行" class="headerlink" title="操作整行"></a>操作整行</h3><p>输入 <code>dd</code> 可以删除当前一整行。</p>
+<p>鉴于整行删除操作的高频度，Vim 提供了简化的删除操作，我们只需在同一行上输入两次 <code>d</code> 即可删除光标所在的行了。同时可以在 <code>dd</code> 操作前加入数字，以删除多行，例如：</p>
+<ul>
+<li>输入 <code>2dd</code> 可以删除两行。</li>
+</ul>
+<h3 id="撤销类命令"><a href="#撤销类命令" class="headerlink" title="撤销类命令"></a>撤销类命令</h3><p>正常模式下，输入 <code>u</code> 来撤销最后执行的命令，输入 <code>U</code> 来撤销对整行的修改。例如按下了 <code>x</code> 删除了当前行的一个字符，那么可以通过 <code>u</code> 来撤销删除操作。若当前行执行了多个操作，需要全部撤销，则可通过 <code>U</code> 来撤销对当前行的所有修改。如果想要重做被撤销的命令，可以按下 <code>CTRL-R</code>，也即撤销掉撤销命令，回到原来修改后的状态。</p>
+<h2 id="置入、更改和替换"><a href="#置入、更改和替换" class="headerlink" title="置入、更改和替换"></a>置入、更改和替换</h2><h3 id="置入类命令"><a href="#置入类命令" class="headerlink" title="置入类命令"></a>置入类命令</h3><p>正常模式下，输入 <code>p</code> 将最后一次删除的内容置入光标后。如：</p>
+<ul>
+<li>输入 <code>dd</code> 删除某一行</li>
+<li>将光标移至准备置入的位置的<strong>上方</strong></li>
+<li>在正常模式下输入 <code>p</code> 将删除的一行粘贴置入</li>
+</ul>
+<h3 id="替换类命令"><a href="#替换类命令" class="headerlink" title="替换类命令"></a>替换类命令</h3><p>正常模式下，输入 <code>r</code> 和一个字符替换光标所在位置的字符。</p>
+<h3 id="更改类命令"><a href="#更改类命令" class="headerlink" title="更改类命令"></a>更改类命令</h3><p>正常模式下，要改变本文直到一个单词的末尾，可以使用 <code>ce</code>。同时也可以输入 <code>cw</code> 修改单词。具体操作为：</p>
+<ul>
+<li>将光标移动至单词中需要修改的开始位置</li>
+<li>输入 <code>cw</code> 并输入正确的单词</li>
+<li>按下 <code>ESC</code> 键退出修改</li>
+</ul>
+<blockquote>
+<p>请注意，<code>ce</code> 和 <code>cw</code> 命令不仅仅是删除了一个单词，它同时会进入插入模式。</p>
+</blockquote>
+<h3 id="使用-c-更改更多"><a href="#使用-c-更改更多" class="headerlink" title="使用 c 更改更多"></a>使用 c 更改更多</h3><p>更改类操作符可以与删除中使用的同样的动作配合使用。</p>
+<p>更改类操作符的工作方式跟删除类是一致的，其操作格式为：</p>
+<p><strong>c [number] motion</strong></p>
+<p>动作参数（motion）也是一样的，比如 <code>w</code> 代表单词，<code>$</code> 表示行末等。</p>
+<h2 id="定位、查找和替换"><a href="#定位、查找和替换" class="headerlink" title="定位、查找和替换"></a>定位、查找和替换</h2><h3 id="定位及文件状态"><a href="#定位及文件状态" class="headerlink" title="定位及文件状态"></a>定位及文件状态</h3><p>正常模式下，输入 <code>CTRL-G</code> 显示当前编辑文件中当前光标所在行位置以及文件状态信息。</p>
+<p>输入 <code>G</code> 可以使当前光标直接跳转到文件的最后一行。</p>
+<p>输入 <code>gg</code> 可以使当前光标直接跳转到文件的第一行。</p>
+<p>输入行号，然后再输入 <code>G</code> 即可使当前光标直接跳转到指定行。</p>
+<h3 id="搜索类命令"><a href="#搜索类命令" class="headerlink" title="搜索类命令"></a>搜索类命令</h3><p>正常模式下，输入 <code>/</code> 加上一个字符串可以用以在当前文档中查找该字符串。</p>
+<p>要查找同上一次的字符串，只需按下 <code>n</code> 键，如果要反向进行查找，则输入 <code>N</code>。</p>
+<p>要反向查找字符串，可以用 <code>?</code> 代替 <code>/</code>。</p>
+<p>要返回到之前的位置，可以按下 <code>CTRL-O</code>，重复按可以回退更多步。输入 <code>CTRL-I</code> 则会跳转到较新的位置，与 <code>CTRL-O</code> 执行的操作相反。</p>
+<blockquote>
+<p>如果查找已经到达文件末尾，查找会自动从文件头部继续查找，除非 ‘wrapscan’ 选项被复位。</p>
+</blockquote>
+<h3 id="配对括号的查找"><a href="#配对括号的查找" class="headerlink" title="配对括号的查找"></a>配对括号的查找</h3><p>正常模式下，输入 <code>%</code> 可以查找配对的括号 <code>)</code>、<code>]</code>、<code>&#125;</code>。</p>
+<p>若当前光标所在位置的字符为 <code>)</code>、<code>]</code> 或者是 <code>&#125;</code>，输入 <code>%</code> 即可使光标跳转至配对的括号处，再次输入 <code>%</code> 即可返回之前括号的位置。</p>
+<h3 id="替换命令"><a href="#替换命令" class="headerlink" title="替换命令"></a>替换命令</h3><p>正常模式下，输入 <code>:s/old/new/g</code> 可以替换 old 为 new。</p>
+<p>若要替换两行之间出现的每个字符串，可以通过以下命令：</p>
+<ul>
+<li>输入 <code>:#,#s/old/new/g</code>， <code>#,#</code> 表示替换操作的若干行的首尾行号</li>
+<li>输入 <code>:%s/old/new/g</code>，表示替换整个文件中的每个匹配串</li>
+<li>输入 <code>:%s/old/new/gc</code>，则会查找整个文件中的匹配串，并且对每个匹配串提示是否进行替换</li>
+</ul>
+<h2 id="文件相关操作"><a href="#文件相关操作" class="headerlink" title="文件相关操作"></a>文件相关操作</h2><h3 id="在-Vim-内执行外部命令的方法"><a href="#在-Vim-内执行外部命令的方法" class="headerlink" title="在 Vim 内执行外部命令的方法"></a>在 Vim 内执行外部命令的方法</h3><p>在正常模式下，输入 <code>:!</code> 然后紧接着输入一个外部命令即可执行该外部命令。</p>
+<p>如输入 <code>:!ls</code> 并按下回车，会列出当前目录的内容。</p>
+<h3 id="关于保存文件的更多信息"><a href="#关于保存文件的更多信息" class="headerlink" title="关于保存文件的更多信息"></a>关于保存文件的更多信息</h3><p>正常模式下，输入 <code>:w FILENAME</code> 可以将对文件的改动保存到 FILENAME 中。</p>
+<p>若要删除保存的文件，可以通过执行外部命令的方法，输入 <code>:!rm TEST</code> 进行删除。</p>
+<h3 id="一个具有选择性的保存命令"><a href="#一个具有选择性的保存命令" class="headerlink" title="一个具有选择性的保存命令"></a>一个具有选择性的保存命令</h3><p>在正常模式下，若要保存文件的部分内容，可以输入 <code>v motion :w FILENAME</code>。具体操作如下：</p>
+<ul>
+<li>将光标移动至要保存内容的开始位置</li>
+<li>接着按下 <code>v</code> 键进入可视模式，并继续移动光标至要保存内容的结束位置，这些内容会高亮显示</li>
+<li>然后按下 <code>:</code>，这时屏幕底部会出现 <code>:&#39;&lt;,&#39;&gt;</code></li>
+<li>接着输入 <code>w FILENAME</code>，然后按下回车键</li>
+<li>所选中的内容将会被写入 FILENAME 中。</li>
+</ul>
+<blockquote>
+<p>按 <code>v</code> 键使 Vim 进入可视模式。我们可以移动光标使选取区域变大或变小。接着可以使用一个操作符对选中的文本进行操作。例如：按 <code>d</code> 键删除所选中的文本内容。</p>
+</blockquote>
+<h3 id="提取和合并文件"><a href="#提取和合并文件" class="headerlink" title="提取和合并文件"></a>提取和合并文件</h3><p>可以通过 <code>:r FILENAME</code> 命令向当前文件中插入另外文件的内容。</p>
+<blockquote>
+<p>除了合并文件外，还可以读取外部命令的输出。例如：<code>:r !ls</code> 可以读取 ls 命令的输出，并将其放置在光标打下面。</p>
+</blockquote>
+<h2 id="打开、附加、替换、复制和设置类命令"><a href="#打开、附加、替换、复制和设置类命令" class="headerlink" title="打开、附加、替换、复制和设置类命令"></a>打开、附加、替换、复制和设置类命令</h2><h3 id="打开类命令"><a href="#打开类命令" class="headerlink" title="打开类命令"></a>打开类命令</h3><p>正常模式下，输入 <code>o</code> 将在光标打下方打开新的一行并进入插入模式。</p>
+<p>若要在光标的<strong>上方</strong>打开新的一行，则需要输入 <code>O</code>。</p>
+<h3 id="附加类命令"><a href="#附加类命令" class="headerlink" title="附加类命令"></a>附加类命令</h3><p>正常模式下，输入 <code>a</code> 将在光标之后插入文本。</p>
+<blockquote>
+<p><code>a</code>、<code>i</code>、<code>A</code> 都会进入插入模式，唯一的区别在于字符插入的位置。<code>i</code> 将字符插入于光标之前，<code>a</code> 将字符插入于光标之后，而 <code>A</code> 则将字符插入于光标所在行的末尾。</p>
+</blockquote>
+<h3 id="另一个置换命令的版本"><a href="#另一个置换命令的版本" class="headerlink" title="另一个置换命令的版本"></a>另一个置换命令的版本</h3><p>正常模式下，输入 <code>R</code> 可以连续替换多个字符。具体操作如下：</p>
+<ul>
+<li>将光标移动至要替换内容的起始位置</li>
+<li>输入 <code>R</code>，然后逐一输入要替换的字符</li>
+<li>按下 <code>ESC</code> 键退出替换模式回到正常模式。</li>
+</ul>
+<blockquote>
+<p>替换模式与插入模式类似，不过每个输入的字符都会删除一个已有的字符。</p>
+</blockquote>
+<h3 id="复制粘贴文本"><a href="#复制粘贴文本" class="headerlink" title="复制粘贴文本"></a>复制粘贴文本</h3><p>正常模式下，使用操作符 <code>y</code> 复制文本，使用 <code>p</code> 粘贴文本。例如：</p>
+<ul>
+<li>移动光标至所要复制内容的起始位置</li>
+<li>按下 <code>v</code> 键进入可视模式</li>
+<li>移动光标至所要复制内容的结束位置</li>
+<li>输入 <code>y</code> 复制高亮文本</li>
+<li>移动光标至要粘贴的位置，输入 <code>p</code> 以复制文本</li>
+</ul>
+<blockquote>
+<p>可以把 <code>y</code> 当作操作符来使用。例如：<code>yw</code> 表示复制一个单词。</p>
+</blockquote>
+<h3 id="设置类命令选项"><a href="#设置类命令选项" class="headerlink" title="设置类命令选项"></a>设置类命令选项</h3><p>设置可使查找或者替换可忽略大小写的选项。例如：</p>
+<ul>
+<li>要查找单词 ignore 可以在正常模式下输入 <code>/ignore</code> 并回车</li>
+<li>然后设置 ic 选项（Ignore Case，忽略大小写），输入：<code>:set ic</code></li>
+<li>现在可以通过输入 <code>n</code> 键查找单词 ignore，且现在能够查找 Ignore 和 IGNORE</li>
+<li>然后设置 hlsearch 和 insearch 这两个选项，输入：<code>set hls is</code></li>
+<li>现在在此输入查找命令：<code>/ignore</code>，可以发现符合要求的字符串高亮显示了</li>
+<li>若要禁用忽略大小写，则输入：<code>:set noic</code></li>
+</ul>
+<p>输入 <code>:set xxx</code> 可以设置 xxx 选项，一些常用的选项如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">缩写</th>
+<th align="center">全称</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">ic</td>
+<td align="center">ignorecase</td>
+<td align="left">查找时忽略字母大小写</td>
+</tr>
+<tr>
+<td align="center">is</td>
+<td align="center">insearch</td>
+<td align="left">查找短语时显示部分匹配</td>
+</tr>
+<tr>
+<td align="center">hls</td>
+<td align="center">hlsearch</td>
+<td align="left">高亮显示所有的匹配短语</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>若要移除匹配项的高亮显示，可以输入：<code>:nohlsearch</code>。在选项前加上 <code>no</code> 可以关闭选项。<br>如果想要仅在一次查找时忽略字母大小写，可以使用 <code>\c:/ignore\c</code> 并回车</p>
+</blockquote>
+<h2 id="其他命令"><a href="#其他命令" class="headerlink" title="其他命令"></a>其他命令</h2><h3 id="在线帮助系统"><a href="#在线帮助系统" class="headerlink" title="在线帮助系统"></a>在线帮助系统</h3><p>Vim 拥有一个细致全面的在线帮助系统，可以通过下述命令启动该系统：</p>
+<ul>
+<li>按下 <HELP> 键</li>
+<li>按下 <F1> 键</li>
+<li>输入 <code>:help</code> 并回车</li>
+</ul>
+<p>输入 <code>CTRL-W</code> 可以在不同窗口间切换</p>
+<p>在 <code>:help</code> 命令中添加关键字，可以找到改关键字的帮助，如：</p>
+<ul>
+<li><code>:help w</code></li>
+<li><code>:help c_CTRL-D</code></li>
+<li><code>:help insert-index</code></li>
+<li><code>:helo user-manual</code></li>
+</ul>
+<h3 id="创建启动脚本"><a href="#创建启动脚本" class="headerlink" title="创建启动脚本"></a>创建启动脚本</h3><p>通过创建启动脚本，可以启用 Vim 的特性。Vim 的功能特性要比 Vi 多得多，但其中大部分都没有缺省启用。为了使用更多的特性，可以创建一个 vimrc 文件。</p>
+<ul>
+<li>开始编辑 vimrc 文件，具体命令取决于您所使用的操作系统：<ul>
+<li><code>:edit ~/.vimrc</code>，这是 Unix 系统所使用的命令</li>
+<li><code>:edit $VIM/_vimrc</code>，这是 MS-Windows 系统所使用的命令</li>
+</ul>
+</li>
+<li>接着读取 vimrc 示例文件的内容：<ul>
+<li><code>:r $VIMRUNTIME/vimrc_example.vim</code></li>
+</ul>
+</li>
+<li>保存文件，命令为：<ul>
+<li><code>:write</code></li>
+</ul>
+</li>
+</ul>
+<p>下次启动 Vim 时，编辑器就会有了语法高亮的功能。我们可以把喜欢的各种设置添加到这个 vimrc 文件中。要了解更多信息请输入 <code>:help imrc-intro</code>。</p>
+<h3 id="补全功能"><a href="#补全功能" class="headerlink" title="补全功能"></a>补全功能</h3><p>使用 <code>CTRL-D</code> 和 <code>TAB</code> 可以进行命令补全。</p>
+<blockquote>
+<p>补全对于许多命令都有效。只需尝试按 CTRL-D 和 TAB。它对于 :help 命令非常有用。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Freedomly
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://www.freedomly.tk/2019/05/17/Vimtutor-commands/" title="《Vim 教程》指令记录">https://www.freedomly.tk/2019/05/17/Vimtutor-commands/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Vim%E6%95%99%E7%A8%8B/" rel="tag"># Vim教程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/05/16/OpenStack-Neutron-Network-Model/" rel="prev" title="OpenStack Neutron -- Neutron 的网络实现模型">
+                  <i class="fa fa-chevron-left"></i> OpenStack Neutron -- Neutron 的网络实现模型
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/05/22/OpenStack-Neutron-Resources-Model/" rel="next" title="OpenStack Neutron -- Neutron 的资源模型">
+                  OpenStack Neutron -- Neutron 的资源模型 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-star"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freedomly</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">101k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:04</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch-lite.umd.js" integrity="sha256-HWlivbjXc58GuU4EIZziqIE83FFZ/da42de13pGZnMA=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.30.2/dist/instantsearch.production.min.js" integrity="sha256-eqhx/eer5fsD7YooSb21wsfJaQkJ/4gF3bmRBZP7q2o=" crossorigin="anonymous"></script><script src="/js/third-party/search/algolia-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

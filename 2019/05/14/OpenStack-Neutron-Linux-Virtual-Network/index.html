@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.freedomly.tk","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"algolia":{"appID":"3V8CYA0BZJ","apiKey":"5e82fb4a75535312cb85cdb8b298443e","indexName":"myBlog","hits":{"per_page":10}}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Neutron 在构建网络服务时，利用了许多 Linux 虚拟网络的功能（Linux 内核中的虚拟网络设备以及其他网络功能）。下面介绍一些与 Neutron 相关的 Linux 虚拟网络功能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenStack Neutron -- Linux 虚拟网络基础">
+<meta property="og:url" content="https://www.freedomly.tk/2019/05/14/OpenStack-Neutron-Linux-Virtual-Network/index.html">
+<meta property="og:site_name" content="FreedomLy">
+<meta property="og:description" content="Neutron 在构建网络服务时，利用了许多 Linux 虚拟网络的功能（Linux 内核中的虚拟网络设备以及其他网络功能）。下面介绍一些与 Neutron 相关的 Linux 虚拟网络功能。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-14T03:59:26.000Z">
+<meta property="article:modified_time" content="2019-05-14T04:28:54.000Z">
+<meta property="article:author" content="Freedomly">
+<meta property="article:tag" content="Neutron">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://www.freedomly.tk/2019/05/14/OpenStack-Neutron-Linux-Virtual-Network/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.freedomly.tk/2019/05/14/OpenStack-Neutron-Linux-Virtual-Network/","path":"2019/05/14/OpenStack-Neutron-Linux-Virtual-Network/","title":"OpenStack Neutron -- Linux 虚拟网络基础"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>OpenStack Neutron -- Linux 虚拟网络基础 | FreedomLy</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">FreedomLy</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Welcome to my blog. <3</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">34</span></a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container">
+  <div class="algolia-stats"><hr></div>
+  <div class="algolia-hits"></div>
+  <div class="algolia-pagination"></div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TAP-TUN"><span class="nav-number">1.</span> <span class="nav-text">TAP&#x2F;TUN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#namespace"><span class="nav-number">2.</span> <span class="nav-text">namespace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#veth-pair"><span class="nav-number">3.</span> <span class="nav-text">veth pair</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bridge"><span class="nav-number">4.</span> <span class="nav-text">Bridge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Router"><span class="nav-number">5.</span> <span class="nav-text">Router</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tun"><span class="nav-number">6.</span> <span class="nav-text">tun</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freedomly</p>
+  <div class="site-description" itemprop="description">Hope is a good thing, maybe the best of things, and no good thing ever dies.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feilongjiang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feilongjiang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:freedom.jfl@live.com" title="E-Mail → mailto:freedom.jfl@live.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/freedomly1003" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;freedomly1003" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://steamcommunity.com/id/freedom1003/" title="Steam → http:&#x2F;&#x2F;steamcommunity.com&#x2F;id&#x2F;freedom1003&#x2F;" rel="noopener" target="_blank"><i class="fab fa-steam fa-fw"></i>Steam</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://space.bilibili.com/2462359" title="Bilibili → http:&#x2F;&#x2F;space.bilibili.com&#x2F;2462359" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>Bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.freedomly.tk/2019/05/14/OpenStack-Neutron-Linux-Virtual-Network/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freedomly">
+      <meta itemprop="description" content="Hope is a good thing, maybe the best of things, and no good thing ever dies.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FreedomLy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OpenStack Neutron -- Linux 虚拟网络基础
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2019-05-14 11:59:26 / 修改时间：12:28:54" itemprop="dateCreated datePublished" datetime="2019-05-14T11:59:26+08:00">2019-05-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OpenStack/" itemprop="url" rel="index"><span itemprop="name">OpenStack</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>17 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Neutron 在构建网络服务时，利用了许多 Linux 虚拟网络的功能（Linux 内核中的虚拟网络设备以及其他网络功能）。下面介绍一些与 Neutron 相关的 Linux 虚拟网络功能。</p>
+<span id="more"></span>
+
+<h2 id="TAP-TUN"><a href="#TAP-TUN" class="headerlink" title="TAP/TUN"></a>TAP/TUN</h2><p>TAP/TUN 是 Linux 内核实现的一对虚拟网络设备。TAP 工作在二层，TUN 工作在三层。Linux 内核通过 TAP/TUN 设备向绑定该设备的用户空间程序发送数据，反之，用户空间程序也可以像操作硬件网络设备那样，通过 TAP/TUN 设备发送数据。</p>
+<p>Linux 中设备的含义并不是指实际的物理硬件，而是一个类似于数据结构、内核模块或设备驱动。像 TAP/TUN 这样的设备，其数据结构如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">tun_struct</span> &#123;</span></span><br><span class="line">    <span class="keyword">char</span> name[<span class="number">8</span>];				<span class="comment">// 设备名</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> flags;			<span class="comment">// 区分 TAP 和 TUN 设备</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">fasync_struct</span> *<span class="title">fasync</span>;</span>		<span class="comment">// 文件异步通知结构</span></span><br><span class="line">    <span class="keyword">wait_queue_head_t</span> read_wait;		<span class="comment">// 文件等待队列</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">net_device</span> <span class="title">dev</span>;</span>			<span class="comment">// Linux 抽象网络设备结构</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sk_buff_head</span> <span class="title">txq</span>;</span>			<span class="comment">// 网络缓冲区队列</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">net_device_status</span> <span class="title">stats</span>;</span>		<span class="comment">// 网卡状态信息结构</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>TAP 与 TUN 的定义相同，通过 <code>flags</code> 来进行区分。但是从其背后所承载的功能而言，两者有着较大的区别：TAP 位于网络 OSI 模型的第二层（数据链路层），TUN 位于第三层（网络层）。</p>
+<p>TAP 从功能定位上来讲，位于数据链路层，数据链路层的主要协议有：</p>
+<ol>
+<li>点对点协议（Point-to-Point Protocol）</li>
+<li>以太网（Ethernet）</li>
+<li>高级数据链路协议（High-Level Data Link Protocol）</li>
+<li>帧中继（Frame Relay）</li>
+<li>异步传输模式（Asynchronous Transfer Mode）</li>
+</ol>
+<p>但是 TAP 只与以太网（Ethernet）协议对于。所以，TAP 有时也称为“虚拟以太设备”。</p>
+<p>想要使用 Linux 命令行（基于 CentOS7 x86_64）操作一个 TAP，首先需要 Linux tun 模块：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果输入 Linux 命令 modinfo tun，有如下输出，则说明有 tun 模块</span></span><br><span class="line">modinfo tun</span><br><span class="line">filename:	/lib/modules/3.10.0-862.14.4.el7.x86_64/kernel/drivers/net/tun.ko.xz</span><br><span class="line"><span class="built_in">alias</span>:		devname:net/tun</span><br><span class="line"><span class="built_in">alias</span>:		char-major-10-200</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
+<p>当 Linux 版本具有 tun 模块时，还需要查看其是否已经加载：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsmod | grep tun</span><br><span class="line">tun 31665 1</span><br></pre></td></tr></table></figure>
+
+<p>如果已经加载，则会出现上述的”tun ***“那一行。如果没有加载，则可使用如下命令进行加载：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">modprob tun</span><br></pre></td></tr></table></figure>
+
+<p>当确认 Linux 加载 tun 模块之后，还需要确认 Linux 是否操作 TAP/TUN 的命令行工具 tunctl：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tunctl <span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+
+<p>如果 Linux 有输出，则说明已有命令行工具，否则表示当前 Linux 系统并没有安装 tunctl，可以通过如下命令进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install tunctl</span><br></pre></td></tr></table></figure>
+
+<blockquote><p>若安装时出现 no package tunctl avaliable 时，需要手动添加安装源：</p>
+<ol>
+<li>添加安装源配置文件 /etc/yun.repos.d/nux-misc.repo：</li>
+</ol>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[nux-misc]</span></span><br><span class="line"><span class="attr">name</span>=Nux Misc</span><br><span class="line"><span class="attr">baseurl</span>=http://li.nux.ro/download/nux/misc/el7/x<span class="number">86_64</span></span><br><span class="line"><span class="attr">enabled</span>=<span class="number">0</span></span><br><span class="line"><span class="attr">gpgcheck</span>=<span class="number">1</span></span><br><span class="line"><span class="attr">gpgkey</span>=http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>重新执行安装命令：</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum --enablerepo=nux-misc install tunctl</span><br></pre></td></tr></table></figure>
+
+<p>ref: <a target="_blank" rel="noopener" href="https://blog.csdn.net/lopng/article/details/72821438">CentOS 7 安装tunctl</a>  </p>
+</blockquote>
+<p>具备了 tun 和 tunctl 后，就可以创建一个 TAP 设备了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tunctl -t tap_test</span><br><span class="line">Set <span class="string">&#x27;tap_test&#x27;</span> persistent and owned by uid 0</span><br></pre></td></tr></table></figure>
+
+<p>可以通过如下命令来查看所创建的 TAP（名字为 <code>tap_test</code>）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip link list</span><br></pre></td></tr></table></figure>
+
+<p>也可以通过如下命令查看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig -a</span><br></pre></td></tr></table></figure>
+
+<p>通过 tunctl 创建的 <code>tap_test</code> 还未绑定 IP 地址，可以通过如下命令进行绑定：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用 ip addr 命令绑定 IP 地址</span></span><br><span class="line">ip addr add <span class="built_in">local</span> 192.168.100.1/24 dev tap_test</span><br><span class="line"><span class="comment"># 或者使用 ifconfig 命令绑定 IP 地址</span></span><br><span class="line">ifconfig tap_test 192.168.100.1/24</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>ifconfig -a</code> 命令再次查看，可以发现 <code>tap_test</code> 已绑定了所设置的 IP 地址。</p>
+<h2 id="namespace"><a href="#namespace" class="headerlink" title="namespace"></a>namespace</h2><p>namespace 是 Linux 虚拟网络的一个重要概念。传统 Linux 的许多资源是全局的，比如进程 ID 资源。而 namespace 的目的就是将这些资源进行隔离。Linux 可以在一个 Host 内创建许多 namespace，于是那些原本是 Linux 全局的资源，就变成了 namespace 范围内的”全局“资源，而且不同的 namespace 的资源互不可见、彼此透明（感觉类似于 C/C++ 的 namespace）。</p>
+<p>Linux 内核对哪些资源进行了隔离可以从 include/linux/nsproxy.h 中看出：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// nsproxy.h</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">nsproxy</span> &#123;</span></span><br><span class="line">    <span class="keyword">atomic_t</span> count;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">uts_namepsace</span> *<span class="title">uts_ns</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">ipc_namespace</span> *<span class="title">ipc_ns</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">mnt_namespace</span> *<span class="title">mnt_ns</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">pid_namespace</span> *<span class="title">pid_ns</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">user_namepsace</span> *<span class="title">user_ns</span>;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">net</span> *<span class="title">net_ns</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>以上 6 个资源就是 Linux namespace 所隔离的资源，其含义如下表：</p>
+<table>
+<thead>
+<tr>
+<th align="center">资源</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">uts_ns</td>
+<td align="left">UTS 为 Unix Timesharing System 的简称，包含内存名称、版本、底层体系结构等信息</td>
+</tr>
+<tr>
+<td align="center">ipc_ns</td>
+<td align="left">所有与进程间通信（IPC）有关的信息</td>
+</tr>
+<tr>
+<td align="center">mnt_ns</td>
+<td align="left">当前装载的文件系统</td>
+</tr>
+<tr>
+<td align="center">pid_ns</td>
+<td align="left">有关进程 ID 的信息</td>
+</tr>
+<tr>
+<td align="center">user_ns</td>
+<td align="left">资源配额的信息</td>
+</tr>
+<tr>
+<td align="center">net_ns</td>
+<td align="left">网络信息</td>
+</tr>
+</tbody></table>
+<p>单纯从网络角度来看，一个 namespace 提供了一份独立的网络协议栈（网络设备接口、IPv4、IPv6、IP 路由、防火墙规则、sockets 等）。一个设备（Linux Device）只能位于一个 namespace 中，不同 namespace 中的设备可以利用 veth pair 进行桥接。</p>
+<p>Linux 操作 namespace 的命令为 <code>ip netns</code>，可以通过如下命令查看其功能：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ip netns <span class="built_in">help</span></span><br><span class="line">Usage:	ip netns list</span><br><span class="line">	ip netns add NAME</span><br><span class="line">	ip netns <span class="built_in">set</span> NAME NETNSID</span><br><span class="line">	ip [-all] netns delete [NAME]</span><br><span class="line">	ip netns identify [PID]</span><br><span class="line">	ip netns pids NAME</span><br><span class="line">	ip [-all] netns <span class="built_in">exec</span> [name] cmd ...</span><br><span class="line">	ip netns monitor</span><br><span class="line">	ip netns list-id</span><br></pre></td></tr></table></figure>
+
+<p>首先可以创建一个 namespace ：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先查看当前的 namespace 列表</span></span><br><span class="line">ip netns list</span><br><span class="line"><span class="comment"># 由于当前没有 namespace，所以命令行没有任何返回</span></span><br><span class="line"><span class="comment"># 创建一个 namespace，命名为 ns_test</span></span><br><span class="line">ip netns add ns_test</span><br><span class="line"><span class="comment">#在此查看当前 namespace 列表，可以发现刚刚创建的 namespace: ns_test</span></span><br><span class="line">ip netns list</span><br><span class="line">ns_test <span class="comment"># 这个是 ip netns list 的返回值</span></span><br></pre></td></tr></table></figure>
+
+<p>当我们创建一个 namespace 后，可以将原来创建的虚拟设备 tap_test 迁移到这个 namespace 中去，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip link <span class="built_in">set</span> tap_test netns ns_test</span><br></pre></td></tr></table></figure>
+
+<p>这个时候，在原来的 host/vm 里再执行 <code>ip link list</code> 命令，就会发现设备 <code>tap_test</code> 消失了，因为我们已经将其迁移到 <code>ns_test</code> 中去了。</p>
+<p>通过一下命令可以查看或者操作 namespace 里的设备：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip [-all] netns <span class="built_in">exec</span> [NAME] cmd ...		<span class="comment"># cmd 为想要操作的命令</span></span><br></pre></td></tr></table></figure>
+
+<p>比如要管理 <code>ns_test</code> 里面的设备，执行命令如下：</p>
+<ol>
+<li>在 <code>ns_test</code> 里执行 <code>ip link list</code></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip netns <span class="built_in">exec</span> ns_test ip link list</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在 <code> ns_test</code> 里执行 <code>ifconfig -a</code></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip netns <span class="built_in">exec</span> ns_test ifconfig -a</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>绑定 IP 地址</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip netns <span class="built_in">exec</span> ns_test ifconfig tap_test 192.168.50.1/24 up</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>查看 IP 地址</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip netns <span class="built_in">exec</span> ns_test ifconfig -a</span><br></pre></td></tr></table></figure>
+
+<h2 id="veth-pair"><a href="#veth-pair" class="headerlink" title="veth pair"></a>veth pair</h2><p>veth pair 不是一个设备，而是一对设备，用以连接两个虚拟以太端口。操作 veth pair，需要结合 namespace，不然就没有意义。下面举一个例子，两个 namespace ns1/ns2 中各有一组 tap 组成 veth pair，两者的 IP 地址分别为 192.168.50.1 和 192.168.50.2，两个 IP 进行互 ping 测试，ping 通表示测试通过。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 创建 veth pair</span></span><br><span class="line">ip link add tap1 <span class="built_in">type</span> veth peer name tap2</span><br><span class="line"><span class="comment"># 2. 创建 namespace: ns1、ns2</span></span><br><span class="line">ip netns add ns1</span><br><span class="line">ip netns add ns2</span><br><span class="line"><span class="comment"># 3. 把两个 tap 分别迁移到对应的 namespace 中</span></span><br><span class="line">ip link <span class="built_in">set</span> tap1 netns ns1</span><br><span class="line">ip link <span class="built_in">set</span> tap2 netns ns2</span><br><span class="line"><span class="comment"># 4. 分别给两个 tap 绑定 IP 地址</span></span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ip addr add <span class="built_in">local</span> 192.168.50.1/24 dev tap1</span><br><span class="line">ip netns <span class="built_in">exec</span> ns2 ip addr add <span class="built_in">local</span> 192.168.50.2/24 dev tap2</span><br><span class="line"><span class="comment"># 5. 将两个 tap 设置为 up</span></span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ifconfig tap1 up</span><br><span class="line">ip netns <span class="built_in">exec</span> ns2 ifconfig tap2 up</span><br><span class="line"><span class="comment"># 6. ping</span></span><br><span class="line">ip netns <span class="built_in">exec</span> ns2 ping 192.168.50.1		<span class="comment"># ping ns1 中的 tap</span></span><br><span class="line">...		<span class="comment"># 输出结果</span></span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ping 192.168.50.2		<span class="comment"># ping ns2 中的 tap</span></span><br><span class="line">...		<span class="comment"># 输出结果</span></span><br></pre></td></tr></table></figure>
+
+<p>上述用例给出了 veth pair 连接两个namespace 的方法，veth pair 只有一对 tap，如果需要实现两个 以上的namespace 互通，则 veth pair 无法满足需求。</p>
+<h2 id="Bridge"><a href="#Bridge" class="headerlink" title="Bridge"></a>Bridge</h2><p>Bridge/Switch 可以实现两个以上 namespace 之间的互通。在 Linux 的语境里，Bridge（网桥）与 Switch（交换机）是一个概念，这里也不对两者进行区分。Linux 中实现 Bridge 功能的是 brctl 模块。在命令行中输入 <code>brctl</code> 可以查看是否正确安装模块：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">brctl</span><br><span class="line">Usage: brctl [Commands]</span><br><span class="line">commands:</span><br><span class="line">	addbr			&lt;bridge&gt;			add bridge</span><br><span class="line">	delbr			&lt;bridge&gt;			delete bridge</span><br><span class="line">	addif			&lt;bridge&gt; &lt;device&gt;		add interface to bridge</span><br><span class="line">	delif			&lt;bridge&gt; &lt;device&gt;		delete interface from bridge</span><br><span class="line">	hairpin			&lt;bridge&gt; &lt;port&gt; &#123;on|off&#125;	turn hairpin on/off</span><br><span class="line">	setageing		&lt;bridge&gt; &lt;time&gt;			<span class="built_in">set</span> ageing time</span><br><span class="line">	setbridgeprio	        &lt;bridge&gt; &lt;prio&gt;			<span class="built_in">set</span> bridge priority</span><br><span class="line">	setfd			&lt;bridge&gt; &lt;time&gt;			<span class="built_in">set</span> bridge forward delay</span><br><span class="line">	sethello		&lt;bridge&gt; &lt;time&gt;			<span class="built_in">set</span> hello time</span><br><span class="line">	setmaxage		&lt;bridge&gt; &lt;time&gt;			<span class="built_in">set</span> max message age</span><br><span class="line">	setpathcost		&lt;bridge&gt; &lt;prot&gt; &lt;cost&gt;		<span class="built_in">set</span> path cost</span><br><span class="line">	setportprio		&lt;bridge&gt; &lt;prot&gt; &lt;prio&gt;		<span class="built_in">set</span> port priority</span><br><span class="line">	show			[ &lt;bridge&gt; ]			show a list of bridges</span><br><span class="line">	showmacs		&lt;bridge&gt;			show a list of mac addrs</span><br><span class="line">	showstp			&lt;bridge&gt;			show bridge stp info</span><br><span class="line">	stp			&lt;bridge&gt; &#123;on|off&#125;		turn stp on/off</span><br></pre></td></tr></table></figure>
+
+<p>若未安装，可通过如下命令进行安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install bridge-utils</span><br></pre></td></tr></table></figure>
+
+<p>接下来也通过一个例子来说明 Bridge 的基本用法，同时也涵盖了之前所述的几个概念：tap、namespace、veth pair。样例中有 4 个 namespace，每个 namespace 都有一个 tap 与交换机上一个 tap 口组成 veth pair。这样 4 个 namespace 就通过 veth pair 及 Bridge 互联起来。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 创建 veth pair</span></span><br><span class="line">ip link add tap1 <span class="built_in">type</span> veth peer name tap1_peer</span><br><span class="line">ip link add tap2 <span class="built_in">type</span> veth peer name tap2_peer</span><br><span class="line">ip link add tap3 <span class="built_in">type</span> veth peer name tap3_peer</span><br><span class="line">ip link add tap4 <span class="built_in">type</span> veth peer name tap4_peer</span><br><span class="line"><span class="comment"># 2. 创建 namespace</span></span><br><span class="line">ip netns add ns1</span><br><span class="line">ip netns add ns2</span><br><span class="line">ip netns add ns3</span><br><span class="line">ip netns add ns4</span><br><span class="line"><span class="comment"># 3. 把 tap 迁移到相应的 namespace 中</span></span><br><span class="line">ip link <span class="built_in">set</span> tap1 netns ns1</span><br><span class="line">ip link <span class="built_in">set</span> tap2 netns ns2</span><br><span class="line">ip link <span class="built_in">set</span> tap3 netns ns3</span><br><span class="line">ip link <span class="built_in">set</span> tap4 netns ns4</span><br><span class="line"><span class="comment"># 4. 创建 Bridge</span></span><br><span class="line">brctl addbr br1</span><br><span class="line"><span class="comment"># 5. 把相应的 tap 添加到 Bridge 中</span></span><br><span class="line">brctl addif br1 tap1_peer</span><br><span class="line">brctl addif br1 tap2_peer</span><br><span class="line">brctl addif br1 tap3_peer</span><br><span class="line">brctl addif br1 tap4_peer</span><br><span class="line"><span class="comment"># 6. 配置相应 tap 的 IP 地址</span></span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ip addr add <span class="built_in">local</span> 192.168.50.1/24 dev tap1</span><br><span class="line">ip netns <span class="built_in">exec</span> ns2 ip addr add <span class="built_in">local</span> 192.168.50.2/24 dev tap2</span><br><span class="line">ip netns <span class="built_in">exec</span> ns3 ip addr add <span class="built_in">local</span> 192.168.50.3/24 dev tap3</span><br><span class="line">ip netns <span class="built_in">exec</span> ns4 ip addr add <span class="built_in">local</span> 192.168.50.4/24 dev tap4</span><br><span class="line"><span class="comment"># 7. 将 Bridge 及所有 tap 状态设置为 up</span></span><br><span class="line">ip link <span class="built_in">set</span> br1 up</span><br><span class="line">ip link <span class="built_in">set</span> tap1_peer up</span><br><span class="line">ip link <span class="built_in">set</span> tap2_peer up</span><br><span class="line">ip link <span class="built_in">set</span> tap3_peer up</span><br><span class="line">ip link <span class="built_in">set</span> tap4_peer up</span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ip link <span class="built_in">set</span> tap1 up</span><br><span class="line">ip netns <span class="built_in">exec</span> ns2 ip link <span class="built_in">set</span> tap2 up</span><br><span class="line">ip netns <span class="built_in">exec</span> ns3 ip link <span class="built_in">set</span> tap3 up</span><br><span class="line">ip netns <span class="built_in">exec</span> ns4 ip link <span class="built_in">set</span> tap4 up</span><br><span class="line"><span class="comment"># 8. 互 ping 测试</span></span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ping 192.168.50.2</span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ping 192.168.50.3</span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ping 192.168.50.4</span><br><span class="line">...</span><br><span class="line">ip netns <span class="built_in">exec</span> ns4 ping 192.168.50.1</span><br><span class="line">ip netns <span class="built_in">exec</span> ns4 ping 192.168.50.2</span><br><span class="line">ip netns <span class="built_in">exec</span> ns4 ping 192.168.50.3</span><br></pre></td></tr></table></figure>
+
+<p>若能够互相 ping 通，则表示测试通过。</p>
+<h2 id="Router"><a href="#Router" class="headerlink" title="Router"></a>Router</h2><p>Linux 中 Router 能够用于不同网段之间的互通。通过如下命令可以查看系统是否开启路由转发功能：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">less /proc/sys/net/ipv4/if_forward</span><br></pre></td></tr></table></figure>
+
+<p>如果返回的结果是 <code>0</code>，则表示未开启，若为 <code>1</code>，则表示已开启路由转发功能。可以修改配置文件 “/etc/systcl.conf”，将 <code>net.ipv4.ip_forward</code> 的值修改为 <code>1</code> 来开启该功能。</p>
+<p>下面举个例子，用于说明 Router 的作用。分别设计 ns1/tap1 和 ns2/tap2，且它们不在同一个网段中，中间需要经过一个路由转发才能互通。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 创建 veth pair</span></span><br><span class="line">ip link add tap1 <span class="built_in">type</span> veth peer name tap1_peer</span><br><span class="line">ip link add tap2 <span class="built_in">type</span> veth peer name tap2_peer</span><br><span class="line"><span class="comment"># 2. 创建 namespace</span></span><br><span class="line">ip netns add ns1</span><br><span class="line">ip netns add ns2</span><br><span class="line"><span class="comment"># 3. 将 tap 迁移到 namespace</span></span><br><span class="line">ip link <span class="built_in">set</span> tap1 netns ns1</span><br><span class="line">ip link <span class="built_in">set</span> tap2 netns ns2</span><br><span class="line"><span class="comment"># 4. 配置 tap IP 地址</span></span><br><span class="line">ip addr add <span class="built_in">local</span> 192.168.100.1/24 dev tap1_peer</span><br><span class="line">ip addr add <span class="built_in">local</span> 192.168.200.1/24 dev tap2_peer</span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ip addr add <span class="built_in">local</span> 192.168.100.2/24 dev tap1</span><br><span class="line">ip netns <span class="built_in">exec</span> ns2 ip addr add <span class="built_in">local</span> 192.168.200.2/24 dev tap2</span><br><span class="line"><span class="comment"># 5. 将 tap 设置为 up</span></span><br><span class="line">ip link <span class="built_in">set</span> tap1_peer up</span><br><span class="line">ip link <span class="built_in">set</span> tap2_peer up</span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ip link <span class="built_in">set</span> tap1 up</span><br><span class="line">ip netns <span class="built_in">exec</span> ns2 ip link <span class="built_in">set</span> tap2 up</span><br><span class="line"><span class="comment"># 6. 为 ns1、ns2 添加静态路由，分别到达对方的网段</span></span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 route add -net 192.168.200.0 netmask 255.255.255.0 gw 192.168.100.1</span><br><span class="line">ip netns <span class="built_in">exec</span> ns2 route add -net 192.168.100.0 netmask 255.255.255.0 gw 192.168.200.1</span><br><span class="line"><span class="comment"># 7. 互 ping 测试</span></span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ping 192.168.200.2</span><br><span class="line">...</span><br><span class="line">ip netns <span class="built_in">exec</span> ns2 ping 192.168.100.2</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>能够互相 ping 通表示测试通过。</p>
+<p>添加了静态路由信息后，可以使用如下命令查看 namespace 的路由表：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ip netns <span class="built_in">exec</span> ns1 route -nee</span><br><span class="line">...</span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 route -nee</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>上述命令可以分别查看 ns1 和 ns2 的路由表信息。</p>
+<h2 id="tun"><a href="#tun" class="headerlink" title="tun"></a>tun</h2><p>tun 是一个网络层（IP）的点对点设备，它启用了 IP 层隧道功能。Linux 原生支持的三层隧道，可以通过 <code>ip tunnle help</code> 查看。</p>
+<p>Linux 一共原生支持 5 种三层隧道（tunnel），如表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">隧道</th>
+<th align="left">简述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">ipip</td>
+<td align="left">IP in IP，在 IPv4 报文的基础上再封装一个 IPv4 报文头，属于 IPv4 in IPv4</td>
+</tr>
+<tr>
+<td align="center">gre</td>
+<td align="left">通用路由封装（Generic Routing Encapsulation），定义了在任意一种网络层协议上封装任意一个其他网络层协议的协议，属于 IPv4/IPv6 over IPv4</td>
+</tr>
+<tr>
+<td align="center">sit</td>
+<td align="left">与 ipip 类似，用一个IPv4 的报文头封装 IPv6 的报文，属于 IPv6 over IPv4</td>
+</tr>
+<tr>
+<td align="center">isatap</td>
+<td align="left">站内自动隧道寻址协议，一般用于 IPv4 网络中的 IPv6/IPv4 节点间的通信</td>
+</tr>
+<tr>
+<td align="center">vti</td>
+<td align="left">全称是 Virtual Tunnel Interface，为 IPsec 隧道提供了一个可路由的接口类型</td>
+</tr>
+</tbody></table>
+<p>下面给出 tun 的具体用例来进行说明，以 ipip tunnel为例进行配置。在上一节 Router 的基础上，分别在 ns1 和 ns2 中添加 tun1 和 tun2，tun1 和 tun2 不互通，且与 tap1、tap2也没有关系。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1. 加载 ipip 模块，可通过 lsmod | grep ip 命令查看是否加载</span></span><br><span class="line">modprobe ipip</span><br><span class="line"><span class="comment"># 2. 在 ns1 上创建 tun1 和 ipip tunnel</span></span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ip tunnel add tun1 mode ipip remote 192.168.200.2 <span class="built_in">local</span> 192.168.100.2 ttl 255		<span class="comment"># 创建 tun1，模式为 ipip，分别配置远端地址和近端（本地）地址以及 ttl</span></span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ip link <span class="built_in">set</span> tun1 up		<span class="comment"># 启动 tun1</span></span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ip addr add 192.168.50.10 peer 192.168.60.10 dev tun1		<span class="comment"># 为 tun1 添加 ipip 隧道的内层 IP 地址，并设置对端的 ipip 隧道内层 IP 地址</span></span><br><span class="line"><span class="comment"># 3. 在 ns2 上创建 tun2 和 ipip tunnel</span></span><br><span class="line">ip netns <span class="built_in">exec</span> ns2 ip tunnel add tun2 mode ipip remote 192.168.100.2 <span class="built_in">local</span> 192.168.200.2 ttl 255</span><br><span class="line">ip netns <span class="built_in">exec</span> ns2 ip link <span class="built_in">set</span> tun2 up</span><br><span class="line">ip netns <span class="built_in">exec</span> ns2 ip addr add 192.168.60.10 peer 192.168.50.10 dev tun2</span><br><span class="line"><span class="comment"># 4. 互 ping 测试 （测试时遇到了问题，在 CentOS 7 系统下，按照上述命令无法实现两个 tun ping 通，但是前面的 Router 是可以的，原因未知。）</span></span><br><span class="line">ip netns <span class="built_in">exec</span> ns1 ping 192.168.60.10</span><br><span class="line">...</span><br><span class="line">ip netns <span class="built_in">exec</span> ns2 ping 192.168.50.10</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>将上述命令中的 <code>ipip</code> 改为 <code>gre</code>，其余保持不变，即可创建一个 gre 隧道的 tun 设备对。</p>
+</blockquote>
+<p>查看 ns1 的路由表，发现已添加了一个直连路由条目，从 tun1 可以直接到达 192.168.60.10，ns2 亦然。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Freedomly
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://www.freedomly.tk/2019/05/14/OpenStack-Neutron-Linux-Virtual-Network/" title="OpenStack Neutron -- Linux 虚拟网络基础">https://www.freedomly.tk/2019/05/14/OpenStack-Neutron-Linux-Virtual-Network/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Neutron/" rel="tag"># Neutron</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/01/16/Hexo-Travis-CI-auto-deploy/" rel="prev" title="使用 Travis CI 实现 Hexo 博客自动构建和部署">
+                  <i class="fa fa-chevron-left"></i> 使用 Travis CI 实现 Hexo 博客自动构建和部署
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/05/16/OpenStack-Neutron-Network-Model/" rel="next" title="OpenStack Neutron -- Neutron 的网络实现模型">
+                  OpenStack Neutron -- Neutron 的网络实现模型 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-star"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freedomly</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">101k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:04</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch-lite.umd.js" integrity="sha256-HWlivbjXc58GuU4EIZziqIE83FFZ/da42de13pGZnMA=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.30.2/dist/instantsearch.production.min.js" integrity="sha256-eqhx/eer5fsD7YooSb21wsfJaQkJ/4gF3bmRBZP7q2o=" crossorigin="anonymous"></script><script src="/js/third-party/search/algolia-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

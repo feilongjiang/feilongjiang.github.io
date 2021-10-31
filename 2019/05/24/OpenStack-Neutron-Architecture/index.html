@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.freedomly.tk","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"algolia":{"appID":"3V8CYA0BZJ","apiKey":"5e82fb4a75535312cb85cdb8b298443e","indexName":"myBlog","hits":{"per_page":10}}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Neutron 在 OpenStack 中的定位是 NaaS （Networking as a Service）。NaaS 有两层含义：  对外接口：Neutron 为 Network、Subnet、Port、Router 等网络资源建立了逻辑模型，并提供了 RESTful API、CLI（命令行）和 GUI（图形化用户接口） 内部实现：利用 Linux 原生以及其他虚拟网络功能，再加上一些硬件网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenStack Neutron -- Neutron 架构分析">
+<meta property="og:url" content="https://www.freedomly.tk/2019/05/24/OpenStack-Neutron-Architecture/index.html">
+<meta property="og:site_name" content="FreedomLy">
+<meta property="og:description" content="Neutron 在 OpenStack 中的定位是 NaaS （Networking as a Service）。NaaS 有两层含义：  对外接口：Neutron 为 Network、Subnet、Port、Router 等网络资源建立了逻辑模型，并提供了 RESTful API、CLI（命令行）和 GUI（图形化用户接口） 内部实现：利用 Linux 原生以及其他虚拟网络功能，再加上一些硬件网">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-24T06:51:53.000Z">
+<meta property="article:modified_time" content="2019-05-24T06:51:53.000Z">
+<meta property="article:author" content="Freedomly">
+<meta property="article:tag" content="Neutron">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://www.freedomly.tk/2019/05/24/OpenStack-Neutron-Architecture/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.freedomly.tk/2019/05/24/OpenStack-Neutron-Architecture/","path":"2019/05/24/OpenStack-Neutron-Architecture/","title":"OpenStack Neutron -- Neutron 架构分析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>OpenStack Neutron -- Neutron 架构分析 | FreedomLy</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">FreedomLy</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Welcome to my blog. <3</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">34</span></a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container">
+  <div class="algolia-stats"><hr></div>
+  <div class="algolia-hits"></div>
+  <div class="algolia-pagination"></div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Neutron-%E4%B8%AD%E7%9A%84-WSGI-Application"><span class="nav-number">1.</span> <span class="nav-text">Neutron 中的 WSGI Application</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Neutron-%E7%9A%84%E6%B6%88%E6%81%AF%E9%80%9A%E4%BF%A1%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">Neutron 的消息通信机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AMQP-%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">AMQP 基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AMQP-%E7%9A%84%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91"><span class="nav-number">2.2.</span> <span class="nav-text">AMQP 的消息转发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AMQP-%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.2.1.</span> <span class="nav-text">AMQP 消息转发模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AMQP-%E7%9A%84%E5%87%A0%E7%A7%8D%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.2.2.</span> <span class="nav-text">AMQP 的几种通信模式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Neutron-%E7%9A%84%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6"><span class="nav-number">3.</span> <span class="nav-text">Neutron 的并发机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8F%E7%A8%8B%E4%B8%8E%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">3.1.</span> <span class="nav-text">协程与进程、线程的比较</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E5%BA%93-Oslo"><span class="nav-number">4.</span> <span class="nav-text">通用库 Oslo</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freedomly</p>
+  <div class="site-description" itemprop="description">Hope is a good thing, maybe the best of things, and no good thing ever dies.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feilongjiang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feilongjiang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:freedom.jfl@live.com" title="E-Mail → mailto:freedom.jfl@live.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/freedomly1003" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;freedomly1003" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://steamcommunity.com/id/freedom1003/" title="Steam → http:&#x2F;&#x2F;steamcommunity.com&#x2F;id&#x2F;freedom1003&#x2F;" rel="noopener" target="_blank"><i class="fab fa-steam fa-fw"></i>Steam</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://space.bilibili.com/2462359" title="Bilibili → http:&#x2F;&#x2F;space.bilibili.com&#x2F;2462359" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>Bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.freedomly.tk/2019/05/24/OpenStack-Neutron-Architecture/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freedomly">
+      <meta itemprop="description" content="Hope is a good thing, maybe the best of things, and no good thing ever dies.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FreedomLy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          OpenStack Neutron -- Neutron 架构分析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-05-24 14:51:53" itemprop="dateCreated datePublished" datetime="2019-05-24T14:51:53+08:00">2019-05-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/OpenStack/" itemprop="url" rel="index"><span itemprop="name">OpenStack</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Neutron 在 OpenStack 中的定位是 NaaS （Networking as a Service）。NaaS 有两层含义：</p>
+<ol>
+<li>对外接口：Neutron 为 Network、Subnet、Port、Router 等网络资源建立了逻辑模型，并提供了 RESTful API、CLI（命令行）和 GUI（图形化用户接口）</li>
+<li>内部实现：利用 Linux 原生以及其他虚拟网络功能，再加上一些硬件网络功能，构建出真正的网络</li>
+</ol>
+<p>Neutron 管理的网元，主要以”软“网元为主（也称作虚拟网络功能）。这些”软“网元有三种来源：</p>
+<ol>
+<li>Linux 原生（内核提供）的网络功能，如 Linux Router、Linux Bridge 等</li>
+<li>开源的网络功能，如 OVS 等</li>
+<li>厂商提供的闭源产品</li>
+</ol>
+<p>在 Neutron 的抽象架构中，Neutron 接到 RESTful API 的请求后，交由模块 WSGI Application 进行初步的处理，然后这个模块通过 Python API 调用 Neutron 的 Plugin 模块。Plugin 模块做了相应处理后，通过 RPC 调用 Neutron 的 Agent 模块，Agent 再通过某种协议（比如 CLI）对 VNF（虚拟网络功能）进行配置。Neutron 内部由不同的组件组成，这些组件之间需要通信，从而引出了 Neutron 消息总线的通信机制。同时，为了提高效率，Neutron 采用了协程来做并发处理。</p>
+<span id="more"></span>
+
+<h2 id="Neutron-中的-WSGI-Application"><a href="#Neutron-中的-WSGI-Application" class="headerlink" title="Neutron 中的 WSGI Application"></a>Neutron 中的 WSGI Application</h2><p>WSGI 是 Web Server Gateway Interface 的缩写。WSGI 本身只是一套标准接口，而非具体实现。这套接口位于 Web Service 和 Web Application（或者 Framework）之间，为的是提升 Web Applications 针对各种 Web Servers 的适配能力。</p>
+<p>能够被 Web Server 按照 WSGI 接口调用的 Web Application 称为 WSGI Application，它有三个特征：</p>
+<ol>
+<li>是一个可调用的对象</li>
+<li>有两个参数：environ、start_response</li>
+<li>有一个可迭代的返回值</li>
+</ol>
+<p>对于 Neutron 来说，只需要按照 WSGI 规范写好 WSGI Application 即可，WSGI Application 才是真正的业务处理单元。</p>
+<h2 id="Neutron-的消息通信机制"><a href="#Neutron-的消息通信机制" class="headerlink" title="Neutron 的消息通信机制"></a>Neutron 的消息通信机制</h2><p>Neutron 内部组件（进程）之间的通信（比如 Neutron Server 与 Neutron Agent），采用 AMQP （Advanced Message Queuing Protocol，高级消息队列协议）机制，进行 RPC 通信。Neutron 采用了三种 AMQP 标准的具体实现：RabbitMQ、Qpid 和 ZMQ，具体应用中根据配置文件选用某种实现。</p>
+<h3 id="AMQP-基本概念"><a href="#AMQP-基本概念" class="headerlink" title="AMQP 基本概念"></a>AMQP 基本概念</h3><p>AMQP 把通信的双方（发送方和接收方）分别称为 Producer 和 Consumer。Producer 把消息发送到 Consumer 需要经过 Message Broker 的处理和传递。AMQP 中，承担 Message Broker 功能的是 AMQP Server，而 AMQP 的 Producer 和 Consumer 都是 AMQP Client。</p>
+<p>在 AMQP Server 中，有两大部件：Exchange 和 Message Queues，其含义如下：</p>
+<ol>
+<li><p>Exchange 接收 Producers 发过来的消息，按照一定规则转发到相应的 Message Queues 中</p>
+</li>
+<li><p>Message Queues 再将消息转发到相应的 Consumers</p>
+</li>
+</ol>
+<h3 id="AMQP-的消息转发"><a href="#AMQP-的消息转发" class="headerlink" title="AMQP 的消息转发"></a>AMQP 的消息转发</h3><h4 id="AMQP-消息转发模型"><a href="#AMQP-消息转发模型" class="headerlink" title="AMQP 消息转发模型"></a>AMQP 消息转发模型</h4><p>Producer 发送的消息，经过 AMQP Server 转发以后，到达对应的 Consumer，在这个消息转发中，起关键的“路由标识”作用的是一个字符串 Routing Key。具体的说，就是 Producer 首先发消息到 Exchange，Exchange 根据一定的转发规则转发到相应的 Message Queue，然后 Queue 通知绑定到它的 Consumer。Exchange 转发消息给 Message Queue 的规则根据 Routing Key 进行匹配。其匹配模式可分为三种：</p>
+<ol>
+<li><p>Direct Exchanges</p>
+<ul>
+<li>Routing Key 是一个字符串</li>
+<li>匹配规则为全值匹配</li>
+</ul>
+<p> Message Queue 绑定的 Routing Key 与 Producer 发送的 Routine Key 完全相同时，Exchange 才会将消息转发给该 Message Queue。</p>
+</li>
+<li><p>Topic Exchanges</p>
+<ul>
+<li>Routing Key 是一个字符串，但是由“.” 分割为多个子字符串</li>
+<li>匹配规则是模式匹配</li>
+</ul>
+<p> 所谓模式匹配，是有两个通配符，一个是“*”，代表任意一个字符串；另一个是“#”，代表任意多个子字符串。Producer 发送的 Routing Key 是一个完整的字符串，没有通配符，Message Queue 绑定的 Routing Key 可以有通配符。</p>
+</li>
+<li><p>Fanout Exchanges</p>
+<ul>
+<li>没有 Routing Key</li>
+<li>所有绑定到 Fanout Exchange Message Queue都能收到相应的 Producer 发送的消息</li>
+</ul>
+</li>
+</ol>
+<h4 id="AMQP-的几种通信模式"><a href="#AMQP-的几种通信模式" class="headerlink" title="AMQP 的几种通信模式"></a>AMQP 的几种通信模式</h4><p>基于 AMQP 的消息转发模型，有以下几种通信模式：</p>
+<ol>
+<li>远程过程调用（RPC）</li>
+<li>发布—订阅（Publish-Subscribe）</li>
+<li>广播（Broadcast）</li>
+</ol>
+<p>发布订阅只需采用 Topic Exchanges 消息转发模型即可，而广播只需采用 Fanout Exchanges 消息转发模型即可。RPC（Remote Procedure Call Protocol，远程过程调用协议），一般称为“远程过程调用”，是一种 Client/Server 通信模型。Client 和 Server 之间有一来（request）一往（response）两个消息。在 request 消息中，RPC Client 担任 Producer 的角色，RPC Server 担任 Consumer 的角色。在 response 消息中，两种角色进行了互换，RPC Server 担任 Producer 角色，RPC Client 担任 Consumer 角色。</p>
+<h2 id="Neutron-的并发机制"><a href="#Neutron-的并发机制" class="headerlink" title="Neutron 的并发机制"></a>Neutron 的并发机制</h2><p>Neutron 北向提供 RESTful 接口，需要处理并发请求，南向对接多个“网元”，Neutron 不能算作“计算密集型”应用，而可以归类为“I/O阻塞型”应用，因此 Neutron 主要采用协程，并且在必要的时候，结合多进程方案来共同构建其并发机制。</p>
+<h3 id="协程与进程、线程的比较"><a href="#协程与进程、线程的比较" class="headerlink" title="协程与进程、线程的比较"></a>协程与进程、线程的比较</h3><p>协程与进程和线程的比较如下：</p>
+<ol>
+<li>协程既不是进程，也不是线程，协程仅仅是一个特殊的函数，协程与进程、线程的含义不在同一维度</li>
+<li>一个进程可以包含多个线程，一个线程可以包含多个协程</li>
+<li>一个线程内的多个协程虽然可以切换，但是这<strong>多个协程是串行执行的</strong>，只能在这一个线程内运行，没法利用 CPU 多核的能力</li>
+<li>协程与进程一样，它们的切换都存在上下文切换问题</li>
+</ol>
+<p>表面上看，进程、线程和协程均存在上下文切换的问题，但是三者上下文切换又有显著的不同，如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">进程</th>
+<th align="left">线程</th>
+<th align="left">协程</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">切换者</td>
+<td align="left">操作系统</td>
+<td align="left">操作系统</td>
+<td align="left">用户（编程者/应用程序）</td>
+</tr>
+<tr>
+<td align="left">切换时机</td>
+<td align="left">根据操作系统自己的切换策略，用户不感知</td>
+<td align="left">根据操作系统自己的切换策略，用户不感知</td>
+<td align="left">用户自己（的程序）决定</td>
+</tr>
+<tr>
+<td align="left">切换内容</td>
+<td align="left">页全局目录、内核栈、硬件上下文</td>
+<td align="left">内核栈、硬件上下文</td>
+<td align="left">硬件上下文</td>
+</tr>
+<tr>
+<td align="left">切换内容的保存</td>
+<td align="left">保存于内核栈中</td>
+<td align="left">保存于内核栈中</td>
+<td align="left">保存于用户自己的变量（用户栈或堆）中</td>
+</tr>
+<tr>
+<td align="left">切换过程</td>
+<td align="left">用户态 - 内核态 - 用户态</td>
+<td align="left">用户态 - 内核态- 用户态</td>
+<td align="left">用户态（没有陷入内核态）</td>
+</tr>
+<tr>
+<td align="left">切换效率</td>
+<td align="left">低</td>
+<td align="left">中</td>
+<td align="left">高</td>
+</tr>
+</tbody></table>
+<h2 id="通用库-Oslo"><a href="#通用库-Oslo" class="headerlink" title="通用库 Oslo"></a>通用库 Oslo</h2><p>为了降低代码的冗余度，OpenStack 社区创建了 Oslo 项目，从 OpenStack 代码中提取公共的部分，构建出一批 lib 库以供 OpenStack 其他项目使用。Neutron 使用了 Oslo 中的 lib。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Freedomly
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://www.freedomly.tk/2019/05/24/OpenStack-Neutron-Architecture/" title="OpenStack Neutron -- Neutron 架构分析">https://www.freedomly.tk/2019/05/24/OpenStack-Neutron-Architecture/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Neutron/" rel="tag"># Neutron</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/05/22/OpenStack-Neutron-Resources-Model/" rel="prev" title="OpenStack Neutron -- Neutron 的资源模型">
+                  <i class="fa fa-chevron-left"></i> OpenStack Neutron -- Neutron 的资源模型
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/02/10/HotSpot-JVM-Float-Compare/" rel="next" title="HotSpot JVM 浮点比较">
+                  HotSpot JVM 浮点比较 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-star"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freedomly</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">101k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:04</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch-lite.umd.js" integrity="sha256-HWlivbjXc58GuU4EIZziqIE83FFZ/da42de13pGZnMA=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.30.2/dist/instantsearch.production.min.js" integrity="sha256-eqhx/eer5fsD7YooSb21wsfJaQkJ/4gF3bmRBZP7q2o=" crossorigin="anonymous"></script><script src="/js/third-party/search/algolia-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
