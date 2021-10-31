@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.freedomly.tk","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"algolia":{"appID":"3V8CYA0BZJ","apiKey":"5e82fb4a75535312cb85cdb8b298443e","indexName":"myBlog","hits":{"per_page":10}}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Github 推出了 GitHub Actions CI&#x2F;CD，之前基于 Travis CI 做的持续部署，这次切换尝试切换到 GitHub Actions。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过 GitHub Actions 自动部署 Hexo 博客">
+<meta property="og:url" content="https://www.freedomly.tk/2021/10/31/hexo-github-action/index.html">
+<meta property="og:site_name" content="FreedomLy">
+<meta property="og:description" content="Github 推出了 GitHub Actions CI&#x2F;CD，之前基于 Travis CI 做的持续部署，这次切换尝试切换到 GitHub Actions。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.freedomly.tk/2021/10/31/hexo-github-action/images/imagesource/21-10-31/21-10-31-2.png">
+<meta property="article:published_time" content="2021-10-31T14:08:52.000Z">
+<meta property="article:modified_time" content="2021-10-31T14:08:53.000Z">
+<meta property="article:author" content="Freedomly">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="github action">
+<meta property="article:tag" content="CI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.freedomly.tk/2021/10/31/hexo-github-action/images/imagesource/21-10-31/21-10-31-2.png">
+
+
+<link rel="canonical" href="https://www.freedomly.tk/2021/10/31/hexo-github-action/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://www.freedomly.tk/2021/10/31/hexo-github-action/","path":"2021/10/31/hexo-github-action/","title":"通过 GitHub Actions 自动部署 Hexo 博客"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>通过 GitHub Actions 自动部署 Hexo 博客 | FreedomLy</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">FreedomLy</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Welcome to my blog. <3</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">22</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">35</span></a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container">
+  <div class="algolia-stats"><hr></div>
+  <div class="algolia-hits"></div>
+  <div class="algolia-pagination"></div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%93%E5%BA%93%E5%87%86%E5%A4%87"><span class="nav-number">1.1.</span> <span class="nav-text">仓库准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-Keys-%E5%92%8C-Secrets"><span class="nav-number">1.2.</span> <span class="nav-text">Deploy Keys 和 Secrets</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE-GitHub-workflows"><span class="nav-number">2.</span> <span class="nav-text">配置 GitHub workflows</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E6%96%B0%E5%8D%9A%E5%AE%A2%E5%B9%B6%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2"><span class="nav-number">3.</span> <span class="nav-text">提交新博客并自动部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Freedomly</p>
+  <div class="site-description" itemprop="description">Hope is a good thing, maybe the best of things, and no good thing ever dies.</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/feilongjiang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;feilongjiang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:freedom.jfl@live.com" title="E-Mail → mailto:freedom.jfl@live.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/freedomly1003" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;freedomly1003" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://steamcommunity.com/id/freedom1003/" title="Steam → http:&#x2F;&#x2F;steamcommunity.com&#x2F;id&#x2F;freedom1003&#x2F;" rel="noopener" target="_blank"><i class="fab fa-steam fa-fw"></i>Steam</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://space.bilibili.com/2462359" title="Bilibili → http:&#x2F;&#x2F;space.bilibili.com&#x2F;2462359" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>Bilibili</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.freedomly.tk/2021/10/31/hexo-github-action/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Freedomly">
+      <meta itemprop="description" content="Hope is a good thing, maybe the best of things, and no good thing ever dies.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FreedomLy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          通过 GitHub Actions 自动部署 Hexo 博客
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-10-31 22:08:52 / 修改时间：22:08:53" itemprop="dateCreated datePublished" datetime="2021-10-31T22:08:52+08:00">2021-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Github 推出了 <a target="_blank" rel="noopener" href="https://github.com/features/actions">GitHub Actions</a> CI/CD，之前基于 Travis CI 做的持续部署，这次切换尝试切换到 GitHub Actions。</p>
+<span id="more"></span>
+
+<p>在 Marketplace/Actions 中找到了已有的 <a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/hexo-action">Hexo Action</a>，本文就是基于它完成的。</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><h3 id="仓库准备"><a href="#仓库准备" class="headerlink" title="仓库准备"></a>仓库准备</h3><p>要实现自动部署，需要把博客的源文件也存放在仓库中。由于有些 TOKEN 可能会存放在配置文件中，建议单独为博客源文件创建一个 private 仓库，这样可以防止 TOKEN 泄漏。同时还需要一个存放 hexo deploy 以后所生成的文件仓库  <code>yourname.github.io</code>，用于发布博客。</p>
+<blockquote>
+<p>如果不在意博客的配置是否公开的，可以直接将源文件 deploy 所生成的文件放在同一个仓库的不同分支下，即 <code>yourname.github.io</code> 下。类似我之前的 <a href="https://www.freedomly.tk/2019/01/16/Hexo-Travis-CI-auto-deploy/">使用 Travis CI 实现 Hexo 博客自动构建和部署</a>。</p>
+</blockquote>
+<p>假设我们有两个仓库：</p>
+<ul>
+<li><code>blog</code>: 存放了博客源码，称之为博客源码仓库</li>
+<li><code>yourname.github.io</code>: 存放了 Hexo deploy 的文件，称之为博客仓库</li>
+</ul>
+<p>博客源码仓库下以下内容是必须的: <code>scaffolds</code>，<code>source</code>，<code>themes</code>，<code>_config.yml</code>，<code>package.json</code>，<code>packge-lock.json</code>。由于我的博客之前是用 Travis CI 做部署的，因此只需将源文件复制过来即可。</p>
+<p>后续操作皆基于上述两个仓库完成。</p>
+<h3 id="Deploy-Keys-和-Secrets"><a href="#Deploy-Keys-和-Secrets" class="headerlink" title="Deploy Keys 和 Secrets"></a>Deploy Keys 和 Secrets</h3><p>自动部署需要额外的部署密钥，通过 <code>ssh-keygen</code> 生成即可：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C &quot;username@example.com&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这里的邮箱请使用 GitHub 绑定的邮箱。</p>
+</blockquote>
+<p>如果没有自定义输出文件名，上述命令会生成两个文件：<code>id_rsa.pub</code> 和 <code>id_rsa</code>，分别是公钥和私钥。将生成的公钥和私钥分别添加到博客仓库和博客源码仓库。</p>
+<p>在博客源码仓库下，<code>Settings-&gt;Secrets</code> 页面点击 New repository secret，将私钥复制进去，并命名为 <code>DEPLOY_KEY</code>，然后点击 Add secret 即可。</p>
+<blockquote>
+<p>DEPLOY_KEY 的命名不可替换，会在后续的 GitHub Actions 中使用到。</p>
+</blockquote>
+<p>在博客仓库下，<code>Settings-&gt;Deploy keys</code> 页面点击 Add deploy key，将私钥对应的公钥复制进去，命名随意，如 <code>HEXP_DEPLOY_KEY</code>，<strong>记得要勾选 Allow write access</strong>。</p>
+<h2 id="配置-GitHub-workflows"><a href="#配置-GitHub-workflows" class="headerlink" title="配置 GitHub workflows"></a>配置 GitHub workflows</h2><p>在 <code>.github/workflows</code> 目录下新建 <code>deploy.yml</code>，使用 Hexo Action 提供的配置即可：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Deploy</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span> [<span class="string">push</span>]</span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">A</span> <span class="string">job</span> <span class="string">to</span> <span class="string">deploy</span> <span class="string">blog.</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/checkout@v1</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">submodules:</span> <span class="literal">true</span> <span class="comment"># Checkout private submodules(themes or something else).</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Caching dependencies to speed up workflows. (GitHub will remove any cache entries that have not been accessed in over 7 days.)</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Cache</span> <span class="string">node</span> <span class="string">modules</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/cache@v1</span></span><br><span class="line">      <span class="attr">id:</span> <span class="string">cache</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">path:</span> <span class="string">node_modules</span></span><br><span class="line">        <span class="attr">key:</span> <span class="string">$&#123;&#123;</span> <span class="string">runner.os</span> <span class="string">&#125;&#125;-node-$&#123;&#123;</span> <span class="string">hashFiles(&#x27;**/package-lock.json&#x27;)</span> <span class="string">&#125;&#125;</span></span><br><span class="line">        <span class="attr">restore-keys:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          $&#123;&#123; runner.os &#125;&#125;-node-</span></span><br><span class="line"><span class="string"></span>    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">Dependencies</span></span><br><span class="line">      <span class="attr">if:</span> <span class="string">steps.cache.outputs.cache-hit</span> <span class="type">!=</span> <span class="string">&#x27;true&#x27;</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">npm</span> <span class="string">ci</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Deploy hexo blog website.</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Deploy</span></span><br><span class="line">      <span class="attr">id:</span> <span class="string">deploy</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">sma11black/hexo-action@v1.0.4</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">deploy_key:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.DEPLOY_KEY</span> <span class="string">&#125;&#125;</span></span><br><span class="line">        <span class="attr">user_name:</span> <span class="string">your</span> <span class="string">github</span> <span class="string">username</span>  <span class="comment"># (or delete this input setting to use bot account)</span></span><br><span class="line">        <span class="attr">user_email:</span> <span class="string">your</span> <span class="string">github</span> <span class="string">useremail</span>  <span class="comment"># (or delete this input setting to use bot account)</span></span><br><span class="line">        <span class="attr">commit_msg:</span> <span class="string">$&#123;&#123;</span> <span class="string">github.event.head_commit.message</span> <span class="string">&#125;&#125;</span>  <span class="comment"># (or delete this input setting to use hexo default settings)</span></span><br><span class="line">    <span class="comment"># Use the output from the `deploy` step(use for test action)</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Get</span> <span class="string">the</span> <span class="string">output</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">        <span class="string">echo</span> <span class="string">&quot;$<span class="template-variable">&#123;&#123; steps.deploy.outputs.notify &#125;&#125;</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>uses: sma11black/hexo-action@v1.0.4</code> 可以配置成最新的，本博客更新时，最新为 v1.0.4。</p>
+</blockquote>
+<h2 id="提交新博客并自动部署"><a href="#提交新博客并自动部署" class="headerlink" title="提交新博客并自动部署"></a>提交新博客并自动部署</h2><p>上述配置完成后，可以尝试将本地改动提交的远程博客源码仓库，测试 GitHub Actions 是否正常执行。成功的话会如下图所示：</p>
+<p><img data-src="images/imagesource/21-10-31/21-10-31-2.png" alt="github actions success"></p>
+<p>成功后，即可访问博客 <code>yourname.github.io</code> 查看更新后的内容了。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>[1]: <a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/hexo-action">GitHub Action - Hexo CI/CD 🌱</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>Freedomly
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://www.freedomly.tk/2021/10/31/hexo-github-action/" title="通过 GitHub Actions 自动部署 Hexo 博客">https://www.freedomly.tk/2021/10/31/hexo-github-action/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+              <a href="/tags/github-action/" rel="tag"># github action</a>
+              <a href="/tags/CI/" rel="tag"># CI</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/10/HotSpot-JVM-Float-Compare/" rel="prev" title="HotSpot JVM 浮点比较">
+                  <i class="fa fa-chevron-left"></i> HotSpot JVM 浮点比较
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-star"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Freedomly</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">103k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:08</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch-lite.umd.js" integrity="sha256-HWlivbjXc58GuU4EIZziqIE83FFZ/da42de13pGZnMA=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.30.2/dist/instantsearch.production.min.js" integrity="sha256-eqhx/eer5fsD7YooSb21wsfJaQkJ/4gF3bmRBZP7q2o=" crossorigin="anonymous"></script><script src="/js/third-party/search/algolia-search.js"></script>
+
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

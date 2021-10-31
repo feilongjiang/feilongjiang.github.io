@@ -16,6 +16,13 @@
   </url>
   
   <url>
+    <loc>https://www.freedomly.tk/404.html</loc>
+    
+    <lastmod>2021-10-31</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.freedomly.tk/about/index.html</loc>
     
     <lastmod>2021-10-31</lastmod>
@@ -30,7 +37,7 @@
   </url>
   
   <url>
-    <loc>https://www.freedomly.tk/404.html</loc>
+    <loc>https://www.freedomly.tk/2021/10/31/hexo-github-action/</loc>
     
     <lastmod>2021-10-31</lastmod>
     
@@ -397,6 +404,20 @@
   
   <url>
     <loc>https://www.freedomly.tk/tags/helloworld/</loc>
+    <lastmod>2021-10-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.freedomly.tk/tags/github-action/</loc>
+    <lastmod>2021-10-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.freedomly.tk/tags/CI/</loc>
     <lastmod>2021-10-31</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
