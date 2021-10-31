@@ -2220,6 +2220,7 @@ pre code {
 }
 .posts-expand .post-meta-container time {
   border-bottom: 1px dashed #999;
+  cursor: pointer;
 }
 .post-meta {
   display: flex;
