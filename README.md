@@ -1,6 +1,6 @@
 # GitHub Pages & Hexo
 
-[![Build Status](https://travis-ci.org/feilongjiang/feilongjiang.github.io.svg?branch=source)](https://travis-ci.org/feilongjiang/feilongjiang.github.io)
+![Deploy Status](https://github.com/feilongjiang/blog/actions/workflows/deploy.yml/badge.svg)
 
 ## 博客
 
@@ -20,6 +20,6 @@ hexo theme [next](https://github.com/next-theme/hexo-theme-next)
 
 ## 自动部署
 
-[Travis-CI](https://https://travis-ci.org/)
+[GitHub Actions](https://github.com/features/actions)
 
-[使用 Travis CI 实现 Hexo 博客自动构建和部署](https://freedomly.tk/2019/01/16/Hexo-Travis-CI-auto-deploy/)
+[通过 GitHub Actions 自动部署 Hexo 博客](https://www.freedomly.tk/2021/10/31/hexo-github-action/)
