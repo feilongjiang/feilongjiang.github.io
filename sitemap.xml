@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.freedomly.tk/sitemap/index.html</loc>
+    
+    <lastmod>2021-11-01</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.freedomly.tk/tags/index.html</loc>
     
     <lastmod>2021-11-01</lastmod>
@@ -9,7 +16,7 @@
   </url>
   
   <url>
-    <loc>https://www.freedomly.tk/sitemap/index.html</loc>
+    <loc>https://www.freedomly.tk/404.html</loc>
     
     <lastmod>2021-11-01</lastmod>
     
@@ -24,13 +31,6 @@
   
   <url>
     <loc>https://www.freedomly.tk/categories/index.html</loc>
-    
-    <lastmod>2021-11-01</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://www.freedomly.tk/404.html</loc>
     
     <lastmod>2021-11-01</lastmod>
     
