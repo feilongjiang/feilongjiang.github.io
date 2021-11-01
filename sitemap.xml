@@ -16,13 +16,6 @@
   </url>
   
   <url>
-    <loc>https://www.freedomly.tk/404.html</loc>
-    
-    <lastmod>2021-11-01</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://www.freedomly.tk/about/index.html</loc>
     
     <lastmod>2021-11-01</lastmod>
@@ -31,6 +24,13 @@
   
   <url>
     <loc>https://www.freedomly.tk/categories/index.html</loc>
+    
+    <lastmod>2021-11-01</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://www.freedomly.tk/404.html</loc>
     
     <lastmod>2021-11-01</lastmod>
     

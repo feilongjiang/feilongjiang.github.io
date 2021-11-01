@@ -1,6 +1,6 @@
 # GitHub Pages & Hexo
 
-![Deploy Status](https://github.com/feilongjiang/blog/actions/workflows/deploy.yml/badge.svg)
+[![Deploy](https://github.com/feilongjiang/blog/actions/workflows/deploy.yml/badge.svg?branch=master&event=push)](https://github.com/feilongjiang/blog/actions/workflows/deploy.yml)
 
 ## 博客
 
