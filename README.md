@@ -1,6 +1,6 @@
 # GitHub Pages & Jekyll
 
-[![Deploy](https://github.com/feilongjiang/blog/actions/workflows/deploy.yml/badge.svg?branch=master&event=push)](https://github.com/feilongjiang/blog/actions/workflows/deploy.yml)
+[![Deploy](https://github.com/feilongjiang/feilongjiang.github.io/actions/workflows/pages-deploy.yml/badge.svg?branch=main&event=push)](https://github.com/feilongjiang/feilongjiang.github.io/actions/workflows/pages-deploy.yml)
 
 ## 博客
 
