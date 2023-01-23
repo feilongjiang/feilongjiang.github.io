@@ -14,7 +14,7 @@ comments: true
 
 # 二叉树节点定义
 
-```C++
+```c++
 /* Definition for a binary tree node*/
 struct TreeNode {
     int val;

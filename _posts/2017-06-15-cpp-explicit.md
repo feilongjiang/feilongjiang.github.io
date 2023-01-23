@@ -10,7 +10,6 @@ tags: [c++]
 在介绍explicit关键字之前，先来了解一下什么是隐式的类类型转换，C++ Primer第五版中的描述如下：
 > 如果构造函数只接受一个实参，则它实际上定义了转化为次类类型的隐式转换规则，有时我们把这种构造函数称作**转换构造函数(converting constructor)**
 
-<!--more-->
 也就是说编译器允许将构造函数参数类型通过隐式的转换，转化为一个类类型，以便为参数获取正确的类型。
 
 ## 转换示例
@@ -78,9 +77,4 @@ Bar(Foo(42))
 
 ## 参考资料
 
-[1]: [Stack OverFlow - What does the explicit keyword mean?](https://stackoverflow.com/questions/121162/what-does-the-explicit-keyword-mean/121163#121163)
-
-
-End~
-
----
+1: [Stack OverFlow - What does the explicit keyword mean?](https://stackoverflow.com/questions/121162/what-does-the-explicit-keyword-mean/121163#121163)
